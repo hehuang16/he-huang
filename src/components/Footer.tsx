@@ -51,7 +51,7 @@ export default function Footer() {
         <div className="text-center py-4 border-t border-obsidian-border border-b mb-6">
           <p className="text-silver/40 text-xs font-sans">
             Proudly serving the Lexington, MA community and students from{' '}
-            <span className="text-silver/60">LHS, Diamond, and Clarke Middle Schools.</span>
+            <span className="text-silver/60">elementary schools(Bowman, Bridge, Hastings, Fiske, Estabrook, Harrington), middle schools (Diamond, Clarke) and Lexington High School.</span>
           </p>
         </div>
 

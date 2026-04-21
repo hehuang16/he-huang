@@ -150,7 +150,7 @@ export default function Hero() {
           {[
             { value: '11', label: 'Years Violin' },
             { value: '$3.3K', label: 'Busking Revenue' },
-            { value: '4', label: 'Students Mentored' },
+            { value: '2+', label: 'Students Mentored' },
           ].map((stat) => (
             <div key={stat.label} className="flex flex-col items-center">
               <span className="stat-number">{stat.value}</span>

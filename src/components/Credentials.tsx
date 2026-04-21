@@ -35,7 +35,7 @@ const credentials = [
   {
     id: 'students',
     icon: Users,
-    stat: '4+',
+    stat: '2+',
     label: 'Students Successfully Mentored',
     description:
       'Guided elementary students from zero basics to confident performances. Results speak louder than credentials.',
