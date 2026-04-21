@@ -1,0 +1,288 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ─── Custom CSS Variables ─── */
+:root {
+  --obsidian: #0B0B0B;
+  --obsidian-light: #111111;
+  --obsidian-card: #161616;
+  --obsidian-border: #1E1E1E;
+  --silver: #E5E5E5;
+  --titanium: #F5F5F5;
+  --crimson: #DC2626;
+  --crimson-dark: #B91C1C;
+  --crimson-light: #EF4444;
+  --crimson-glow: rgba(220, 38, 38, 0.15);
+  --crimson-glow-strong: rgba(220, 38, 38, 0.35);
+}
+
+/* ─── Base Resets ─── */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  background-color: var(--obsidian);
+  color: var(--silver);
+  overflow-x: hidden;
+}
+
+/* ─── Selection Styling ─── */
+::selection {
+  background: var(--crimson);
+  color: #fff;
+}
+
+/* ─── Scrollbar Styling ─── */
+::-webkit-scrollbar {
+  width: 4px;
+}
+::-webkit-scrollbar-track {
+  background: var(--obsidian);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--crimson);
+  border-radius: 2px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--crimson-light);
+}
+
+/* ─── Utility Classes ─── */
+@layer utilities {
+  .text-gradient {
+    background: linear-gradient(135deg, #E5E5E5 0%, #DC2626 50%, #E5E5E5 100%);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .text-gradient-silver {
+    background: linear-gradient(180deg, #FFFFFF 0%, #9CA3AF 100%);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .glow-crimson {
+    box-shadow: 0 0 30px var(--crimson-glow-strong), 0 0 60px var(--crimson-glow);
+  }
+
+  .glow-crimson-sm {
+    box-shadow: 0 0 10px var(--crimson-glow-strong), 0 0 20px var(--crimson-glow);
+  }
+
+  .border-gradient {
+    border-image: linear-gradient(135deg, #DC2626, transparent) 1;
+  }
+
+  .noise-bg {
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+  }
+
+  .card-glass {
+    background: rgba(22, 22, 22, 0.8);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(220, 38, 38, 0.1);
+  }
+
+  .hover-lift {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  .hover-lift:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5), 0 0 30px var(--crimson-glow);
+  }
+
+  .section-divider {
+    width: 60px;
+    height: 3px;
+    background: linear-gradient(90deg, #DC2626, transparent);
+    margin: 0 auto;
+  }
+}
+
+/* ─── Global Typography ─── */
+@layer base {
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-montserrat), system-ui, sans-serif;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+  }
+
+  p {
+    line-height: 1.75;
+  }
+}
+
+/* ─── Animations ─── */
+@keyframes crimsonPulse {
+  0%, 100% { opacity: 0.6; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.05); }
+}
+
+@keyframes scanLine {
+  0% { top: -10%; }
+  100% { top: 110%; }
+}
+
+@keyframes bowStroke {
+  0% { transform: scaleX(0); transform-origin: left; }
+  100% { transform: scaleX(1); transform-origin: left; }
+}
+
+.animate-bow-stroke {
+  animation: bowStroke 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* ─── Hero Scan Effect ─── */
+.hero-scan::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, rgba(220, 38, 38, 0.4), transparent);
+  animation: scanLine 4s ease-in-out infinite;
+  pointer-events: none;
+}
+
+/* ─── Floating CTA ─── */
+.floating-cta {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  z-index: 999;
+  border-radius: 50px;
+  overflow: hidden;
+}
+
+@media (min-width: 768px) {
+  .floating-cta {
+    bottom: 2.5rem;
+    right: 2.5rem;
+  }
+}
+
+/* ─── Video Container ─── */
+.video-container {
+  position: relative;
+  padding-bottom: 56.25%;
+  height: 0;
+  overflow: hidden;
+  border-radius: 12px;
+}
+
+.video-container iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+/* ─── Table Styling ─── */
+.service-table {
+  border-collapse: separate;
+  border-spacing: 0;
+  width: 100%;
+}
+
+.service-table th,
+.service-table td {
+  padding: 1rem 1.5rem;
+  text-align: left;
+  border-bottom: 1px solid rgba(30, 30, 30, 0.8);
+}
+
+.service-table tr:last-child td {
+  border-bottom: none;
+}
+
+.service-table tr:hover td {
+  background: rgba(220, 38, 38, 0.04);
+  transition: background 0.3s ease;
+}
+
+/* ─── Particle Background ─── */
+.particles-bg {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.particle {
+  position: absolute;
+  width: 2px;
+  height: 2px;
+  background: var(--crimson);
+  border-radius: 50%;
+  opacity: 0;
+  animation: particleFade 3s ease-in-out infinite;
+}
+
+@keyframes particleFade {
+  0%, 100% { opacity: 0; transform: translateY(0); }
+  50% { opacity: 0.6; transform: translateY(-20px); }
+}
+
+/* ─── Number Counter ─── */
+.stat-number {
+  font-family: var(--font-montserrat), system-ui;
+  font-weight: 900;
+  font-size: clamp(2.5rem, 5vw, 4rem);
+  background: linear-gradient(135deg, #FFFFFF 0%, #DC2626 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  line-height: 1;
+}
+
+/* ─── Nav ─── */
+.nav-blur {
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  background: rgba(11, 11, 11, 0.85);
+  border-bottom: 1px solid rgba(220, 38, 38, 0.08);
+}
+
+/* ─── Hero gradient overlay ─── */
+.hero-overlay {
+  background: linear-gradient(
+    180deg,
+    rgba(11, 11, 11, 0) 0%,
+    rgba(11, 11, 11, 0.3) 30%,
+    rgba(11, 11, 11, 0.7) 70%,
+    rgba(11, 11, 11, 1) 100%
+  );
+}
+
+/* ─── Thin Red Line Decoration ─── */
+.red-line {
+  display: block;
+  height: 2px;
+  background: linear-gradient(90deg, var(--crimson), transparent);
+  margin-bottom: 1.5rem;
+}
+
+/* ─── Section Label ─── */
+.section-label {
+  font-family: var(--font-montserrat), system-ui;
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--crimson);
+}
