@@ -21,7 +21,8 @@ const services = [
       'Performance confidence',
     ],
     ideal: 'Elementary school students starting violin',
-    pricing: 'Text for Rates',
+    pricing: 'Starting at $30/session',
+    duration: '~30 min',
   },
   {
     id: 'practice-ally',
@@ -37,7 +38,8 @@ const services = [
       'Mental performance coaching',
     ],
     ideal: 'BYSO, NEC, Rivers School students',
-    pricing: 'Text for Rates',
+    pricing: 'Starting at $30/session',
+    duration: '~45 min',
     featured: true,
   },
   {
@@ -54,7 +56,8 @@ const services = [
       'Growth mindset coaching',
     ],
     ideal: 'Middle & high school athletes',
-    pricing: 'Text for Rates',
+    pricing: 'Starting at $30/session',
+    duration: '~45 min',
   },
 ]
 
@@ -168,6 +171,17 @@ export default function Services() {
                   ))}
                 </ul>
 
+                {/* Pricing */}
+                <div className="py-3 px-4 bg-obsidian border border-obsidian-border rounded-sm mb-3">
+                  <span className="text-[0.6rem] font-display font-700 uppercase tracking-[0.2em] text-silver/30 block mb-1">
+                    Rate
+                  </span>
+                  <div className="flex items-baseline justify-between">
+                    <span className="text-sm font-display font-800 text-titanium">{service.pricing}</span>
+                    <span className="text-[0.6rem] font-display font-600 tracking-[0.1em] text-silver/40">{service.duration}</span>
+                  </div>
+                </div>
+
                 {/* Ideal for */}
                 <div className="py-3 px-4 bg-obsidian border border-obsidian-border rounded-sm mb-6">
                   <span className="text-[0.6rem] font-display font-700 uppercase tracking-[0.2em] text-silver/30 block mb-1">
@@ -187,7 +201,7 @@ export default function Services() {
                   }`}
                 >
                   <MessageCircle className="w-3.5 h-3.5" />
-                  {service.pricing}
+                  Book Session
                 </a>
               </div>
             </motion.div>
