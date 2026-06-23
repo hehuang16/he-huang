@@ -6,6 +6,7 @@ import Credentials from '@/components/Credentials'
 import Showcase from '@/components/Showcase'
 import Services from '@/components/Services'
 import WhyMe from '@/components/WhyMe'
+import CommunityImpact from '@/components/CommunityImpact'
 import Contact from '@/components/Contact'
 import Footer from '@/components/Footer'
 import FloatingCTA from '@/components/FloatingCTA'
@@ -22,6 +23,7 @@ export default function Home() {
         <Showcase />
         <Services />
         <WhyMe />
+        <CommunityImpact />
         <Contact />
       </main>
       <Footer />
