@@ -40,7 +40,7 @@ const services = [
         Thorough, reliable car washing service. My partner <strong>Alan Jee</strong> and I work as a dedicated team to treat your vehicle with the utmost care, right in the convenience of your driveway.
       </>
     ),
-    experience: '5 cars serviced',
+    experience: '7 cars serviced',
   },
   {
     icon: BookOpen,
