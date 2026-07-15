@@ -35,8 +35,11 @@ const services = [
     icon: Car,
     title: 'Car Washing',
     price: 'Contact for pricing',
-    description:
-      'Thorough, reliable car washing service. I treat every car with care and attention to detail, right in the convenience of your driveway.',
+    description: (
+      <>
+        Thorough, reliable car washing service. My partner <strong>Alan Jee</strong> and I work as a dedicated team to treat your vehicle with the utmost care, right in the convenience of your driveway.
+      </>
+    ),
     experience: '5 cars serviced',
   },
   {
