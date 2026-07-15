@@ -37,10 +37,6 @@ export default function Navbar() {
           scrolled ? 'nav-blur' : 'bg-transparent'
         }`}
       >
-        <div className="bg-[#1E3A5F] text-white text-xs sm:text-sm py-2 px-4 text-center w-full font-medium">
-          $10 from every paid service is proudly donated to the Chinese Bible Church of Greater Boston.
-        </div>
-
         <div className="max-w-5xl w-full mx-auto px-4 sm:px-6 flex items-center justify-between h-16">
           {/* Logo */}
           <a href="#" className="font-display font-bold text-[#1E3A5F] text-lg tracking-tight">

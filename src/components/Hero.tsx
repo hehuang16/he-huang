@@ -61,6 +61,14 @@ export default function Hero() {
           care, discipline, and respect.
         </motion.p>
 
+        {/* Donation Notice */}
+        <motion.p
+          className="text-[#2563EB] font-medium text-sm sm:text-base mt-4 max-w-xl mx-auto"
+          variants={fadeUp}
+        >
+          $10 from every paid service is proudly donated to the Chinese Bible Church of Greater Boston.
+        </motion.p>
+
         {/* CTA button */}
         <motion.div className="mt-8" variants={fadeUp}>
           <a
