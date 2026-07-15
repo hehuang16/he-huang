@@ -1,117 +1,116 @@
-'use client'
+'use client';
 
-import { useEffect, useState } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
-import { Menu, X, Music } from 'lucide-react'
+import { useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Menu, X } from 'lucide-react';
 
 const navLinks = [
-  { label: 'About', href: '#about' },
-  { label: 'Mission', href: '#mission' },
   { label: 'Services', href: '#services' },
-  { label: 'Showcase', href: '#showcase' },
-  { label: 'Community', href: '#community' },
+  { label: 'About', href: '#about' },
   { label: 'Contact', href: '#contact' },
-]
+];
 
 export default function Navbar() {
-  const [scrolled, setScrolled] = useState(false)
-  const [mobileOpen, setMobileOpen] = useState(false)
+  const [scrolled, setScrolled] = useState(false);
+  const [mobileOpen, setMobileOpen] = useState(false);
 
   useEffect(() => {
-    const handleScroll = () => setScrolled(window.scrollY > 40)
-    window.addEventListener('scroll', handleScroll, { passive: true })
-    return () => window.removeEventListener('scroll', handleScroll)
-  }, [])
+    const handleScroll = () => setScrolled(window.scrollY > 40);
+    handleScroll();
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  // Lock body scroll when mobile menu is open
+  useEffect(() => {
+    document.body.style.overflow = mobileOpen ? 'hidden' : '';
+    return () => { document.body.style.overflow = ''; };
+  }, [mobileOpen]);
 
   return (
     <>
       <motion.nav
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
-          scrolled ? 'nav-blur py-3' : 'py-5 bg-transparent'
-        }`}
-        initial={{ y: -80, opacity: 0 }}
+        initial={{ y: -20, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
-        transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+        transition={{ duration: 0.5, ease: 'easeOut' }}
+        className={`fixed top-0 inset-x-0 z-50 transition-all duration-300 ${
+          scrolled ? 'nav-blur' : 'bg-transparent'
+        }`}
       >
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 flex items-center justify-between h-16">
           {/* Logo */}
-          <a href="#" className="flex items-center gap-2 group">
-            <div className="w-8 h-8 bg-crimson rounded-sm flex items-center justify-center group-hover:glow-crimson-sm transition-all duration-300">
-              <Music className="w-4 h-4 text-white" strokeWidth={2.5} />
-            </div>
-            <span className="font-display font-900 text-sm tracking-[0.15em] uppercase text-titanium">
-              He Huang
-            </span>
+          <a href="#" className="font-display font-bold text-[#1E3A5F] text-lg tracking-tight">
+            He Huang
           </a>
 
-          {/* Desktop Nav */}
+          {/* Desktop links */}
           <div className="hidden md:flex items-center gap-8">
             {navLinks.map((link) => (
               <a
-                key={link.label}
+                key={link.href}
                 href={link.href}
-                className="text-xs font-display font-600 tracking-[0.15em] uppercase text-silver/60 hover:text-crimson transition-colors duration-200 relative group"
+                className="text-sm font-medium text-[#6B7280] hover:text-[#2563EB] transition-colors"
               >
                 {link.label}
-                <span className="absolute -bottom-1 left-0 w-0 h-px bg-crimson group-hover:w-full transition-all duration-300" />
               </a>
             ))}
+
             <a
-              href="sms:+16175482946"
-              id="nav-cta"
-              className="ml-4 px-5 py-2 bg-crimson hover:bg-crimson-dark text-white text-xs font-display font-700 tracking-[0.1em] uppercase rounded-sm transition-all duration-300 hover:glow-crimson-sm"
+              href="sms:+17813544240"
+              className="px-4 py-2 bg-[#2563EB] hover:bg-[#1E3A5F] text-white text-sm font-semibold rounded-lg transition-colors"
             >
-              Text Me
+              Contact Me
             </a>
           </div>
 
-          {/* Mobile Hamburger */}
+          {/* Mobile menu button */}
           <button
-            id="mobile-menu-toggle"
-            className="md:hidden text-silver/70 hover:text-crimson transition-colors"
             onClick={() => setMobileOpen(!mobileOpen)}
-            aria-label="Toggle mobile menu"
+            className="md:hidden p-2 text-[#1E3A5F]"
+            aria-label="Toggle menu"
           >
-            {mobileOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+            {mobileOpen ? <X size={24} /> : <Menu size={24} />}
           </button>
         </div>
       </motion.nav>
 
-      {/* Mobile Menu */}
+      {/* Mobile overlay */}
       <AnimatePresence>
         {mobileOpen && (
           <motion.div
-            className="fixed inset-0 z-40 bg-obsidian/97 flex flex-col items-center justify-center gap-8"
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            transition={{ duration: 0.3 }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.2 }}
+            className="fixed inset-0 z-40 bg-white flex flex-col items-center justify-center gap-8"
           >
             {navLinks.map((link, i) => (
               <motion.a
-                key={link.label}
+                key={link.href}
                 href={link.href}
-                className="text-2xl font-display font-800 uppercase tracking-[0.2em] text-silver/80 hover:text-crimson transition-colors"
                 onClick={() => setMobileOpen(false)}
-                initial={{ opacity: 0, y: 20 }}
+                initial={{ opacity: 0, y: 12 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: i * 0.08 }}
+                transition={{ delay: 0.05 * i, duration: 0.3 }}
+                className="text-2xl font-display font-semibold text-[#1E3A5F] hover:text-[#2563EB] transition-colors"
               >
                 {link.label}
               </motion.a>
             ))}
+
             <motion.a
-              href="sms:+16175482946"
-              className="mt-4 px-8 py-3 bg-crimson text-white font-display font-700 uppercase tracking-[0.15em] text-sm rounded-sm glow-crimson"
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ delay: 0.4 }}
+              href="sms:+17813544240"
+              onClick={() => setMobileOpen(false)}
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.15, duration: 0.3 }}
+              className="mt-4 px-6 py-3 bg-[#2563EB] hover:bg-[#1E3A5F] text-white text-lg font-semibold rounded-lg transition-colors"
             >
-              Text for Inquiry
+              Contact Me
             </motion.a>
           </motion.div>
         )}
       </AnimatePresence>
     </>
-  )
+  );
 }

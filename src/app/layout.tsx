@@ -12,138 +12,155 @@ const montserrat = Montserrat({
   subsets: ['latin'],
   variable: '--font-montserrat',
   display: 'swap',
-  weight: ['400', '600', '700', '800', '900'],
 })
 
 export const metadata: Metadata = {
-  title: 'He Huang | Elite Violin Mentoring & Practice Coaching in Lexington, MA',
+  title: 'He Huang | Student Services in Lexington, MA',
   description:
-    'LHS scholar-musician offering high-performance violin mentoring. Specializing in technique precision, athletic discipline, and competition prep for students in Greater Boston.',
+    'Lexington High School student offering violin lessons, practice coaching, personal fitness training, car washing, math tutoring, and STEM education mission trips. Serving the Lexington, MA community with dedication.',
   keywords: [
-    'Violin Mentor Lexington',
-    'LHS Violin',
-    'Music Practice Assistant Boston',
-    'High School Violin Tutor',
-    'BYSO audition prep',
-    'NEC violin coaching',
-    'He Huang violin',
-    'Lexington MA music tutor',
+    'violin lessons Lexington',
+    'math tutor elementary',
+    'personal training teen',
+    'car wash Lexington MA',
+    'student services',
+    'He Huang',
+    'STEM education Panama',
   ],
   authors: [{ name: 'He Huang' }],
   creator: 'He Huang',
   openGraph: {
-    title: 'He Huang | Elite Violin Mentoring in Lexington, MA',
+    title: 'He Huang | Student Services in Lexington, MA',
     description:
-      'LHS scholar-musician offering high-performance violin mentoring. Precision, discipline, and artistic soul.',
+      'Lexington High School student offering violin lessons, practice coaching, personal fitness training, car washing, math tutoring, and STEM education mission trips. Serving the Lexington, MA community with dedication.',
     type: 'website',
     locale: 'en_US',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'He Huang | Elite Violin Mentoring in Lexington, MA',
+    title: 'He Huang | Student Services in Lexington, MA',
     description:
-      'LHS scholar-musician offering high-performance violin mentoring. Precision, discipline, and artistic soul.',
+      'Lexington High School student offering violin lessons, practice coaching, personal fitness training, car washing, math tutoring, and STEM education mission trips. Serving the Lexington, MA community with dedication.',
   },
   robots: {
     index: true,
     follow: true,
-    googleBot: {
-      index: true,
-      follow: true,
-    },
   },
 }
 
-// JSON-LD LocalBusiness schema
 const jsonLd = {
   '@context': 'https://schema.org',
   '@type': 'LocalBusiness',
-  name: 'He Huang Violin Mentoring',
+  name: 'He Huang Student Services',
   description:
-    'Premium violin mentoring and practice coaching by LHS scholar-musician He Huang. Specializing in technique precision, athletic discipline, and competition prep.',
-  url: 'https://hehuangviolin.com',
-  telephone: '+16175482946',
+    'Lexington High School student offering violin lessons, practice coaching, personal fitness training, car washing, math tutoring, and STEM education mission trips.',
+  telephone: '+17813544240',
   address: {
     '@type': 'PostalAddress',
     addressLocality: 'Lexington',
     addressRegion: 'MA',
     addressCountry: 'US',
   },
-  geo: {
-    '@type': 'GeoCoordinates',
-    latitude: 42.4473,
-    longitude: -71.2245,
+  serviceType: 'Student Services',
+  founder: {
+    '@type': 'Person',
+    name: 'He Huang',
+    alumniOf: {
+      '@type': 'HighSchool',
+      name: 'Lexington High School',
+    },
   },
-  areaServed: [
-    {
-      '@type': 'City',
-      name: 'Lexington',
-      '@id': 'https://www.wikidata.org/wiki/Q771627',
-    },
-    {
-      '@type': 'State',
-      name: 'Massachusetts',
-    },
-  ],
-  serviceType: 'Music Tutoring',
-  priceRange: '$$',
   hasOfferCatalog: {
     '@type': 'OfferCatalog',
-    name: 'Violin Mentoring Services',
+    name: 'Student Services',
     itemListElement: [
       {
         '@type': 'Offer',
         itemOffered: {
           '@type': 'Service',
-          name: 'Violin Mastery for Beginners',
+          name: 'Violin Lessons',
+          description: 'Private violin lessons for students of all levels.',
+        },
+        price: '35.00',
+        priceCurrency: 'USD',
+        unitText: '30 minutes',
+      },
+      {
+        '@type': 'Offer',
+        itemOffered: {
+          '@type': 'Service',
+          name: 'Violin Practice Partner',
           description:
-            'Foundations of posture, tone, and musicality for elementary students.',
+            'Guided practice sessions to help students build technique and consistency.',
+        },
+        price: '25.00',
+        priceCurrency: 'USD',
+        unitText: '30 minutes',
+      },
+      {
+        '@type': 'Offer',
+        itemOffered: {
+          '@type': 'Service',
+          name: 'Personal Fitness Training',
+          description:
+            'Customized workout plans and one-on-one fitness coaching.',
+        },
+        price: '25.00',
+        priceCurrency: 'USD',
+        unitText: '1 hour',
+      },
+      {
+        '@type': 'Offer',
+        itemOffered: {
+          '@type': 'Service',
+          name: 'Car Washing',
+          description:
+            'Thorough hand car washing service in the Lexington area.',
         },
       },
       {
         '@type': 'Offer',
         itemOffered: {
           '@type': 'Service',
-          name: 'Virtuoso Practice Ally',
+          name: 'Math Tutoring for Elementary',
           description:
-            'Specialized practice assistant sessions for students under master teachers.',
+            'Patient, engaging math tutoring for elementary school students.',
         },
-      },
-      {
-        '@type': 'Offer',
-        itemOffered: {
-          '@type': 'Service',
-          name: 'Teen Strength & Discipline',
-          description:
-            '1-on-1 fitness guidance focusing on form, discipline, and growth mindset.',
-        },
+        price: '30.00',
+        priceCurrency: 'USD',
+        unitText: '1 hour',
       },
     ],
   },
-  founder: {
-    '@type': 'Person',
-    name: 'He Huang',
-    alumniOf: 'Lexington High School',
-    knowsAbout: ['Violin', 'Music Education', 'Athletic Training', 'Performance'],
-  },
+  knowsAbout: [
+    'STEM Education',
+    'Panama Mission Trip',
+    'Community Service',
+  ],
 }
 
 export default function RootLayout({
   children,
-}: {
+}: Readonly<{
   children: React.ReactNode
-}) {
+}>) {
   return (
-    <html lang="en" className="scroll-smooth dark">
+    <html lang="en" className="scroll-smooth">
       <head>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link
+          rel="preconnect"
+          href="https://fonts.gstatic.com"
+          crossOrigin="anonymous"
+        />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
       </head>
-      <body className={`${inter.variable} ${montserrat.variable} font-sans bg-obsidian text-silver antialiased`}>
+      <body
+        className={`${inter.variable} ${montserrat.variable} font-sans bg-white text-[#374151] antialiased`}
+      >
         {children}
       </body>
     </html>
