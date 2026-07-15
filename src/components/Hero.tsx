@@ -66,7 +66,7 @@ export default function Hero() {
           className="text-[#2563EB] font-medium text-sm sm:text-base mt-4 max-w-xl mx-auto"
           variants={fadeUp}
         >
-          $10 from every paid service is proudly donated to the Chinese Bible Church of Greater Boston.
+          $10 from every paid service is proudly donated to the Chinese Bible Church of Greater Boston (CBCGB).
         </motion.p>
 
         {/* CTA button */}
