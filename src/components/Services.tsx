@@ -42,7 +42,7 @@ const services = [
     price: '$30 / hour',
     donation: true,
     description:
-      'Delivering patient, encouraging math tutoring for elementary school students. I make math approachable and help build confidence through clear explanations and plenty of practice.',
+      'Delivering patient, encouraging math tutoring for elementary/middle school students. I make math approachable and help build confidence through clear explanations and plenty of practice.',
     experience: '50+ hours of tutoring completed',
   },
   {
