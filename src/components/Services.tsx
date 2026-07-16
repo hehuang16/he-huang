@@ -131,7 +131,7 @@ export default function Services() {
                         </span>
                         {service.donation && (
                           <span className="text-xs font-medium text-[#2563EB] bg-[#DBEAFE]/50 px-2 py-1 rounded-md w-fit">
-                            ($10 donated to CBCGB)
+                            ($10 donated to LHS and CBCGB)
                           </span>
                         )}
                       </div>

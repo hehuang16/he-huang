@@ -56,9 +56,7 @@ export default function Hero() {
           className="text-[#6B7280] text-base sm:text-lg mt-4 max-w-xl mx-auto leading-relaxed"
           variants={fadeUp}
         >
-          I offer violin lessons, fitness training, math tutoring, car washing,
-          and lead STEM education mission trips. Every service is delivered with
-          care, discipline, and respect.
+          I lead STEM education mission trips, and offer violin lessons, violin practice partnering, math tutoring, fitness training, and <strong>car washing</strong>🔥. Every service is delivered with care, discipline, and respect.
         </motion.p>
 
         {/* Donation Notice */}
@@ -66,7 +64,7 @@ export default function Hero() {
           className="text-[#2563EB] font-medium text-sm sm:text-base mt-4 max-w-xl mx-auto"
           variants={fadeUp}
         >
-          $10 from every paid service is proudly donated to the Chinese Bible Church of Greater Boston (CBCGB).
+          $10 from every paid service will be proudly donated to Lexington High School clubs and the Chinese Bible Church of Greater Boston (CBCGB).
         </motion.p>
 
         {/* CTA button */}
