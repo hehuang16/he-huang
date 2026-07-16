@@ -36,6 +36,8 @@ export default function Contact() {
           />
           <p className="mt-2 text-sm text-[#6B7280]">
             (Please copy the number above to send me a text)
+            <br />
+            Or, fill out this quick <a href="https://docs.google.com/forms/d/e/1FAIpQLSfKfJtAwmZ8SXwRvyjzg9TVR9352an1qJUAlxGrmzWQCBnhDQ/viewform?usp=header" target="_blank" rel="noopener noreferrer" className="text-[#2563EB] hover:underline font-medium">Contact Form</a> and I will get back to you!
           </p>
 
           <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-4 pt-6 border-t border-[#E5E7EB]">
