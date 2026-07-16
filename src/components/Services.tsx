@@ -13,7 +13,7 @@ const services = [
     price: 'Free to Join',
     priceBadgeClass: 'text-[#2563EB] bg-[#DBEAFE]',
     description:
-      'Leading our next mission trip to Panama in February 2027. We provide hands-on STEM education to local students — bridge building, engineering workshops, and teamwork. Open to all students who want to make a global impact.',
+      'Leading our next mission trip to Panama in February 2027. We provide hands-on STEM education to local students — bridge building, engineering workshops, and teamwork. Open to all students who want to make a global impact. (Note: Travel, lodging, and meals are self-funded/not included.)',
     experience: '2 missions completed · Healthcare & STEM leadership',
     isSpecial: true,
     cta: 'Text to Learn More →',
