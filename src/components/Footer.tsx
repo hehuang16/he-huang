@@ -31,10 +31,10 @@ export default function Footer() {
           </nav>
 
           <a
-            href={`sms:${PHONE}`}
+            href="#contact"
             className="px-4 py-2 bg-white/10 hover:bg-white/20 text-white text-sm font-medium rounded-lg border border-white/20 transition-colors"
           >
-            Text Me
+            Contact Me
           </a>
         </div>
 

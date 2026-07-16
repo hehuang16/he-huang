@@ -54,7 +54,6 @@ const jsonLd = {
   name: 'He Huang Student Services',
   description:
     'Lexington High School student offering violin lessons, practice coaching, personal fitness training, car washing, math tutoring, and STEM education mission trips.',
-  telephone: '+17813544240',
   address: {
     '@type': 'PostalAddress',
     addressLocality: 'Lexington',

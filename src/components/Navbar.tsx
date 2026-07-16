@@ -56,7 +56,7 @@ export default function Navbar() {
             ))}
 
             <a
-              href="sms:+17813544240"
+              href="#contact"
               className="px-4 py-2 bg-[#2563EB] hover:bg-[#1E3A5F] text-white text-sm font-semibold rounded-lg transition-colors"
             >
               Contact Me
@@ -99,7 +99,7 @@ export default function Navbar() {
             ))}
 
             <motion.a
-              href="sms:+17813544240"
+              href="#contact"
               onClick={() => setMobileOpen(false)}
               initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}

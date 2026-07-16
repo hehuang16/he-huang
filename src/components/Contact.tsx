@@ -30,17 +30,13 @@ export default function Contact() {
         </p>
 
         <div className="mt-8 bg-white rounded-xl border border-[#E5E7EB] p-8 shadow-sm">
-          <p className="font-display font-bold text-2xl text-[#1A1A2E]">
-            {PHONE_DISPLAY}
+          <p 
+            className="font-display font-bold text-2xl text-[#1A1A2E] tracking-widest"
+            dangerouslySetInnerHTML={{ __html: '&#40;&#55;&#56;&#49;&#41;&#32;&#51;&#53;&#52;&#32;&#45;&#32;&#52;&#50;&#52;&#48;' }} 
+          />
+          <p className="mt-2 text-sm text-[#6B7280]">
+            (Please copy the number above to send me a text)
           </p>
-
-          <a
-            href={`sms:${PHONE}`}
-            className="mt-4 inline-flex items-center gap-2 px-6 py-3 bg-[#2563EB] hover:bg-[#1E3A5F] text-white font-semibold rounded-lg transition-colors"
-          >
-            <MessageCircle className="w-5 h-5" />
-            Text Me
-          </a>
 
           <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-4 pt-6 border-t border-[#E5E7EB]">
             <div className="flex items-center justify-center gap-2">

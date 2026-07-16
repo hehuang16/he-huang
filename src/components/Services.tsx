@@ -150,7 +150,7 @@ export default function Services() {
 
                     {/* CTA */}
                     <a
-                      href={`sms:${PHONE}`}
+                      href="#contact"
                       className="inline-block mt-4 text-[#2563EB] hover:text-[#1E3A5F] text-sm font-medium transition-colors"
                     >
                       {service.cta || 'Text to Book →'}
