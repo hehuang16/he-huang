@@ -31,7 +31,7 @@ export default function About() {
         </h2>
 
         <p className="text-[#374151] text-base leading-relaxed mt-6">
-          I&rsquo;m a 10th-grade student at Lexington High School with a deep
+          I&rsquo;m a junior at Lexington High School with a deep
           love for music, fitness, and helping others. I&rsquo;ve been playing
           violin for 11 years, performing with the Boston Youth Symphony
           Orchestra and the LHS Chamber Orchestra.
