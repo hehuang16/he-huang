@@ -1,0 +1,888 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>¡Pásele, pásele! El mercado · Día 73</title>
+<style>
+:root {
+  --navy: #13294b; --ink: #1d2733; --muted: #4f5d6e; --line: #d3dce6; --wash: #f2f6fa; --paper: #ffffff;
+  --blue: #1f6fb2; --cyan: #5cc8d6; --amber: #e9a23b; --green: #2e7d4f; --red: #c0453c; --purple: #6a3fb5;
+  --soft-green: #e3f4ea; --soft-amber: #fff2dc; --soft-blue: #e7f1fa;
+  --interp: #1f6fb2; --inter: #b26b00; --pres: #2e7d4f;
+}
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+html { font-size: 19px; scroll-behavior: smooth; }
+body { margin: 0; font-family: "Segoe UI", system-ui, -apple-system, Roboto, Arial, sans-serif; color: var(--ink); background: #eef2f6; line-height: 1.5; }
+h1, h2, h3 { color: var(--navy); line-height: 1.2; }
+a { color: var(--blue); }
+button { font: inherit; }
+
+/* Presenter bar */
+.topbar { position: sticky; top: 0; z-index: 50; display: flex; flex-wrap: wrap; align-items: center; gap: 8px 14px; padding: 8px 16px; background: var(--navy); color: white; }
+.brand { font-weight: 900; letter-spacing: .02em; white-space: nowrap; }
+.navlinks { display: flex; flex: 1 1 auto; min-width: 0; flex-wrap: wrap; row-gap: 2px; gap: 2px 4px; }
+.navlinks a { padding: 5px 8px; border-radius: 8px; color: white; text-decoration: none; font-size: .78rem; font-weight: 700; white-space: nowrap; }
+.navlinks a:hover { background: rgba(255,255,255,.14); }
+.navlinks a b { color: var(--cyan); margin-right: 3px; }
+.presenter-tools { display: flex; gap: 6px; flex: 0 0 auto; flex-wrap: wrap; }
+.ptool { border: 1px solid rgba(255,255,255,.4); border-radius: 9px; padding: 5px 11px; color: white; background: rgba(255,255,255,.1); font-weight: 850; font-size: .8rem; cursor: pointer; }
+.ptool:hover { background: rgba(255,255,255,.22); }
+.ptool[aria-pressed="true"] { background: var(--amber); border-color: var(--amber); color: var(--navy); }
+@media (max-width: 700px) { .navlinks { flex-wrap: nowrap; overflow-x: auto; } .presenter-tools { width: 100%; } }
+
+/* Layout */
+main { max-width: 1120px; margin: 0 auto; padding: 0 16px 80px; }
+.hero { margin: 26px 0 22px; padding: 34px 34px 30px; border-radius: 24px; color: white; background: linear-gradient(135deg, #13294b 0%, #1f6fb2 62%, #2e9bb0 100%); }
+.eyebrow { display: inline-block; margin-bottom: 10px; padding: 4px 12px; border-radius: 999px; background: rgba(255,255,255,.16); font-size: .78rem; font-weight: 900; letter-spacing: .12em; }
+.hero h1 { margin: 0 0 8px; color: white; font-size: 2.3rem; }
+.hero .sub { margin: 0; font-size: 1.1rem; color: #e3f2fb; font-weight: 600; }
+.hero .en { color: #cfe6f5; }
+section.lesson-section { scroll-margin-top: 70px; margin: 0 0 30px; padding: 28px 28px 10px; border-radius: 22px; background: var(--paper); box-shadow: 0 10px 30px rgba(19,41,75,.07); }
+section.lesson-section > h2 { margin: 0 0 8px; font-size: 1.6rem; }
+.sec-num { display: inline-grid; place-items: center; width: 38px; height: 38px; margin-right: 10px; border-radius: 12px; color: white; background: var(--navy); font-size: 1.05rem; vertical-align: middle; }
+.card { margin: 0 0 22px; padding: 22px 24px; border: 1px solid var(--line); border-radius: 18px; background: white; }
+.card h3 { margin: 0 0 12px; font-size: 1.2rem; }
+.grid-2 { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; }
+.grid-3 { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; }
+@media (max-width: 760px) { .grid-2, .grid-3 { grid-template-columns: 1fr; } section.lesson-section { padding: 22px 16px 6px; } .hero { padding: 26px 20px; } .hero h1 { font-size: 1.8rem; } }
+.note { color: var(--muted); font-size: .85rem; }
+.spaced { margin-top: 12px; }
+
+/* English toggle */
+.en { display: none; color: var(--muted); font-style: italic; }
+body.show-en .en { display: block; }
+body.show-en span.en, body.show-en td.en, body.show-en th.en { display: revert; }
+span.en { font-size: .9em; }
+
+/* Mode pills + key */
+.mode-pills { display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 20px; }
+.mode-pill { padding: 4px 12px; border-radius: 999px; font-size: .72rem; font-weight: 900; letter-spacing: .04em; color: white; }
+.mode-pill.interp { background: var(--interp); } .mode-pill.inter { background: var(--inter); } .mode-pill.pres { background: var(--pres); }
+.mode-pill.cult { background: #efeaf8; color: #4b2e83; }
+.color-key { display: flex; flex-wrap: wrap; gap: 8px 22px; align-items: center; font-size: .85rem; color: var(--navy); font-weight: 700; }
+.color-key i { display: inline-block; width: 26px; height: 10px; margin-right: 7px; border-radius: 4px; vertical-align: middle; }
+
+/* Can-do */
+.cando { border: 2px solid var(--green); background: linear-gradient(135deg, #eaf7ef, #ffffff 70%); }
+.cando ul { margin: 0; padding-left: 0; list-style: none; }
+.cando li { margin: 8px 0; padding-left: 34px; position: relative; font-weight: 650; color: var(--navy); }
+.cando li::before { content: "✓"; position: absolute; left: 0; top: 0; width: 24px; height: 24px; border-radius: 50%; display: grid; place-items: center; color: white; background: var(--green); font-size: .8rem; }
+
+/* Key idea */
+.key-idea { margin: 0 0 22px; padding: 22px 24px 20px; border: 2px solid var(--blue); border-radius: 18px; background: linear-gradient(135deg, #eaf3fb, #ffffff 70%); }
+.key-idea .ki-label { display: inline-block; margin-bottom: 8px; padding: 3px 11px; border-radius: 999px; color: white; background: var(--blue); font-size: .72rem; font-weight: 900; letter-spacing: .08em; text-transform: uppercase; }
+.key-idea p { margin: 0 0 6px; color: var(--navy); font-weight: 650; }
+.key-idea.tip { border-color: var(--amber); background: linear-gradient(135deg, #fff5df, #ffffff 70%); }
+.key-idea.tip .ki-label { color: var(--navy); background: var(--amber); }
+.write-space { height: 220px; margin: 0 0 24px; border: 1px solid #e2e8f0; border-radius: 14px; background: #f8fafc; }
+
+/* Buttons */
+.btn-row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.btn { border: 2px solid var(--navy); border-radius: 12px; padding: 8px 16px; background: white; color: var(--navy); font-weight: 800; cursor: pointer; }
+.btn:hover:not(:disabled) { background: var(--wash); }
+.btn.primary { background: var(--navy); color: white; }
+.btn.primary:hover:not(:disabled) { background: #1d3c6b; }
+.btn.small { padding: 5px 12px; font-size: .85rem; }
+.btn:disabled { opacity: .45; cursor: default; }
+.say { display: inline-grid; place-items: center; width: 34px; height: 34px; flex: 0 0 auto; padding: 0; border: 1px solid var(--line); border-radius: 50%; background: var(--soft-blue); color: var(--blue); cursor: pointer; vertical-align: middle; }
+.say:hover { background: var(--blue); color: white; }
+.say svg { width: 18px; height: 18px; }
+
+/* Units overview */
+.unit-tile { padding: 14px 16px; border-radius: 16px; background: var(--wash); border: 1px solid var(--line); }
+.unit-tile .u-num { display: inline-grid; place-items: center; width: 34px; height: 34px; margin-bottom: 6px; border-radius: 10px; color: white; background: var(--blue); font-weight: 900; }
+.unit-tile.now { border: 2px solid var(--amber); background: #fffaf0; }
+.unit-tile.now .u-num { background: var(--amber); color: var(--navy); }
+.unit-tile strong { display: block; color: var(--navy); }
+
+/* Phrase cards */
+.phrase-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+@media (max-width: 760px) { .phrase-grid { grid-template-columns: 1fr; } }
+.phrase { display: flex; gap: 12px; align-items: center; padding: 12px 14px; border: 1px solid var(--line); border-radius: 14px; background: white; }
+.phrase .es { font-weight: 800; color: var(--navy); }
+.phrase .en { font-size: .88rem; }
+
+/* Norms */
+.norms { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; margin: 0; padding: 0; list-style: none; }
+.norms li { padding: 14px 16px; border-radius: 14px; background: var(--soft-amber); font-weight: 700; color: var(--navy); }
+@media (max-width: 760px) { .norms { grid-template-columns: 1fr; } }
+
+/* Model text */
+.model-text { padding: 20px 22px; border-left: 6px solid var(--pres); border-radius: 12px; background: #f4faf6; font-size: 1.08rem; }
+.model-text .v { border-radius: 5px; transition: background .2s, color .2s; }
+.model-text.hl .v { background: #ffe08a; color: var(--navy); font-weight: 800; padding: 0 3px; }
+
+/* Tables */
+table.ref { width: 100%; border-collapse: collapse; margin: 6px 0 14px; }
+table.ref th, table.ref td { padding: 9px 12px; border: 1px solid var(--line); text-align: left; vertical-align: top; }
+table.ref th { background: var(--navy); color: white; }
+table.ref tr:nth-child(even) td { background: var(--wash); }
+.table-wrap { overflow-x: auto; }
+
+/* Conjugation explorer */
+.explorer { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr); gap: 20px; align-items: start; }
+@media (max-width: 760px) { .explorer { grid-template-columns: 1fr; } }
+.field { display: block; margin: 0 0 12px; font-weight: 800; color: var(--navy); }
+.field select, .field input[type=text] { display: block; width: 100%; margin-top: 6px; padding: 9px 12px; border: 2px solid var(--line); border-radius: 12px; font: inherit; color: var(--ink); background: white; }
+.field input[type=text]:focus, .field select:focus { outline: none; border-color: var(--blue); }
+.conj-out { padding: 20px; border-radius: 18px; background: var(--navy); color: white; text-align: center; }
+.conj-out .form { display: flex; justify-content: center; align-items: center; gap: 12px; font-size: 2.2rem; font-weight: 900; color: #ffe08a; }
+.conj-out .form .say { background: rgba(255,255,255,.15); color: white; border-color: rgba(255,255,255,.4); }
+.conj-out .tag { margin-top: 6px; font-size: .85rem; color: #cfe6f5; }
+.conj-table { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px 14px; margin-top: 14px; text-align: left; font-size: .9rem; }
+.conj-table div { padding: 4px 8px; border-radius: 8px; background: rgba(255,255,255,.08); }
+.conj-table div.on { background: #ffe08a; color: var(--navy); font-weight: 800; }
+.challenge { margin-top: 16px; padding: 16px 18px; border: 2px dashed var(--blue); border-radius: 16px; background: var(--soft-blue); }
+.challenge .prompt-line { font-size: 1.15rem; font-weight: 800; color: var(--navy); }
+.feedback { margin-top: 10px; padding: 10px 14px; border-radius: 12px; font-weight: 700; }
+.feedback.ok { color: #155d36; background: var(--soft-green); }
+.feedback.close { color: #7b4e0b; background: var(--soft-amber); }
+.feedback.no { color: #8b2620; background: #fbeceb; }
+.streak { font-weight: 850; color: var(--navy); }
+
+/* Matching game */
+.match-board { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+@media (max-width: 760px) { .match-board { grid-template-columns: 1fr; } }
+.match-col { display: grid; gap: 8px; align-content: start; }
+.match-col h4 { margin: 0 0 4px; color: var(--muted); font-size: .8rem; letter-spacing: .08em; text-transform: uppercase; }
+.m-item { padding: 11px 14px; border: 2px solid var(--line); border-radius: 12px; background: white; color: var(--ink); text-align: left; cursor: pointer; font-weight: 650; }
+.m-item:hover:not(:disabled) { border-color: var(--blue); }
+.m-item.sel { border-color: var(--navy); background: #e9eef6; }
+.m-item.done { border-color: var(--green); background: var(--soft-green); color: #155d36; cursor: default; }
+.m-item.shake { animation: shake .35s; border-color: var(--red); }
+@keyframes shake { 0%,100% { transform: translateX(0); } 25% { transform: translateX(-6px); } 75% { transform: translateX(6px); } }
+.score-line { margin-top: 12px; color: var(--navy); font-weight: 850; }
+
+/* Polls & MC */
+.poll { margin: 0 0 26px; padding: 20px 22px; border: 2px dashed var(--amber); border-radius: 18px; background: #fffaf0; }
+.poll-label, .qtype { display: inline-block; margin-bottom: 8px; padding: 3px 11px; border-radius: 999px; color: var(--navy); background: var(--amber); font-size: .72rem; font-weight: 900; letter-spacing: .07em; text-transform: uppercase; }
+.qtype { background: #e7e0f6; color: #4b2e83; }
+.poll-q { margin: 0 0 12px; color: var(--navy); font-weight: 800; font-size: 1.05rem; }
+.poll-opts, .mc-options { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; margin: 0 0 12px; }
+.poll-opt, .mc-opt { display: flex; align-items: center; gap: 12px; padding: 11px 14px; text-align: left; border: 2px solid var(--line); border-radius: 14px; background: white; color: var(--ink); cursor: pointer; }
+.poll-opt:hover:not(:disabled), .mc-opt:hover:not(:disabled) { border-color: var(--blue); }
+.mc-key { width: 32px; height: 32px; flex: 0 0 auto; display: grid; place-items: center; border-radius: 50%; color: white; background: var(--navy); font-weight: 900; }
+.poll-opt.chosen { border-color: var(--navy); background: #eef3f7; }
+.poll-opt.correct, .mc-opt.correct { border-color: var(--green); background: var(--soft-green); }
+.poll-opt.correct .mc-key, .mc-opt.correct .mc-key { background: var(--green); }
+.poll-opt.wrong, .mc-opt.wrong { border-color: var(--red); background: #fbeceb; }
+.poll-opt.wrong .mc-key, .mc-opt.wrong .mc-key { background: var(--red); }
+.mc-opt:disabled, .poll-opt:disabled { cursor: default; }
+.poll-why { padding: 12px 14px; border-radius: 12px; background: white; color: var(--navy); }
+.question { margin: 0 0 22px; padding: 20px 22px; border: 1px solid var(--line); border-radius: 18px; background: white; }
+.question h3 { margin: 4px 0 10px; font-size: 1.1rem; }
+.mc-feedback { margin-bottom: 12px; border-radius: 12px; }
+.mc-feedback.ok { padding: 12px 14px; color: #155d36; background: var(--soft-green); }
+.mc-feedback.retry { padding: 12px 14px; color: #7b4e0b; background: var(--soft-amber); }
+.reveal { display: none; margin-top: 12px; padding: 12px 14px; border-radius: 12px; background: var(--wash); }
+.reveal.open { display: block; }
+@media (max-width: 760px) { .poll-opts, .mc-options { grid-template-columns: 1fr; } }
+
+/* Myth or fact */
+.myth-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; }
+@media (max-width: 760px) { .myth-grid { grid-template-columns: 1fr; } }
+.myth-card { padding: 22px 22px 20px; border: 1px solid var(--line); border-radius: 18px; background: white; box-shadow: 0 10px 28px rgba(17,35,61,.07); }
+.myth-num { color: var(--blue); font-size: .78rem; font-weight: 900; letter-spacing: .08em; text-transform: uppercase; }
+.myth-statement { margin: 8px 50px 14px 0; color: var(--navy); font-size: 1.1rem; font-weight: 800; }
+.myth-vote.correct { color: white; background: var(--green); border-color: var(--green); }
+.myth-vote.wrong { color: white; background: var(--red); border-color: var(--red); }
+.myth-reveal { margin-top: 14px; padding-top: 12px; border-top: 1px solid var(--line); }
+.myth-reveal p { margin: 0 0 8px; }
+.quick-test { padding: 10px 12px; border-radius: 12px; background: var(--wash); }
+.qt-answer { color: #155d36; font-weight: 800; }
+
+/* Interview tools */
+.roulette { padding: 26px 22px; border-radius: 20px; background: var(--navy); color: white; text-align: center; }
+.roulette .q-big { min-height: 2.6em; margin: 10px 0 16px; font-size: 1.8rem; font-weight: 900; color: #ffe08a; display: flex; align-items: center; justify-content: center; gap: 12px; flex-wrap: wrap; }
+.roulette .q-big .say { background: rgba(255,255,255,.15); color: white; border-color: rgba(255,255,255,.4); }
+.roulette .btn { border-color: white; }
+.timer { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; }
+.timer .t-display { min-width: 4.5ch; font-size: 2.4rem; font-weight: 900; color: var(--navy); font-variant-numeric: tabular-nums; }
+.timer.done .t-display { color: var(--red); }
+.timer .t-msg { font-weight: 850; color: var(--red); }
+.bingo { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
+.b-cell { min-height: 112px; padding: 12px; border: 2px solid var(--line); border-radius: 14px; background: white; color: var(--ink); text-align: left; cursor: pointer; }
+.b-cell .b-text { display: block; font-weight: 800; color: var(--navy); }
+.b-cell .b-q { display: block; margin-top: 6px; font-size: .85rem; color: var(--blue); font-weight: 700; }
+.bingo:not(.show-q) .b-q { visibility: hidden; }
+.b-cell.on { border-color: var(--green); background: var(--soft-green); }
+.b-cell.on .b-text::after { content: " ✓"; color: var(--green); }
+@media (max-width: 560px) { .b-cell { min-height: 96px; padding: 8px; font-size: .85rem; } }
+.react { display: flex; flex-wrap: wrap; gap: 8px; }
+.react span { padding: 6px 12px; border-radius: 999px; background: var(--soft-amber); color: var(--navy); font-weight: 750; }
+
+/* Diagnostic */
+textarea { width: 100%; min-height: 180px; padding: 14px; border: 2px solid var(--line); border-radius: 14px; font: inherit; color: var(--ink); resize: vertical; }
+textarea:focus { outline: none; border-color: var(--pres); }
+.wc { display: flex; flex-wrap: wrap; gap: 8px 18px; margin-top: 8px; font-weight: 800; color: var(--navy); }
+.wc .good { color: var(--green); }
+.check-option { display: flex; gap: 10px; align-items: flex-start; padding: 8px 10px; border-radius: 10px; cursor: pointer; }
+.check-option:hover { background: var(--wash); }
+.check-option input { width: 20px; height: 20px; margin-top: 3px; accent-color: var(--green); }
+.scale-row { display: grid; grid-template-columns: minmax(0, 1.6fr) minmax(0, 2fr); gap: 10px; align-items: center; padding: 10px 0; border-bottom: 1px solid var(--line); }
+.scale-row:last-child { border-bottom: none; }
+.scale-row .s-text { font-weight: 750; color: var(--navy); }
+.scale-btns { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px; }
+.scale-btns button { padding: 7px 6px; border: 2px solid var(--line); border-radius: 10px; background: white; font-size: .8rem; font-weight: 800; color: var(--muted); cursor: pointer; }
+.scale-btns button.on[data-l="0"] { border-color: var(--red); background: #fbeceb; color: #8b2620; }
+.scale-btns button.on[data-l="1"] { border-color: var(--amber); background: var(--soft-amber); color: #7b4e0b; }
+.scale-btns button.on[data-l="2"] { border-color: var(--green); background: var(--soft-green); color: #155d36; }
+@media (max-width: 760px) { .scale-row { grid-template-columns: 1fr; } }
+
+/* Confidence */
+.conf-bar { height: 18px; margin: 8px 0 4px; border-radius: 999px; background: var(--wash); border: 1px solid var(--line); overflow: hidden; }
+.conf-bar span { display: block; height: 100%; width: 0; background: linear-gradient(90deg, var(--cyan), var(--green)); transition: width .3s; }
+.conf-list { display: grid; gap: 4px; margin-top: 10px; }
+
+/* Teacher guide */
+details.teacher { margin: 0 0 22px; padding: 14px 18px; border-radius: 14px; background: #f6f3fb; border: 1px solid #e2d9f3; }
+details.teacher summary { cursor: pointer; font-weight: 850; color: #4b2e83; }
+details.teacher ol { margin: 10px 0 0; }
+
+/* Focus mode */
+.has-focus { position: relative; }
+.has-focus > h3:first-of-type { padding-right: 48px; }
+.focus-btn { position: absolute; top: 10px; right: 10px; z-index: 3; width: 40px; height: 40px; display: grid; place-items: center; padding: 0; border: 1px solid var(--line); border-radius: 10px; color: var(--navy); background: rgba(255,255,255,.92); opacity: .72; cursor: pointer; }
+.focus-btn:hover, .focus-btn:focus-visible { opacity: 1; border-color: var(--blue); color: var(--blue); }
+.focus-btn svg { width: 24px; height: 24px; }
+.focus-overlay { position: fixed; inset: 0; z-index: 100; display: none; flex-direction: column; background: #0a1b31; }
+.focus-overlay.open { display: flex; }
+body.focus-open { overflow: hidden; }
+.focus-toolbar { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; justify-content: space-between; padding: 10px 18px; color: white; }
+.fbtn { border: 1px solid rgba(255,255,255,.4); border-radius: 999px; padding: 7px 15px; color: white; background: rgba(255,255,255,.1); font-weight: 850; cursor: pointer; }
+.fbtn:hover { background: rgba(255,255,255,.22); }
+.fbtn:disabled { opacity: .35; cursor: default; }
+.fbtn.close { background: var(--amber); border-color: var(--amber); color: var(--navy); }
+.focus-count { color: #bcecf1; font-weight: 800; font-variant-numeric: tabular-nums; }
+.focus-stage { flex: 1; overflow: auto; padding: 8px 24px 48px; }
+.focus-content { width: 100%; max-width: 1200px; margin: 0 auto; padding: 26px; border-radius: 22px; background: white; }
+.focus-content .focus-btn { display: none; }
+.focus-content > .write-space { margin-bottom: 0; }
+
+.confetti-piece { position: fixed; top: -14px; z-index: 300; width: 10px; height: 15px; border-radius: 2px; pointer-events: none; animation: confetti-fall 1.5s ease-in forwards; }
+@keyframes confetti-fall { to { transform: translate(var(--dx), 108vh) rotate(var(--rot)); } }
+.voice-warn { margin: 0 0 16px; padding: 10px 14px; border-radius: 12px; background: var(--soft-amber); color: #7b4e0b; font-weight: 700; }
+footer { text-align: center; color: var(--muted); font-size: .8rem; }
+@media print { .topbar, .focus-btn, .focus-overlay, .say { display: none !important; } .reveal { display: block; } }
+
+/* ---- Components added for the full series ---- */
+.vocab-icon { font-size: 1.5rem; width: 34px; text-align: center; flex: 0 0 auto; }
+.phrase .ex { font-size: .88rem; color: var(--ink); margin-top: 2px; }
+.reading-text { padding: 22px 24px; border-left: 6px solid var(--interp); border-radius: 12px; background: #f3f8fd; font-size: 1.08rem; }
+.reading-text h4 { margin: 0 0 10px; color: var(--navy); font-size: 1.15rem; }
+.reading-text p { margin: 0 0 12px; }
+.gloss { position: relative; border-bottom: 2px dotted var(--blue); cursor: help; }
+.gloss.show::after { content: attr(data-g); position: absolute; left: 0; top: 100%; z-index: 5; margin-top: 4px; padding: 4px 9px; border-radius: 8px; background: var(--navy); color: white; font-size: .8rem; font-weight: 700; font-style: normal; white-space: nowrap; }
+.listen-box { padding: 22px; border-radius: 18px; background: var(--navy); color: white; text-align: center; }
+.listen-box .btn { border-color: white; }
+.listen-box .btn:not(.primary) { background: transparent; color: white; }
+.listen-box .l-status { margin-top: 10px; color: #cfe6f5; font-weight: 700; min-height: 1.5em; }
+.transcript { margin-top: 14px; padding: 16px 18px; border-radius: 12px; background: var(--wash); }
+.transcript p { margin: 0 0 8px; }
+.dialogue { display: grid; gap: 10px; }
+.d-line { display: flex; gap: 10px; align-items: flex-start; }
+.d-line .who { flex: 0 0 auto; display: grid; place-items: center; min-width: 34px; height: 34px; padding: 0 8px; border-radius: 10px; color: white; background: var(--inter); font-weight: 900; font-size: .85rem; }
+.d-line.b .who { background: var(--blue); }
+.d-line .bubble { flex: 1; padding: 10px 14px; border-radius: 14px; background: var(--wash); }
+.d-line .bubble .en { font-size: .88rem; }
+.fill-list { display: grid; grid-template-columns: minmax(0, 1fr); gap: 10px; }
+.fill-item, .match-col, .s-bin, .station, .step { min-width: 0; overflow-wrap: anywhere; }
+.fill-item { padding: 12px 14px; border: 1px solid var(--line); border-radius: 14px; background: white; }
+.fill-item .f-q { font-weight: 700; color: var(--navy); margin-bottom: 8px; }
+.fill-item .f-row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.fill-item input { flex: 1 1 180px; min-width: 0; max-width: 100%; padding: 8px 12px; border: 2px solid var(--line); border-radius: 12px; font: inherit; }
+.fill-item input:focus { outline: none; border-color: var(--blue); }
+.fill-item.ok { border-color: var(--green); background: var(--soft-green); }
+.fill-item .feedback { margin-top: 8px; }
+.acc-bar { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; margin: 0 0 12px; }
+.sort-pool { display: flex; flex-wrap: wrap; gap: 8px; min-height: 52px; padding: 12px; margin-bottom: 14px; border: 2px dashed var(--line); border-radius: 14px; background: var(--wash); }
+.s-item { padding: 8px 13px; border: 2px solid var(--line); border-radius: 12px; background: white; color: var(--ink); font-weight: 700; cursor: pointer; }
+.s-item.sel { border-color: var(--navy); background: #e9eef6; }
+.s-item.placed { border-color: var(--green); background: var(--soft-green); color: #155d36; cursor: default; }
+.s-item.shake { animation: shake .35s; border-color: var(--red); }
+.sort-bins { display: grid; grid-template-columns: repeat(var(--bins, 2), minmax(0, 1fr)); gap: 12px; }
+@media (max-width: 760px) { .sort-bins { grid-template-columns: 1fr; } }
+.s-bin { min-height: 120px; padding: 12px; border: 2px solid var(--blue); border-radius: 16px; background: white; cursor: pointer; text-align: left; color: var(--ink); }
+.s-bin:hover { background: var(--soft-blue); }
+.s-bin .bin-title { display: block; margin-bottom: 8px; color: var(--navy); font-weight: 900; }
+.s-bin .bin-items { display: flex; flex-wrap: wrap; gap: 6px; }
+.role-cards { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; margin-top: 12px; }
+@media (max-width: 760px) { .role-cards { grid-template-columns: 1fr; } }
+.role { padding: 18px 20px; border-radius: 16px; color: var(--navy); font-weight: 700; min-height: 110px; }
+.role .r-label { display: block; margin-bottom: 6px; font-size: .75rem; font-weight: 900; letter-spacing: .08em; text-transform: uppercase; }
+.role.a { background: var(--soft-amber); border: 2px solid var(--amber); }
+.role.b { background: var(--soft-blue); border: 2px solid var(--blue); }
+.role.cover { filter: blur(6px); user-select: none; }
+.steps-list { display: grid; gap: 10px; margin-top: 10px; }
+.step { padding: 12px 14px; border-radius: 12px; background: var(--wash); border-left: 5px solid var(--blue); }
+.step .s-label { display: block; color: var(--blue); font-size: .78rem; font-weight: 900; letter-spacing: .06em; text-transform: uppercase; }
+.step-hidden { display: none; }
+.stations { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
+@media (max-width: 760px) { .stations { grid-template-columns: 1fr; } }
+.station { padding: 16px 18px; border: 2px solid var(--line); border-radius: 16px; background: white; }
+.station .st-num { display: inline-grid; place-items: center; width: 32px; height: 32px; margin-right: 8px; border-radius: 10px; color: white; background: var(--purple); font-weight: 900; }
+.station h4 { display: inline; color: var(--navy); font-size: 1.05rem; }
+.station ul { margin: 10px 0 0; padding-left: 20px; }
+.jeo { display: grid; grid-template-columns: repeat(var(--cats, 4), minmax(0, 1fr)); gap: 8px; }
+@media (max-width: 760px) { .jeo { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+.jeo .j-cat { padding: 10px 8px; border-radius: 12px; background: var(--navy); color: white; font-weight: 900; text-align: center; font-size: .85rem; }
+.jeo .j-cell { padding: 16px 8px; border: none; border-radius: 12px; background: var(--blue); color: #ffe08a; font-size: 1.4rem; font-weight: 900; cursor: pointer; }
+.jeo .j-cell.used { background: #c9d6e4; color: #6b7c8f; }
+.j-panel { margin-top: 14px; padding: 18px 20px; border-radius: 16px; background: var(--navy); color: white; }
+.j-panel .j-q { font-size: 1.3rem; font-weight: 800; color: #ffe08a; }
+.j-panel .j-a { margin-top: 10px; font-size: 1.1rem; font-weight: 800; color: #bdf0cf; }
+.j-panel .btn { border-color: white; background: transparent; color: white; }
+.teams { display: flex; flex-wrap: wrap; gap: 16px; align-items: center; margin-top: 12px; font-weight: 850; color: var(--navy); }
+.mc-set.exam .mc-opt.chosen { border-color: var(--navy); background: #e9eef6; }
+.exam-bar { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin-top: 10px; }
+.prompt-card .p-text { font-size: 1.08rem; font-weight: 700; color: var(--navy); }
+.frame-list { margin: 8px 0 0; padding-left: 0; list-style: none; display: grid; gap: 6px; }
+.frame-list li { padding: 8px 12px; border-radius: 10px; background: #f4faf6; border-left: 4px solid var(--pres); font-weight: 650; }
+table.rubric th:first-child { min-width: 140px; }
+table.rubric td { font-size: .88rem; }
+.svg-wrap { overflow-x: auto; }
+.svg-wrap svg { display: block; max-width: 100%; height: auto; margin: 0 auto; }
+.svg-wrap svg text { font-size: 14px; }
+
+</style>
+</head>
+<body>
+<header class="topbar">
+  <div class="brand">Español 3</div>
+  <nav class="navlinks" aria-label="Secciones"><a href="#gancho"><b>1</b> Gancho</a><a href="#lectura"><b>2</b> Lectura</a><a href="#comparacion"><b>3</b> Comparación</a><a href="#tres-p"><b>4</b> 3 P</a><a href="#repaso"><b>5</b> Repaso</a><a href="#discusion"><b>6</b> Discusión</a><a href="#parrafo"><b>7</b> Párrafo</a><a href="#salida"><b>8</b> Boleto de salida</a></nav>
+  <div class="presenter-tools">
+    <button type="button" class="ptool" id="en-toggle" aria-pressed="false" title="Show English support">EN</button>
+    <button type="button" class="ptool" id="slow-toggle" aria-pressed="false" title="Slow down the audio">Audio lento</button>
+    <button type="button" class="ptool" id="font-down" aria-label="Smaller text">A−</button>
+    <button type="button" class="ptool" id="font-up" aria-label="Larger text">A+</button>
+    <button type="button" class="ptool" id="fullscreen-btn">Pantalla completa</button>
+  </div>
+</header>
+<main>
+  <div class="hero">
+    <span class="eyebrow">ESPAÑOL 3 · DÍA 73 / 180</span>
+    <h1>¡Pásele, pásele! El mercado</h1>
+    <p class="sub">Unidad 4: Salud y bienestar · Mercados de México y Perú vs. el supermercado</p>
+    <p class="en">Come on in! The market · Unit 4: Health and Wellness · Markets in Mexico and Peru vs. the supermarket</p>
+  </div>
+  <div class="card cando">
+    <h3>Hoy puedo…</h3>
+    <ul><li>Puedo comparar los mercados tradicionales con las compras en un supermercado de EE. UU. <span class="en">— I can compare traditional markets with U.S. grocery shopping.</span></li><li>Puedo identificar productos, prácticas y perspectivas de los mercados de México y Perú. <span class="en">— I can identify products, practices and perspectives of markets in Mexico and Peru.</span></li><li>Puedo usar comparativos (más/menos… que, tan… como, mejor, peor) para comparar dos lugares. <span class="en">— I can use comparatives to compare two places.</span></li><li>Puedo pedir productos en un puesto con pronombres (¿Me lo da? Sí, se lo doy). <span class="en">— I can ask for products at a market stall using pronouns.</span></li></ul>
+    <div class="color-key spaced" aria-label="Modos de comunicación">
+      <span><i style="background:var(--interp)"></i>Interpretivo (leer / escuchar)</span>
+      <span><i style="background:var(--inter)"></i>Interpersonal (conversar)</span>
+      <span><i style="background:var(--pres)"></i>Presentacional (hablar / escribir para otros)</span>
+    </div>
+  </div>
+  <details class="teacher">
+    <summary>Guía del profesor · Teacher guide (≈ 55 min)</summary>
+    <p class="note"><strong>Pacing guide:</strong> Culture &amp; Comparison · Presentational · Grammar: Comparatives review · Product: Comparison chart</p>
+    <ol><li><strong>Gancho (7 min):</strong> Poll, then the vocabulary cards with audio. Ask: Who has been to a farmers' market, a bodega or Haymarket in Boston? Thumbs up / sideways / down.</li><li><strong>Lectura (11 min):</strong> Read the two posts aloud once (audio), then students reread silently and tap glosses. 4 MC items whole-class with mini-whiteboards.</li><li><strong>Comparación (7 min):</strong> Venn sort in pairs; the pair that finishes first explains two cards to the class.</li><li><strong>3 P (7 min):</strong> Walk through products / practices / perspectives. Ask students to add one more example to each column on paper.</li><li><strong>Repaso: comparar (7 min):</strong> Fill-ins individually; review items 9–10 (pronouns from Day 72) together.</li><li><strong>Discusión (6 min):</strong> Roulette in groups of 3 with a 2-minute timer; each answer must include a comparative.</li><li><strong>Párrafo (7 min):</strong> Students start the comparison paragraph with the frame; finish as homework if needed. This is today's product (comparison chart + paragraph).</li><li><strong>Boleto de salida (3 min):</strong> MC + confidence.</li></ol>
+    <p class="note">Recycles comparatives from Days 51–52 and the double object pronouns from Day 72 (¿Me lo da? — Sí, se lo doy). Keep the comparison respectful: different, not better/worse. Optional extension: students compare prices or products at a local bodega or a farmers' market. Haymarket (Boston) is an open-air produce market (Fridays and Saturdays, on Blackstone Street near the North End) with roots in the early 1800s — a useful local connection.</p>
+    <p class="note">Nothing typed on this page is saved or sent anywhere. Audio uses the computer's built-in Spanish voice.</p>
+  </details>
+  <section class="lesson-section" id="gancho"><h2><span class="sec-num">1</span>Gancho: ¿mercado o supermercado?</h2><div class="mode-pills"><span class="mode-pill cult">Cultura</span><span class="mode-pill interp">Interpretivo</span></div><div class="card"><h3>En el mercado 🧺</h3><div class="phrase-grid"><div class="phrase"><button class="say" data-say="el mercado" aria-label="Escuchar"></button><span class="vocab-icon" aria-hidden="true">🏪</span><div><div class="es">el mercado</div><div class="en">market</div></div></div><div class="phrase"><button class="say" data-say="el tianguis" aria-label="Escuchar"></button><span class="vocab-icon" aria-hidden="true">⛺</span><div><div class="es">el tianguis</div><div class="en">open-air market (Mexico)</div></div></div><div class="phrase"><button class="say" data-say="el puesto. Mi abuela compra en el mismo puesto desde hace años." aria-label="Escuchar"></button><div><div class="es">el puesto</div><div class="ex">Mi abuela compra en el mismo puesto desde hace años.</div><div class="en">stall, stand</div></div></div><div class="phrase"><button class="say" data-say="el vendedor / la vendedora" aria-label="Escuchar"></button><div><div class="es">el vendedor / la vendedora</div><div class="en">vendor, seller</div></div></div><div class="phrase"><button class="say" data-say="el casero / la casera. «¿Qué va a llevar, casera?»" aria-label="Escuchar"></button><div><div class="es">el casero / la casera</div><div class="ex">«¿Qué va a llevar, casera?»</div><div class="en">regular vendor or customer (Peru, Bolivia)</div></div></div><div class="phrase"><button class="say" data-say="regatear" aria-label="Escuchar"></button><span class="vocab-icon" aria-hidden="true">🤝</span><div><div class="es">regatear</div><div class="en">to bargain, haggle</div></div></div><div class="phrase"><button class="say" data-say="fresco / fresca" aria-label="Escuchar"></button><span class="vocab-icon" aria-hidden="true">🥬</span><div><div class="es">fresco / fresca</div><div class="en">fresh</div></div></div><div class="phrase"><button class="say" data-say="de temporada" aria-label="Escuchar"></button><div><div class="es">de temporada</div><div class="en">in season</div></div></div><div class="phrase"><button class="say" data-say="el kilo / medio kilo" aria-label="Escuchar"></button><span class="vocab-icon" aria-hidden="true">⚖️</span><div><div class="es">el kilo / medio kilo</div><div class="en">kilo / half a kilo</div></div></div><div class="phrase"><button class="say" data-say="la yapa / el pilón" aria-label="Escuchar"></button><span class="vocab-icon" aria-hidden="true">🎁</span><div><div class="es">la yapa / el pilón</div><div class="en">a little extra for free (Andes / Mexico)</div></div></div><div class="phrase"><button class="say" data-say="probar. ¿Quiere probar el mango? Pruébelo." aria-label="Escuchar"></button><div><div class="es">probar</div><div class="ex">¿Quiere probar el mango? Pruébelo.</div><div class="en">to taste, try</div></div></div><div class="phrase"><button class="say" data-say="el carrito" aria-label="Escuchar"></button><span class="vocab-icon" aria-hidden="true">🛒</span><div><div class="es">el carrito</div><div class="en">shopping cart</div></div></div><div class="phrase"><button class="say" data-say="la caja" aria-label="Escuchar"></button><div><div class="es">la caja</div><div class="en">checkout, cash register</div></div></div><div class="phrase"><button class="say" data-say="envasado / envasada" aria-label="Escuchar"></button><span class="vocab-icon" aria-hidden="true">📦</span><div><div class="es">envasado / envasada</div><div class="en">packaged</div></div></div></div></div><div class="key-idea"><span class="ki-label">Idea clave</span><p>En México y Perú, mucha gente compra frutas, verduras, carne y pan en el <strong>mercado</strong> del barrio, varias veces por semana. Los mercados también tienen <strong>fondas</strong> o puestos de comida donde se desayuna y se almuerza.</p><p class="en">In Mexico and Peru, many people buy fruit, vegetables, meat and bread at the neighborhood market several times a week. Markets also have food stalls where people eat breakfast and lunch.</p></div><div class="write-space"></div></section><section class="lesson-section" id="lectura"><h2><span class="sec-num">2</span>Lectura: dos mercados, dos ciudades</h2><div class="mode-pills"><span class="mode-pill interp">Interpretivo</span><span class="mode-pill cult">Cultura</span></div><div class="card"><h3>Lee los dos blogs</h3><div class="btn-row" style="margin-bottom:12px"><button class="say" data-say-target="reading-1" aria-label="Escuchar el texto"></button><span class="note">Escucha el texto</span></div><div class="reading-text" id="reading-1"><h4>Mi mercado favorito</h4><p><strong>Ximena, 17 años, Oaxaca (México):</strong> Los sábados acompaño a mi abuela al mercado. Ella no hace una lista: camina por los <span class="gloss" data-g="aisles" tabindex="0">pasillos</span>, mira, huele y prueba. «Pruebe esta mandarina, joven», me dicen, y yo la pruebo. Los vendedores llaman a los clientes: «¡Pásele, pásele! ¿Qué le damos?». Mi abuela tiene su vendedora favorita de tomates, doña Chela, que siempre le guarda los más rojos y, a veces, le da un pilón: unos <span class="gloss" data-g="chili peppers" tabindex="0">chiles</span> o un poco de cilantro. En el <span class="gloss" data-g="“smoke aisle”, where meat is grilled" tabindex="0">pasillo de humo</span>, eliges la carne y alguien te la <span class="gloss" data-g="grills" tabindex="0">asa</span> allí mismo. El mercado es más ruidoso que un supermercado, pero también es más divertido.</p><p><strong>Rodrigo, 16 años, Lima (Perú):</strong> En mi casa compramos casi todo en el mercado de Surquillo. Mi mamá dice que las frutas son más frescas que en el supermercado y que hay tantas variedades de papa que no las puedes contar. Allí descubrí la lúcuma, la chirimoya y la granadilla. Mi mamá es casera de la señora Rosa: la saluda, le pregunta por su familia y la señora Rosa le da la yapa aunque mi mamá no se la pide. Casi nunca regateamos por la comida; regatear es más común en los mercados de <span class="gloss" data-g="crafts" tabindex="0">artesanía</span>. En el supermercado todo es más rápido y está envasado, pero nadie te pregunta cómo estás.</p><p><strong>¿Y tú?</strong> En Massachusetts, ¿compras en un supermercado, en una bodega o en un mercado como Haymarket, en Boston? ¿Conoces a las personas que te venden la comida?</p></div><p class="note">Haz clic en las palabras subrayadas para ver su significado.</p><div class="btn-row spaced"><button type="button" class="btn small reveal-btn" data-target="trans-2">Traducción (profesor)</button></div><div class="reveal" id="trans-2"><p>Ximena, 17, Oaxaca (Mexico): On Saturdays I go with my grandmother to the market. She doesn't make a list: she walks through the aisles, looks, smells and tastes. «Try this tangerine, young lady», they tell me, and I try it. The vendors call to customers: «Come in, come in! What can we get you?». My grandmother has her favorite tomato vendor, Doña Chela, who always saves her the reddest ones and sometimes gives her a little extra: a few chiles or some cilantro. In the «smoke aisle», you choose the meat and someone grills it for you right there. The market is noisier than a supermarket, but it's also more fun.</p><p>Rodrigo, 16, Lima (Peru): At home we buy almost everything at the Surquillo market. My mom says the fruit is fresher than at the supermarket and that there are so many varieties of potatoes you can't count them. There I discovered lúcuma, chirimoya and granadilla. My mom is a regular of Mrs. Rosa: she greets her, asks about her family, and Mrs. Rosa gives her the yapa even though my mom doesn't ask her for it. We almost never bargain for food; bargaining is more common at craft markets. At the supermarket everything is faster and packaged, but nobody asks you how you are.</p><p>And you? In Massachusetts, do you shop at a supermarket, a bodega or a market like Haymarket in Boston? Do you know the people who sell you your food?</p></div></div><div class="card"><h3>Comprensión</h3></div><div class="mc-set"><article class="question mc" data-answer="B"><span class="qtype">Pregunta 1</span><h3>¿Cómo compra la abuela de Ximena?</h3><p class="en">How does Ximena's grandmother shop?</p><div class="mc-options"><button class="mc-opt" type="button" data-key="A"><span class="mc-key">A</span><span>Con una lista muy larga</span></button><button class="mc-opt" type="button" data-key="B"><span class="mc-key">B</span><span>Mirando, oliendo y probando</span></button><button class="mc-opt" type="button" data-key="C"><span class="mc-key">C</span><span>Por internet</span></button><button class="mc-opt" type="button" data-key="D"><span class="mc-key">D</span><span>Solo en el supermercado</span></button></div><div class="mc-feedback" aria-live="polite"></div></article><article class="question mc" data-answer="A"><span class="qtype">Pregunta 2</span><h3>¿Qué es el «pilón» en el texto de Ximena?</h3><div class="mc-options"><button class="mc-opt" type="button" data-key="A"><span class="mc-key">A</span><span>Un poco de comida extra gratis</span></button><button class="mc-opt" type="button" data-key="B"><span class="mc-key">B</span><span>Un tipo de chile</span></button><button class="mc-opt" type="button" data-key="C"><span class="mc-key">C</span><span>El pasillo de humo</span></button><button class="mc-opt" type="button" data-key="D"><span class="mc-key">D</span><span>Un descuento en la caja</span></button></div><div class="mc-feedback" aria-live="polite"></div></article><article class="question mc" data-answer="D"><span class="qtype">Pregunta 3</span><h3>Según Rodrigo, ¿dónde es más común regatear?</h3><div class="mc-options"><button class="mc-opt" type="button" data-key="A"><span class="mc-key">A</span><span>En el supermercado</span></button><button class="mc-opt" type="button" data-key="B"><span class="mc-key">B</span><span>En los puestos de fruta</span></button><button class="mc-opt" type="button" data-key="C"><span class="mc-key">C</span><span>En los puestos de papas</span></button><button class="mc-opt" type="button" data-key="D"><span class="mc-key">D</span><span>En los mercados de artesanía</span></button></div><div class="mc-feedback" aria-live="polite"></div></article><article class="question mc" data-answer="C"><span class="qtype">Pregunta 4</span><h3>¿Qué perspectiva comparten Ximena y Rodrigo?</h3><p class="en">What perspective do Ximena and Rodrigo share?</p><div class="mc-options"><button class="mc-opt" type="button" data-key="A"><span class="mc-key">A</span><span>El supermercado es más divertido.</span></button><button class="mc-opt" type="button" data-key="B"><span class="mc-key">B</span><span>Es mejor comprar todo envasado.</span></button><button class="mc-opt" type="button" data-key="C"><span class="mc-key">C</span><span>En el mercado la relación con el vendedor es importante.</span></button><button class="mc-opt" type="button" data-key="D"><span class="mc-key">D</span><span>Regatear por la comida es muy común.</span></button></div><div class="mc-feedback" aria-live="polite"></div><div class="reveal explain">Los dos hablan de una vendedora favorita que conoce a su familia: la <strong>relación personal</strong> es parte de la experiencia.</div></article><div class="score-line"></div></div></section><section class="lesson-section" id="comparacion"><h2><span class="sec-num">3</span>Comparación: Venn</h2><div class="mode-pills"><span class="mode-pill cult">Cultura</span><span class="mode-pill pres">Presentacional</span></div><div class="card sort-comp"><script type="application/json">{"items": [["Los vendedores te llaman: «¡Pásele!»", "0"], ["Recibes la yapa o el pilón.", "0"], ["Muchos puestos pequeños de diferentes familias", "0"], ["Pruebas la fruta antes de comprarla.", "0"], ["Se venden frutas y verduras.", "1"], ["Puedes comprar pan, carne y verduras.", "1"], ["Hay productos de temporada.", "1"], ["Usas un carrito grande.", "2"], ["Casi todo está envasado.", "2"], ["Pagas todo en una caja al final.", "2"], ["Abre muchas horas, a veces hasta muy tarde.", "2"], ["Conoces al vendedor por su nombre.", "0"]]}</script><h3>¿Dónde va cada idea?</h3><p class="note">Haz clic en una tarjeta y después en el lugar correcto según la lectura y tu experiencia. <span class="en">Click a card, then the right place (based on the reading and your experience).</span></p><div class="sort-pool"></div><div class="sort-bins" style="--bins:3"><div class="s-bin" role="button" tabindex="0" data-bin="0"><span class="bin-title">Mercados de México y Perú</span><span class="bin-items"></span></div><div class="s-bin" role="button" tabindex="0" data-bin="1"><span class="bin-title">Los dos</span><span class="bin-items"></span></div><div class="s-bin" role="button" tabindex="0" data-bin="2"><span class="bin-title">Supermercados de EE. UU.</span><span class="bin-items"></span></div></div><div class="score-line"></div><div class="btn-row spaced"><button type="button" class="btn small s-reset">Empezar otra vez</button></div></div><div class="key-idea tip"><span class="ki-label">¡Ojo!</span><p>Ojo con las generalizaciones: también hay supermercados grandes en Lima y en Ciudad de México, y en Massachusetts hay mercados al aire libre, bodegas y mercados de agricultores. Usa palabras como <strong>muchas veces, en general, en muchos lugares</strong>.</p><p class="en">Avoid overgeneralizing: there are big supermarkets in Lima and Mexico City, and there are open-air, bodega and farmers' markets in Massachusetts. Use hedges like «often», «in general», «in many places».</p></div><div class="write-space"></div></section><section class="lesson-section" id="tres-p"><h2><span class="sec-num">4</span>Productos, prácticas y perspectivas</h2><div class="mode-pills"><span class="mode-pill cult">Cultura</span></div><div class="card"><h3>Las 3 P del mercado</h3><div class="table-wrap"><table class="ref"><tr><th></th><th>México y Perú</th><th>Massachusetts (en general)</th></tr><tr><td><strong>Productos</strong> (cosas)</td><td>papas de muchos colores, ají amarillo, lúcuma, chiles, tortillas hechas a mano, mole, chocolate de Oaxaca</td><td>productos envasados, cereales, comida congelada; también productos latinos en bodegas</td></tr><tr><td><strong>Prácticas</strong> (lo que hacen)</td><td>comprar poco y seguido, saludar al casero, probar antes de comprar, desayunar en el mercado</td><td>una compra grande a la semana, listas en el teléfono, pagar en la caja de autoservicio</td></tr><tr><td><strong>Perspectivas</strong> (lo que piensan / valoran)</td><td>la comida fresca y de temporada es importante; la relación personal con el vendedor tiene valor</td><td>la rapidez y la comodidad son importantes; tener muchas opciones en un solo lugar</td></tr></table></div></div><div class="key-idea"><span class="ki-label">Idea clave</span><p>La <strong>perspectiva</strong> explica la práctica: si valoras la relación con tu casera, compras en su puesto, aunque el supermercado está más cerca.</p><p class="en">The perspective explains the practice: if you value your relationship with your regular vendor, you buy from her even if the supermarket is closer.</p></div><div class="write-space"></div><div class="card prompt-card"><h3>Añade un ejemplo</h3><p class="p-text">Escribe una práctica de tu familia cuando compra comida y la perspectiva que hay detrás. Ejemplo: <em>Compramos en una bodega dominicana porque allí encontramos los plátanos que nos gustan y conocemos al dueño.</em></p><p class="en">Write one food-shopping practice from your family and the perspective behind it.</p></div><div class="write-space"></div></section><section class="lesson-section" id="repaso"><h2><span class="sec-num">5</span>Repaso: comparar y pedir</h2><div class="mode-pills"><span class="mode-pill pres">Presentacional</span></div><div class="card fill-set"><h3>Completa</h3>Escribe la palabra que falta. (+) = más, (−) = menos, (=) = igualdad.<p class="en">Write the missing word.</p><div class="acc-bar" aria-label="Acentos"><span class="note">Acentos:</span><button type="button" class="btn small acc">á</button><button type="button" class="btn small acc">é</button><button type="button" class="btn small acc">í</button><button type="button" class="btn small acc">ó</button><button type="button" class="btn small acc">ú</button><button type="button" class="btn small acc">ñ</button><button type="button" class="btn small acc">ü</button></div><div class="fill-list"><div class="fill-item" data-a="[&quot;más&quot;]"><div class="f-q">En el mercado, la fruta es ___ fresca que en el supermercado. (+)</div><div class="f-row"><input type="text" autocomplete="off" spellcheck="false" aria-label="Respuesta"><button type="button" class="btn small primary f-check">Comprobar</button></div><div class="feedback" hidden></div></div><div class="fill-item" data-a="[&quot;menos&quot;]"><div class="f-q">El supermercado es ___ divertido que el mercado. (−)</div><div class="f-row"><input type="text" autocomplete="off" spellcheck="false" aria-label="Respuesta"><button type="button" class="btn small primary f-check">Comprobar</button></div><div class="feedback" hidden></div></div><div class="fill-item" data-a="[&quot;como&quot;]"><div class="f-q">La señora Rosa es tan amable ___ la vendedora de Oaxaca. (=)</div><div class="f-row"><input type="text" autocomplete="off" spellcheck="false" aria-label="Respuesta"><button type="button" class="btn small primary f-check">Comprobar</button></div><div class="feedback" hidden></div></div><div class="fill-item" data-a="[&quot;tantos&quot;]"><div class="f-q">En el mercado de Surquillo hay ___ puestos de fruta como de verduras. (=)</div><div class="f-row"><input type="text" autocomplete="off" spellcheck="false" aria-label="Respuesta"><button type="button" class="btn small primary f-check">Comprobar</button></div><div class="feedback" hidden></div><div class="reveal explain">«puestos» es masculino plural → <strong>tantos</strong> + sustantivo + como.</div></div><div class="fill-item" data-a="[&quot;mejores&quot;]"><div class="f-q">Para Rodrigo, las frutas del mercado son ___ que las del supermercado. (bueno, +)</div><div class="f-row"><input type="text" autocomplete="off" spellcheck="false" aria-label="Respuesta"><button type="button" class="btn small primary f-check">Comprobar</button></div><div class="feedback" hidden></div></div><div class="fill-item" data-a="[&quot;peor&quot;]"><div class="f-q">Para mi abuela, la comida envasada es ___ que la comida fresca. (malo, +)</div><div class="f-row"><input type="text" autocomplete="off" spellcheck="false" aria-label="Respuesta"><button type="button" class="btn small primary f-check">Comprobar</button></div><div class="feedback" hidden></div></div><div class="fill-item" data-a="[&quot;más&quot;]"><div class="f-q">El mercado de mi barrio es el ___ grande de la ciudad. (superlativo)</div><div class="f-row"><input type="text" autocomplete="off" spellcheck="false" aria-label="Respuesta"><button type="button" class="btn small primary f-check">Comprobar</button></div><div class="feedback" hidden></div></div><div class="fill-item" data-a="[&quot;menos&quot;]"><div class="f-q">Hay ___ ruido en el supermercado que en el mercado. (−)</div><div class="f-row"><input type="text" autocomplete="off" spellcheck="false" aria-label="Respuesta"><button type="button" class="btn small primary f-check">Comprobar</button></div><div class="feedback" hidden></div></div><div class="fill-item" data-a="[&quot;se los&quot;]"><div class="f-q">—¿Me da medio kilo de tomates? —Sí, ahora ___ doy. (vendedor → cliente, usted)</div><div class="f-row"><input type="text" autocomplete="off" spellcheck="false" aria-label="Respuesta"><button type="button" class="btn small primary f-check">Comprobar</button></div><div class="feedback" hidden></div><div class="reveal explain">a usted → le → <strong>se</strong>; los tomates → <strong>los</strong>: Se los doy.</div></div><div class="fill-item" data-a="[&quot;pruébela&quot;]"><div class="f-q">—¿Me deja probar la granadilla? —¡Claro! ___ (mandato usted: probar + la)</div><div class="f-row"><input type="text" autocomplete="off" spellcheck="false" aria-label="Respuesta"><button type="button" class="btn small primary f-check">Comprobar</button></div><div class="feedback" hidden></div></div></div><div class="score-line"></div></div></section><section class="lesson-section" id="discusion"><h2><span class="sec-num">6</span>Discusión</h2><div class="mode-pills"><span class="mode-pill inter">Interpersonal</span></div><div class="card roulette-comp"><script type="application/json">{"bank": ["¿Prefieres comprar en un mercado o en un supermercado? ¿Por qué?", "¿Dónde compra la comida tu familia? ¿Quién la compra?", "¿Te gustaría tener un casero o una casera? ¿Por qué?", "¿Es la comida del mercado más fresca que la del supermercado? ¿Siempre?", "¿Qué es más importante para ti: la rapidez o la relación con el vendedor?", "¿Regateaste alguna vez? ¿Dónde?", "¿Qué fruta de la lectura te gustaría probar? ¿Por qué?", "¿Es buena idea probar la fruta antes de comprarla?", "¿Hay mercados de agricultores en tu ciudad? ¿Cómo son?", "¿Qué productos latinos encuentras en las tiendas de tu barrio?", "¿Es el supermercado tan social como el mercado?", "¿Qué ventajas tiene comprar poco y seguido?"]}</script><h3>La ruleta de preguntas</h3><div class="roulette"><div class="note" style="color:#cfe6f5">Contesta con una comparación (más… que, tan… como, mejor/peor) y un ejemplo.</div><div class="q-big"><span class="rq-text">¡Haz clic en «Girar»!</span><button class="say rq-say" aria-label="Escuchar"></button></div><div class="btn-row" style="justify-content:center"><button type="button" class="btn primary rq-spin">Girar 🎲</button></div></div><div class="timer spaced" data-seconds="120" data-end="¡Tiempo! ¡Cambien!"><span class="t-display">2:00</span><button type="button" class="btn small primary t-start">Empezar</button><button type="button" class="btn small t-reset">Reiniciar</button><span class="t-msg" aria-live="polite"></span></div><p class="en note">Answer with a comparison and an example. Switch who asks when time is up.</p><h3 class="spaced">Reacciones naturales</h3><div class="react"><span>Estoy de acuerdo.</span><span>Yo no estoy de acuerdo.</span><span>¡Qué interesante!</span><span>Depende…</span><span>Tienes razón, pero…</span><span>¿Por qué piensas eso?</span></div></div></section><section class="lesson-section" id="parrafo"><h2><span class="sec-num">7</span>Párrafo de comparación</h2><div class="mode-pills"><span class="mode-pill pres">Presentacional</span></div><div class="card writing-comp"><script type="application/json">{"target": 90, "connectors": ["en cambio", "mientras que", "igual que", "también", "pero", "además", "aunque"]}</script><h3>Escribe tu comparación</h3><p>Compara un mercado de México o Perú con el lugar donde tu familia compra comida en Massachusetts. Incluye al menos una semejanza, dos diferencias y una perspectiva. Usa comparativos.</p><p class="en">Compare a market in Mexico or Peru with where your family buys food in Massachusetts: one similarity, two differences, one perspective. Use comparatives.</p><p class="note">Marco de escritura:</p><ul class="frame-list"><li>En México / Perú, mucha gente compra… en…</li><li>En cambio, mi familia compra… en…</li><li>El mercado es más / menos… que…</li><li>Igual que en el supermercado, en el mercado…</li><li>Para muchas personas en Perú, … es importante porque…</li><li>Personalmente, prefiero… porque…</li></ul><div class="acc-bar" aria-label="Acentos"><span class="note">Acentos:</span><button type="button" class="btn small acc">á</button><button type="button" class="btn small acc">é</button><button type="button" class="btn small acc">í</button><button type="button" class="btn small acc">ó</button><button type="button" class="btn small acc">ú</button><button type="button" class="btn small acc">ñ</button><button type="button" class="btn small acc">ü</button></div><textarea placeholder="En Perú, mucha gente compra…" aria-label="Tu texto"></textarea><div class="wc"><span class="w-count"></span><span class="w-conn"></span><span class="w-q"></span></div><div class="spaced"><label class="check-option"><input type="checkbox"> Incluí una semejanza y dos diferencias.</label><label class="check-option"><input type="checkbox"> Usé más/menos… que o tan… como.</label><label class="check-option"><input type="checkbox"> Usé mejor o peor correctamente (no «más bueno»).</label><label class="check-option"><input type="checkbox"> Expliqué una perspectiva (lo que la gente valora).</label><label class="check-option"><input type="checkbox"> Usé un conector de contraste (en cambio, mientras que).</label></div><p class="note">Puedes escribir en papel si prefieres. Este texto no se guarda.</p></div></section><section class="lesson-section" id="salida"><h2><span class="sec-num">8</span>Boleto de salida</h2><div class="mode-pills"><span class="mode-pill interp">Interpretivo</span><span class="mode-pill cult">Cultura</span></div><div class="mc-set"><article class="question mc" data-answer="C"><span class="qtype">Pregunta 1</span><h3>«Saludar al vendedor y preguntarle por su familia» es…</h3><div class="mc-options"><button class="mc-opt" type="button" data-key="A"><span class="mc-key">A</span><span>un producto</span></button><button class="mc-opt" type="button" data-key="B"><span class="mc-key">B</span><span>una perspectiva</span></button><button class="mc-opt" type="button" data-key="C"><span class="mc-key">C</span><span>una práctica</span></button></div><div class="mc-feedback" aria-live="polite"></div></article><article class="question mc" data-answer="B"><span class="qtype">Pregunta 2</span><h3>Para mi abuela, «la comida del mercado es ___ que la comida envasada».</h3><div class="mc-options"><button class="mc-opt" type="button" data-key="A"><span class="mc-key">A</span><span>más mejor</span></button><button class="mc-opt" type="button" data-key="B"><span class="mc-key">B</span><span>mejor</span></button><button class="mc-opt" type="button" data-key="C"><span class="mc-key">C</span><span>tan buena</span></button><button class="mc-opt" type="button" data-key="D"><span class="mc-key">D</span><span>más bien</span></button></div><div class="mc-feedback" aria-live="polite"></div></article><article class="question mc" data-answer="C"><span class="qtype">Pregunta 3</span><h3>—¿Me da las papas amarillas? —Sí, ___ doy ahora mismo.</h3><div class="mc-options"><button class="mc-opt" type="button" data-key="A"><span class="mc-key">A</span><span>le las</span></button><button class="mc-opt" type="button" data-key="B"><span class="mc-key">B</span><span>se los</span></button><button class="mc-opt" type="button" data-key="C"><span class="mc-key">C</span><span>se las</span></button><button class="mc-opt" type="button" data-key="D"><span class="mc-key">D</span><span>me las</span></button></div><div class="mc-feedback" aria-live="polite"></div></article><article class="question mc" data-answer="A"><span class="qtype">Pregunta 4</span><h3>¿Cuál es una <strong>perspectiva</strong>?</h3><div class="mc-options"><button class="mc-opt" type="button" data-key="A"><span class="mc-key">A</span><span>Valorar la relación personal con el vendedor</span></button><button class="mc-opt" type="button" data-key="B"><span class="mc-key">B</span><span>La lúcuma</span></button><button class="mc-opt" type="button" data-key="C"><span class="mc-key">C</span><span>Usar un carrito</span></button><button class="mc-opt" type="button" data-key="D"><span class="mc-key">D</span><span>Pagar en la caja</span></button></div><div class="mc-feedback" aria-live="polite"></div></article><div class="score-line"></div></div><div class="card confidence"><h3>¿Puedo hacerlo?</h3><div class="conf-bar" role="progressbar" aria-valuemin="0" aria-valuemax="5" aria-valuenow="0"><span class="conf-fill"></span></div><p class="note conf-msg">0 / 5 — marca lo que puedes hacer sin ayuda.</p><div class="conf-list"><label class="check-option conf-check"><input type="checkbox"> Puedo explicar qué es un tianguis, un casero y la yapa.</label><label class="check-option conf-check"><input type="checkbox"> Puedo comparar un mercado y un supermercado con más/menos… que y tan… como.</label><label class="check-option conf-check"><input type="checkbox"> Puedo dar un ejemplo de producto, práctica y perspectiva.</label><label class="check-option conf-check"><input type="checkbox"> Puedo pedir algo en un puesto y entender «se lo doy».</label><label class="check-option conf-check"><input type="checkbox"> Puedo escribir un párrafo de comparación con conectores de contraste.</label></div></div></section>
+  <footer>Español 3 · Día 73 · Unidad 4: Salud y bienestar</footer>
+</main>
+<script type="application/json" id="polls-data">{"gancho": {"q": "En México, ¿qué es un «tianguis»?", "o": ["Un tipo de fruta tropical", "Un supermercado grande", "Un mercado al aire libre que se pone ciertos días de la semana", "Una tienda de ropa"], "a": 2, "why": "Un <strong>tianguis<\/strong> es un mercado al aire libre que se instala ciertos días de la semana. La palabra viene del náhuatl, la lengua de los aztecas.", "en": "In Mexico, what is a «tianguis»?"}, "lectura": {"q": "¿Qué crees que pasa cuando un cliente compra en el mismo puesto muchas veces en Perú?", "o": ["Paga más", "No puede regatear", "Tiene que hacer fila", "Recibe un poco más gratis (la yapa)"], "a": 3, "why": "La <strong>yapa<\/strong> es una costumbre andina: el vendedor añade un poquito más gratis, sobre todo a sus caseros. ¡Es una forma de cuidar la relación!", "en": "What do you think happens when a customer buys at the same stall many times in Peru?"}, "comparacion": {"q": "¿Qué tienen en común un mercado de Lima y un supermercado de Worcester?", "o": ["En los dos hay pasillo de humo.", "En los dos regateas el precio de la leche.", "En los dos te dan la yapa.", "En los dos puedes comprar frutas y verduras."], "a": 3, "why": "¡Los dos venden comida fresca! La diferencia está en <strong>cómo<\/strong> se compra: la relación, el ruido, los envases, los horarios.", "en": "What do a market in Lima and a supermarket in Worcester have in common?"}, "tres-p": {"q": "«Ir al mercado varias veces por semana» es un ejemplo de…", "o": ["un producto", "una práctica", "una perspectiva", "un comparativo"], "a": 1, "why": "Una <strong>práctica<\/strong> es algo que la gente <em>hace<\/em>. Un producto es una cosa; una perspectiva es una idea o un valor.", "en": "«Going to the market several times a week» is an example of…"}, "repaso": {"q": "«El mercado es ___ ruidoso ___ el supermercado.» (=)", "o": ["más … que", "tan … como", "tanto … como", "menos … de"], "a": 1, "why": "Igualdad con adjetivo: <strong>tan + adjetivo + como<\/strong>. Con sustantivo: tanto/a/os/as + sustantivo + como.", "en": "«The market is as noisy as the supermarket.»"}, "discusion": {"q": "¿Cuál es la mejor respuesta a «¿Prefieres el mercado o el supermercado?»", "o": ["El mercado.", "Me gusta.", "Prefiero el mercado porque la comida es más fresca, aunque el supermercado es más rápido.", "Supermercado más bueno."], "a": 2, "why": "Una respuesta completa tiene <strong>opinión + razón + comparación<\/strong> (y a veces un «aunque»). «Más bueno» → mejor.", "en": "What's the best answer to «Do you prefer the market or the supermarket?»"}, "parrafo": {"q": "¿Qué conector usas para presentar una diferencia?", "o": ["además", "también", "por ejemplo", "en cambio"], "a": 3, "why": "<strong>En cambio<\/strong> y <strong>mientras que<\/strong> presentan un contraste. Además y también añaden información.", "en": "Which connector introduces a difference?"}, "salida": {"q": "La casera te da tres mandarinas extra. Tú le dices:", "o": ["¡Muchas gracias, casera!", "¿Por qué?", "No las quiero.", "¿Cuánto cuestan?"], "a": 0, "why": "La yapa es un gesto de amistad: lo normal es <strong>agradecerla<\/strong> y volver al mismo puesto.", "en": "Your regular vendor gives you three extra tangerines. You say:"}}</script>
+<script>
+(function () {
+  "use strict";
+  var $ = function (id) { return document.getElementById(id); };
+  var qsa = function (sel, root) { return Array.prototype.slice.call((root || document).querySelectorAll(sel)); };
+  var reduceMotion = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  function shuffle(a) { a = a.slice(); for (var i = a.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)); var t = a[i]; a[i] = a[j]; a[j] = t; } return a; }
+  function stripAcc(s) { return s.normalize("NFD").replace(/[̀-ͯ]/g, ""); }
+  function norm(s) { return s.trim().toLowerCase().replace(/[¿?¡!.,;:]/g, "").replace(/\s+/g, " ").trim(); }
+  function data(el) { var s = el.querySelector(':scope > script[type="application/json"]'); return s ? JSON.parse(s.textContent) : {}; }
+  function esc(s) { var d = document.createElement("div"); d.textContent = s; return d.innerHTML; }
+
+  /* Celebrate + cheers */
+  window.celebrate = function () {
+    if (reduceMotion) return;
+    var colors = ["#1f6fb2", "#5cc8d6", "#e9a23b", "#6a3fb5", "#2e7d4f", "#c0453c"];
+    for (var i = 0; i < 70; i++) {
+      var c = document.createElement("span"); c.className = "confetti-piece";
+      c.style.left = (Math.random() * 100) + "vw"; c.style.background = colors[i % colors.length];
+      c.style.setProperty("--dx", (Math.random() * 240 - 120) + "px"); c.style.setProperty("--rot", (Math.random() * 900 - 450) + "deg");
+      c.style.animationDelay = (Math.random() * 0.25) + "s"; c.style.animationDuration = (1.1 + Math.random() * 0.8) + "s";
+      document.body.appendChild(c);
+      setTimeout(function (n) { if (n.parentNode) n.parentNode.removeChild(n); }, 2600, c);
+    }
+  };
+  var cheers = ["¡Excelente!", "¡Muy bien!", "¡Perfecto!", "¡Eso es!", "¡Qué bien lo haces!", "¡Fenomenal!"];
+  function cheer() { return cheers[Math.floor(Math.random() * cheers.length)]; }
+
+  /* Audio */
+  var SPEAKER = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9H4z" fill="currentColor"/><path d="M16 8.5a5 5 0 0 1 0 7M18.5 6a8.5 8.5 0 0 1 0 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>';
+  function decorateSay(root) { qsa(".say", root).forEach(function (b) { if (!b.innerHTML) b.innerHTML = SPEAKER; b.type = "button"; if (!b.getAttribute("aria-label")) b.setAttribute("aria-label", "Escuchar"); }); }
+  decorateSay(document);
+  var slow = false, voice = null;
+  function pickVoice() {
+    if (!("speechSynthesis" in window)) return;
+    var vs = window.speechSynthesis.getVoices(), pref = ["es-MX", "es-US", "es-419", "es-ES"];
+    for (var i = 0; i < pref.length && !voice; i++) voice = vs.filter(function (v) { return v.lang.replace("_", "-") === pref[i]; })[0] || null;
+    if (!voice) voice = vs.filter(function (v) { return /^es/i.test(v.lang); })[0] || null;
+  }
+  if ("speechSynthesis" in window) { pickVoice(); window.speechSynthesis.onvoiceschanged = pickVoice; }
+  var warned = false;
+  function warnVoice() {
+    if (warned) return; warned = true;
+    var w = document.createElement("div"); w.className = "voice-warn";
+    w.textContent = "No Spanish voice was found on this computer, so audio may sound English or be silent. Add a Spanish voice in the system's speech settings.";
+    document.querySelector("main").insertBefore(w, document.querySelector(".hero").nextSibling);
+  }
+  function utter(text) {
+    var u = new SpeechSynthesisUtterance(text.replace(/_{2,}|\.\.\./g, " "));
+    u.lang = voice ? voice.lang : "es-MX"; if (voice) u.voice = voice;
+    u.rate = slow ? 0.7 : 0.95; return u;
+  }
+  function speak(text, onend) {
+    if (!("speechSynthesis" in window)) { warnVoice(); return; }
+    window.speechSynthesis.cancel();
+    var u = utter(text); if (onend) u.onend = onend;
+    window.speechSynthesis.speak(u);
+    if (!voice) warnVoice();
+  }
+  function speakQueue(lines, onLine, onDone) {
+    if (!("speechSynthesis" in window)) { warnVoice(); return; }
+    window.speechSynthesis.cancel(); if (!voice) warnVoice();
+    lines.forEach(function (t, i) { var u = utter(t); u.onstart = function () { if (onLine) onLine(i); }; if (i === lines.length - 1) u.onend = function () { if (onDone) onDone(); }; window.speechSynthesis.speak(u); });
+  }
+  document.addEventListener("click", function (e) {
+    var b = e.target.closest && e.target.closest(".say");
+    if (!b) return;
+    if (b.hasAttribute("data-say")) speak(b.getAttribute("data-say"));
+    else if (b.hasAttribute("data-say-target")) { var t = $(b.getAttribute("data-say-target")); if (t) speak(t.textContent.replace(/\s+/g, " ")); }
+  });
+  $("slow-toggle").addEventListener("click", function () { slow = !slow; this.setAttribute("aria-pressed", slow); });
+
+  /* Presenter bar */
+  var baseFont = 19;
+  function setFont() { document.documentElement.style.fontSize = baseFont + "px"; }
+  $("font-down").addEventListener("click", function () { baseFont = Math.max(15, baseFont - 2); setFont(); });
+  $("font-up").addEventListener("click", function () { baseFont = Math.min(31, baseFont + 2); setFont(); });
+  $("fullscreen-btn").addEventListener("click", function () {
+    try { if (!document.fullscreenElement) document.documentElement.requestFullscreen(); else document.exitFullscreen(); } catch (e) {}
+  });
+  document.addEventListener("fullscreenchange", function () { $("fullscreen-btn").textContent = document.fullscreenElement ? "Salir" : "Pantalla completa"; });
+  $("en-toggle").addEventListener("click", function () { var on = document.body.classList.toggle("show-en"); this.setAttribute("aria-pressed", on); });
+
+  /* Generic reveal buttons */
+  qsa(".reveal-btn").forEach(function (btn) {
+    btn.dataset.label = btn.textContent;
+    btn.addEventListener("click", function () { var t = $(btn.getAttribute("data-target")); var open = t.classList.toggle("open"); if (t.hasAttribute("hidden")) t.hidden = !open; btn.textContent = open ? "Ocultar" : btn.dataset.label; });
+  });
+
+  /* Glossary words */
+  qsa(".gloss").forEach(function (g) { g.addEventListener("click", function () { g.classList.toggle("show"); }); });
+
+  /* Accent bars insert into the last focused input */
+  var lastInput = null;
+  document.addEventListener("focusin", function (e) { if (e.target.matches && e.target.matches('input[type="text"], textarea')) lastInput = e.target; });
+  qsa(".acc").forEach(function (b) {
+    b.addEventListener("mousedown", function (e) { e.preventDefault(); });
+    b.addEventListener("click", function () {
+      var scope = b.closest(".card, .challenge, .fill-set") || document;
+      var inp = (lastInput && scope.contains(lastInput)) ? lastInput : scope.querySelector('input[type="text"], textarea');
+      if (!inp) return;
+      var s = inp.selectionStart == null ? inp.value.length : inp.selectionStart, e2 = inp.selectionEnd == null ? inp.value.length : inp.selectionEnd;
+      inp.value = inp.value.slice(0, s) + b.textContent + inp.value.slice(e2); inp.focus(); inp.setSelectionRange(s + 1, s + 1);
+      inp.dispatchEvent(new Event("input"));
+    });
+  });
+
+  /* Predict-first polls */
+  var polls = JSON.parse($("polls-data").textContent);
+  Object.keys(polls).forEach(function (id) {
+    var sec = $(id); if (!sec) return;
+    var anchor = sec.querySelector(".mode-pills"), p = polls[id], box = document.createElement("div");
+    box.className = "poll"; box.setAttribute("data-answer", p.a);
+    box.innerHTML = '<span class="poll-label">Predice primero</span><p class="poll-q">' + p.q + '</p>' + (p.en ? '<p class="en">' + p.en + '</p>' : '') + '<div class="poll-opts">' +
+      p.o.map(function (o, i) { return '<button type="button" class="poll-opt" data-i="' + i + '"><span class="mc-key">' + "ABCD"[i] + '</span><span>' + o + '</span></button>'; }).join("") +
+      '</div><div class="btn-row"><button type="button" class="btn small primary poll-reveal" disabled>Revelar la respuesta</button><span class="note poll-status">Elige una predicción primero.</span></div><div class="poll-why spaced" hidden></div>';
+    anchor.parentNode.insertBefore(box, anchor.nextSibling);
+    var chosen = -1, opts = qsa(".poll-opt", box), reveal = box.querySelector(".poll-reveal");
+    opts.forEach(function (b) { b.addEventListener("click", function () {
+      chosen = Number(b.getAttribute("data-i"));
+      opts.forEach(function (x) { x.classList.toggle("chosen", x === b); });
+      reveal.disabled = false; box.querySelector(".poll-status").textContent = "Tu predicción: " + "ABCD"[chosen] + ". ¿Revelamos?";
+    }); });
+    reveal.addEventListener("click", function () {
+      opts.forEach(function (x, i) { x.disabled = true; x.classList.remove("chosen"); if (i === p.a) x.classList.add("correct"); else if (i === chosen) x.classList.add("wrong"); });
+      var why = box.querySelector(".poll-why"); why.hidden = false;
+      why.innerHTML = (chosen === p.a ? "<strong>" + cheer() + "</strong> " : "<strong>¡Buena predicción para comprobar!</strong> ") + p.why;
+      reveal.disabled = true; box.querySelector(".poll-status").textContent = "";
+      if (chosen === p.a) window.celebrate();
+    });
+  });
+
+  /* Multiple choice sets (practice mode and exam mode) */
+  qsa(".mc-set").forEach(function (set) {
+    var items = qsa(".question.mc", set), first = 0, solved = 0, line = set.querySelector(":scope > .score-line"), exam = set.classList.contains("exam");
+    function upd() { if (line && !exam) line.textContent = "Correctas al primer intento: " + first + " / " + items.length + (solved ? " · resueltas: " + solved : ""); }
+    items.forEach(function (q) {
+      var ans = q.getAttribute("data-answer"), fb = q.querySelector(".mc-feedback"), tried = false;
+      qsa(".mc-opt", q).forEach(function (b) { b.addEventListener("click", function () {
+        if (exam) { if (set.classList.contains("revealed")) return; qsa(".mc-opt", q).forEach(function (x) { x.classList.toggle("chosen", x === b); }); return; }
+        if (q.classList.contains("solved")) return;
+        if (b.getAttribute("data-key") === ans) {
+          b.classList.add("correct"); q.classList.add("solved"); solved++;
+          qsa(".mc-opt", q).forEach(function (x) { x.disabled = true; });
+          fb.className = "mc-feedback ok"; fb.innerHTML = "<strong>" + cheer() + "</strong> " + (tried ? "¡Lo lograste!" : "Correcto al primer intento.");
+          if (!tried) { first++; window.celebrate(); }
+          var r = q.querySelector(".explain"); if (r) r.classList.add("open");
+          upd();
+        } else {
+          tried = true; b.classList.add("wrong"); b.disabled = true;
+          fb.className = "mc-feedback retry"; fb.innerHTML = "<strong>Todavía no — ¡buen intento!</strong> Piensa otra vez y elige de nuevo.";
+        }
+      }); });
+    });
+    if (exam) {
+      var rb = set.querySelector(".exam-reveal");
+      rb.addEventListener("click", function () {
+        set.classList.add("revealed"); var right = 0;
+        items.forEach(function (q) {
+          var ans = q.getAttribute("data-answer"), ch = q.querySelector(".mc-opt.chosen");
+          qsa(".mc-opt", q).forEach(function (x) { x.disabled = true; if (x.getAttribute("data-key") === ans) x.classList.add("correct"); else if (x === ch) x.classList.add("wrong"); });
+          if (ch && ch.getAttribute("data-key") === ans) right++;
+          var r = q.querySelector(".explain"); if (r) r.classList.add("open");
+        });
+        line.textContent = "Resultado: " + right + " / " + items.length; rb.disabled = true;
+      });
+    }
+    upd();
+  });
+
+  /* Model texts: highlight */
+  qsa(".model-comp").forEach(function (c) {
+    var btn = c.querySelector(".hl-btn"), txt = c.querySelector(".model-text"), note = c.querySelector(".hl-note");
+    if (!btn) return; var label = btn.textContent;
+    btn.addEventListener("click", function () { var on = txt.classList.toggle("hl"); btn.textContent = on ? "Ocultar" : label; if (note) note.hidden = !on; });
+  });
+
+  /* Explorers */
+  qsa(".explorer-comp").forEach(function (c) {
+    var d = data(c), vSel = c.querySelector(".cx-verb"), pSel = c.querySelector(".cx-person");
+    var names = Object.keys(d.verbs);
+    names.forEach(function (v) { var o = document.createElement("option"); o.value = v; o.textContent = v; vSel.appendChild(o); });
+    d.persons.forEach(function (p, i) { var o = document.createElement("option"); o.value = i; o.textContent = p; pSel.appendChild(o); });
+    function render() {
+      var v = d.verbs[vSel.value], i = Number(pSel.value);
+      c.querySelector(".cx-form").textContent = v.f[i];
+      c.querySelector(".cx-tag").textContent = vSel.value + (v.type ? " · " + v.type : "");
+      c.querySelector(".cx-info").innerHTML = (v.en ? '<span class="en">' + esc(v.en) + '</span>' : '') + (v.note ? '<br>' + esc(v.note) : '') + ((d.notes && d.notes[i]) ? '<br>' + esc(d.notes[i]) : '');
+      c.querySelector(".conj-table").innerHTML = v.f.map(function (f, k) { return '<div class="' + (k === i ? "on" : "") + '">' + esc(d.persons[k].split(" / ")[0]) + " · " + esc(f) + "</div>"; }).join("");
+    }
+    vSel.addEventListener("change", render); pSel.addEventListener("change", render);
+    c.querySelector(".cx-say").addEventListener("click", function () { var i = Number(pSel.value); speak(((d.say_prefix && d.say_prefix[i]) ? d.say_prefix[i] + " " : "") + d.verbs[vSel.value].f[i]); });
+    render();
+    var ch = c.querySelector(".challenge"); if (!ch) return;
+    var cur = null, right = 0, streak = 0, done = false, inp = ch.querySelector(".ch-input"), fb = ch.querySelector(".feedback");
+    var pool = []; d.persons.forEach(function (p, i) { if (!d.skip || d.skip.indexOf(i) < 0) pool.push(i); });
+    function next() {
+      var v = names[Math.floor(Math.random() * names.length)], i = pool[Math.floor(Math.random() * pool.length)];
+      cur = { v: v, i: i, ans: d.verbs[v].f[i] }; done = false; ch.setAttribute("data-ans", cur.ans);
+      ch.querySelector(".prompt-line").innerHTML = (d.ask || "Conjuga") + " <strong>" + esc(v) + "</strong> · <strong>" + esc(d.persons[i]) + "</strong>";
+      inp.value = ""; fb.hidden = true;
+    }
+    function check() {
+      if (!cur || done) return; var val = norm(inp.value); if (!val) return; fb.hidden = false;
+      var answers = cur.ans.split(" / ").map(norm);
+      if (answers.indexOf(val) >= 0) { done = true; right++; streak++; fb.className = "feedback ok"; fb.textContent = cheer() + " " + cur.ans; if (streak % 3 === 0) window.celebrate(); }
+      else if (answers.map(stripAcc).indexOf(stripAcc(val)) >= 0) { fb.className = "feedback close"; fb.textContent = "¡Casi! Revisa el acento."; }
+      else { streak = 0; done = true; fb.className = "feedback no"; fb.innerHTML = "Todavía no. La respuesta es <strong>" + esc(cur.ans) + "</strong>. Intenta otro."; }
+      ch.querySelector(".streak").textContent = "Correctas: " + right + " · Racha: " + streak;
+    }
+    ch.querySelector(".ch-check").addEventListener("click", check);
+    ch.querySelector(".ch-next").addEventListener("click", next);
+    inp.addEventListener("keydown", function (e) { if (e.key === "Enter") { e.preventDefault(); if (done) next(); else check(); } });
+    next();
+  });
+
+  /* Fill-in sets */
+  qsa(".fill-set").forEach(function (set) {
+    var items = qsa(".fill-item", set), right = 0, line = set.querySelector(".score-line");
+    function upd() { if (line) line.textContent = "Correctas: " + right + " / " + items.length; }
+    items.forEach(function (it) {
+      var ans = JSON.parse(it.getAttribute("data-a")), inp = it.querySelector("input"), fb = it.querySelector(".feedback"), tries = 0, done = false;
+      function check() {
+        if (done) return; var val = norm(inp.value); if (!val) return; fb.hidden = false;
+        var ok = ans.map(norm);
+        if (ok.indexOf(val) >= 0) { done = true; right++; it.classList.add("ok"); inp.disabled = true; fb.className = "feedback ok"; fb.innerHTML = cheer() + (it.querySelector(".explain") ? "" : ""); var ex = it.querySelector(".explain"); if (ex) ex.classList.add("open"); if (tries === 0 && right === items.length) window.celebrate(); upd(); }
+        else if (ok.map(stripAcc).indexOf(stripAcc(val)) >= 0) { fb.className = "feedback close"; fb.textContent = "¡Casi! Revisa el acento."; }
+        else { tries++; if (tries >= 2) { fb.className = "feedback no"; fb.innerHTML = "Respuesta: <strong>" + esc(ans[0]) + "</strong>"; var ex2 = it.querySelector(".explain"); if (ex2) ex2.classList.add("open"); } else { fb.className = "feedback no"; fb.textContent = "Todavía no. Intenta otra vez."; } }
+      }
+      it.querySelector(".f-check").addEventListener("click", check);
+      inp.addEventListener("keydown", function (e) { if (e.key === "Enter") { e.preventDefault(); check(); } });
+    });
+    upd();
+  });
+
+  /* Matching games */
+  qsa(".match-comp").forEach(function (c) {
+    var d = data(c), L = c.querySelector(".m-left"), R = c.querySelector(".m-right"), score = c.querySelector(".m-score");
+    var sel = null, done = 0, miss = 0;
+    function build() {
+      qsa(".m-item", c).forEach(function (n) { n.parentNode.removeChild(n); }); sel = null; done = 0; miss = 0;
+      shuffle(d.pairs.map(function (p, i) { return i; })).forEach(function (i) { L.appendChild(mk(d.pairs[i][0], i, "q")); });
+      shuffle(d.pairs.map(function (p, i) { return i; })).forEach(function (i) { R.appendChild(mk(d.pairs[i][1], i, "a")); });
+      upd();
+    }
+    function mk(text, i, side) {
+      var b = document.createElement("button"); b.type = "button"; b.className = "m-item"; b.innerHTML = text; b.dataset.i = i; b.dataset.side = side;
+      b.addEventListener("click", function () {
+        if (b.classList.contains("done")) return;
+        if (!sel || sel.dataset.side === side) {
+          if (sel) sel.classList.remove("sel"); sel = (sel === b) ? null : b; if (sel) sel.classList.add("sel");
+          if (sel && d.say !== false && ((side === "q" && d.say !== "right") || (side === "a" && d.say === "right"))) speak(b.textContent);
+          return;
+        }
+        if (sel.dataset.i === b.dataset.i) { [sel, b].forEach(function (x) { x.classList.remove("sel"); x.classList.add("done"); x.disabled = true; }); done++; sel = null; if (done === d.pairs.length) window.celebrate(); }
+        else { miss++; [sel, b].forEach(function (x) { x.classList.remove("shake"); void x.offsetWidth; x.classList.add("shake"); }); sel.classList.remove("sel"); sel = null; }
+        upd();
+      });
+      return b;
+    }
+    function upd() { score.textContent = "Parejas: " + done + " / " + d.pairs.length + " · errores: " + miss + (done === d.pairs.length ? " · ¡Completo! " + cheer() : ""); }
+    c.querySelector(".m-reset").addEventListener("click", build);
+    build();
+  });
+
+  /* Sorting games */
+  qsa(".sort-comp").forEach(function (c) {
+    var d = data(c), pool = c.querySelector(".sort-pool"), bins = qsa(".s-bin", c), score = c.querySelector(".score-line");
+    var sel = null, placed = 0, miss = 0;
+    function build() {
+      qsa(".s-item", c).forEach(function (n) { n.parentNode.removeChild(n); }); sel = null; placed = 0; miss = 0;
+      shuffle(d.items.map(function (x, i) { return i; })).forEach(function (i) {
+        var b = document.createElement("button"); b.type = "button"; b.className = "s-item"; b.innerHTML = d.items[i][0]; b.dataset.bin = d.items[i][1];
+        b.addEventListener("click", function () { if (b.classList.contains("placed")) return; if (sel) sel.classList.remove("sel"); sel = (sel === b) ? null : b; if (sel) sel.classList.add("sel"); });
+        pool.appendChild(b);
+      });
+      upd();
+    }
+    bins.forEach(function (bin) { bin.addEventListener("keydown", function (e) { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); bin.click(); } }); bin.addEventListener("click", function () {
+      if (!sel) return;
+      if (sel.dataset.bin === bin.getAttribute("data-bin")) { var sp = document.createElement("span"); sp.className = "s-item placed"; sp.innerHTML = sel.innerHTML; bin.querySelector(".bin-items").appendChild(sp); sel.parentNode.removeChild(sel); placed++; sel = null; if (placed === d.items.length) window.celebrate(); }
+      else { miss++; var s = sel; s.classList.remove("shake"); void s.offsetWidth; s.classList.add("shake"); s.classList.remove("sel"); sel = null; }
+      upd();
+    }); });
+    function upd() { score.textContent = "Clasificadas: " + placed + " / " + d.items.length + " · errores: " + miss + (placed === d.items.length ? " · ¡Completo! " + cheer() : ""); }
+    c.querySelector(".s-reset").addEventListener("click", build);
+    build();
+  });
+
+  /* Myth or fact sets */
+  qsa(".myth-set").forEach(function (set) {
+    var cards = qsa(".myth-card", set), right = 0, done = 0, line = set.querySelector(".score-line");
+    cards.forEach(function (c) {
+      var truth = c.getAttribute("data-truth");
+      qsa(".myth-vote", c).forEach(function (b) { b.addEventListener("click", function () {
+        if (c.classList.contains("answered")) return; c.classList.add("answered");
+        var ok = b.getAttribute("data-vote") === truth;
+        qsa(".myth-vote", c).forEach(function (x) { x.disabled = true; });
+        b.classList.add(ok ? "correct" : "wrong");
+        if (!ok) c.querySelector('.myth-vote[data-vote="' + truth + '"]').classList.add("correct");
+        done++; if (ok) right++;
+        c.querySelector(".myth-verdict").innerHTML = (ok ? "<strong>" + cheer() + "</strong> " : "<strong>Casi — este engaña a mucha gente.</strong> ") + "Es <strong>" + truth.toUpperCase() + "</strong>.";
+        c.querySelector(".myth-reveal").hidden = false;
+        line.textContent = "Puntos: " + right + " · " + done + " de " + cards.length + " contestadas";
+        if (ok) window.celebrate();
+      }); });
+      var qt = c.querySelector(".qt-btn");
+      if (qt) qt.addEventListener("click", function () { var a = c.querySelector(".qt-answer"); a.hidden = !a.hidden; qt.textContent = a.hidden ? "Ver respuesta" : "Ocultar"; });
+    });
+  });
+
+  /* Roulettes */
+  qsa(".roulette-comp").forEach(function (c) {
+    var d = data(c), deck = [], txt = c.querySelector(".rq-text"), say = c.querySelector(".rq-say");
+    c.querySelector(".rq-spin").addEventListener("click", function () {
+      if (!deck.length) deck = shuffle(d.bank);
+      var q = deck.pop(); txt.innerHTML = q; say.setAttribute("data-say", txt.textContent);
+    });
+  });
+
+  /* Timers */
+  qsa(".timer").forEach(function (t) {
+    var total = Number(t.getAttribute("data-seconds")), left = total, iv = null;
+    var disp = t.querySelector(".t-display"), start = t.querySelector(".t-start"), msg = t.querySelector(".t-msg"), endMsg = t.getAttribute("data-end") || "¡Tiempo!";
+    function fmt(s) { return Math.floor(s / 60) + ":" + ("0" + (s % 60)).slice(-2); }
+    function draw() { disp.textContent = fmt(left); }
+    function stop() { clearInterval(iv); iv = null; start.textContent = "Empezar"; }
+    start.addEventListener("click", function () {
+      if (iv) { stop(); start.textContent = "Seguir"; return; }
+      if (left === 0) { left = total; t.classList.remove("done"); msg.textContent = ""; }
+      start.textContent = "Pausa";
+      iv = setInterval(function () { left--; draw(); if (left <= 0) { left = 0; draw(); stop(); t.classList.add("done"); msg.textContent = endMsg; } }, 1000);
+    });
+    t.querySelector(".t-reset").addEventListener("click", function () { stop(); left = total; t.classList.remove("done"); msg.textContent = ""; draw(); });
+    draw();
+  });
+
+  /* Bingo */
+  qsa(".bingo-comp").forEach(function (c) {
+    var d = data(c), grid = c.querySelector(".bingo"), msg = c.querySelector(".b-msg"), won = false;
+    d.items.forEach(function (it) {
+      var cell = document.createElement("button"); cell.type = "button"; cell.className = "b-cell";
+      cell.innerHTML = '<span class="b-text">' + it[0] + '</span><span class="b-q">' + it[1] + "</span>";
+      cell.addEventListener("click", function () { cell.classList.toggle("on"); check(); });
+      grid.appendChild(cell);
+    });
+    var lines = [[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]];
+    function check() {
+      var on = qsa(".b-cell", grid).map(function (x) { return x.classList.contains("on"); });
+      var n = lines.filter(function (l) { return on[l[0]] && on[l[1]] && on[l[2]]; }).length, count = on.filter(Boolean).length;
+      msg.textContent = count + " / 9" + (n ? " · ¡BINGO! (" + n + " línea" + (n > 1 ? "s" : "") + ")" : "");
+      if (n && !won) { won = true; window.celebrate(); } if (!n) won = false;
+    }
+    c.querySelector(".bq-toggle").addEventListener("click", function () { var on = grid.classList.toggle("show-q"); this.textContent = on ? "Ocultar preguntas" : "Mostrar preguntas"; });
+    c.querySelector(".b-reset").addEventListener("click", function () { qsa(".b-cell", grid).forEach(function (x) { x.classList.remove("on"); }); check(); });
+    check();
+  });
+
+  /* Writing counters */
+  qsa(".writing-comp").forEach(function (c) {
+    var d = data(c), ta = c.querySelector("textarea"), target = d.target || 80;
+    var conns = (d.connectors || ["y", "pero", "porque", "también", "además"]).map(function (w) { return w.toLowerCase(); });
+    function upd() {
+      var t = ta.value, words = (t.trim().match(/\S+/g) || []).length, low = " " + t.toLowerCase().replace(/[.,;:!?¡¿()«»"]/g, " ") + " ", cn = 0;
+      conns.forEach(function (w) { var parts = low.split(" " + w + " "); cn += parts.length - 1; });
+      var sents = (t.match(/[^.!?]+[.!?]/g) || []).length;
+      var wc = c.querySelector(".w-count"); wc.textContent = words + " palabras" + (words >= target ? " ✓" : " / " + target); wc.className = "w-count" + (words >= target ? " good" : "");
+      var cc = c.querySelector(".w-conn"); cc.textContent = "Conectores: " + cn + (cn >= 3 ? " ✓" : ""); cc.className = "w-conn" + (cn >= 3 ? " good" : "");
+      c.querySelector(".w-q").textContent = "Oraciones: " + sents;
+    }
+    ta.addEventListener("input", upd); upd();
+  });
+
+  /* Self-assessment scales */
+  qsa(".scale-comp").forEach(function (c) {
+    qsa(".scale-row", c).forEach(function (row) { qsa("button", row).forEach(function (b) { b.addEventListener("click", function () { qsa("button", row).forEach(function (x) { x.classList.toggle("on", x === b); }); }); }); });
+  });
+
+  /* Confidence checks */
+  qsa(".confidence").forEach(function (c) {
+    var checks = qsa(".conf-check input", c), done = false, fill = c.querySelector(".conf-fill"), bar = c.querySelector(".conf-bar"), msgEl = c.querySelector(".conf-msg");
+    function upd() {
+      var n = checks.filter(function (x) { return x.checked; }).length, total = checks.length;
+      fill.style.width = (100 * n / total) + "%"; bar.setAttribute("aria-valuenow", n);
+      var m = n === 0 ? "marca lo que puedes hacer sin ayuda." : n < total / 2 ? "buen comienzo — repasa las secciones de lo que falta." : n < total ? "¡casi! Un repaso más y lo tienes." : "¡Lo lograste! ¡Excelente trabajo!";
+      msgEl.textContent = n + " / " + total + " — " + m;
+      if (n === total && !done) { done = true; window.celebrate(); } if (n < total) done = false;
+    }
+    checks.forEach(function (x) { x.addEventListener("change", upd); }); upd();
+  });
+
+  /* Role cards */
+  qsa(".roles-comp").forEach(function (c) {
+    var d = data(c), deck = [], a = c.querySelector(".role.a .r-text"), b = c.querySelector(".role.b .r-text"), cnt = c.querySelector(".r-count");
+    function draw() { if (!deck.length) deck = shuffle(d.cards.map(function (x, i) { return i; })); var i = deck.pop(); a.innerHTML = d.cards[i].a; b.innerHTML = d.cards[i].b; cnt.textContent = "Situación " + (i + 1) + " de " + d.cards.length; qsa(".role", c).forEach(function (r) { r.classList.remove("cover"); }); }
+    c.querySelector(".r-draw").addEventListener("click", draw);
+    qsa(".role", c).forEach(function (r) { r.addEventListener("click", function () { r.classList.toggle("cover"); }); });
+    draw();
+  });
+
+  /* Listening */
+  qsa(".listen-comp").forEach(function (c) {
+    var d = data(c), status = c.querySelector(".l-status"), plays = 0;
+    c.querySelector(".l-play").addEventListener("click", function () {
+      plays++; status.textContent = "Escuchando… (vez " + plays + ")";
+      speakQueue(d.lines, function (i) { status.textContent = "Escuchando… " + (i + 1) + " / " + d.lines.length + " (vez " + plays + ")"; }, function () { status.textContent = "Fin. Has escuchado " + plays + (plays === 1 ? " vez." : " veces."); });
+    });
+    c.querySelector(".l-stop").addEventListener("click", function () { if ("speechSynthesis" in window) window.speechSynthesis.cancel(); status.textContent = "Pausado."; });
+  });
+
+  /* Dialogue line audio handled by .say; play-all */
+  qsa(".dialogue-comp").forEach(function (c) {
+    var btn = c.querySelector(".d-play"); if (!btn) return;
+    btn.addEventListener("click", function () { speakQueue(qsa(".d-line .es-line", c).map(function (x) { return x.textContent; })); });
+  });
+
+  /* Guided steps */
+  qsa(".steps-comp").forEach(function (c) {
+    var steps = qsa(".step", c), shown = 0, b = c.querySelectorAll(".step-controls button");
+    function upd() { steps.forEach(function (s, i) { s.classList.toggle("step-hidden", i >= shown); }); b[0].textContent = shown < steps.length ? "Revelar el siguiente paso (" + shown + "/" + steps.length + ")" : "Todos los pasos"; b[0].disabled = shown >= steps.length; }
+    b[0].addEventListener("click", function () { shown = Math.min(steps.length, shown + 1); upd(); });
+    b[1].addEventListener("click", function () { shown = steps.length; upd(); });
+    b[2].addEventListener("click", function () { shown = 0; upd(); });
+    upd();
+  });
+
+  /* Review board (Jeopardy style) */
+  qsa(".jeo-comp").forEach(function (c) {
+    var d = data(c), grid = c.querySelector(".jeo"), panel = c.querySelector(".j-panel"), qEl = panel.querySelector(".j-q"), aEl = panel.querySelector(".j-a"), cur = null;
+    var pts = { A: 0, B: 0 }, vals = [100, 200, 300, 400, 500];
+    grid.style.setProperty("--cats", d.cats.length);
+    d.cats.forEach(function (cat) { var h = document.createElement("div"); h.className = "j-cat"; h.innerHTML = cat.name; grid.appendChild(h); });
+    var rows = Math.max.apply(null, d.cats.map(function (x) { return x.qs.length; }));
+    for (var r = 0; r < rows; r++) d.cats.forEach(function (cat) {
+      var cell = document.createElement("button"); cell.type = "button"; cell.className = "j-cell"; var q = cat.qs[r];
+      if (!q) { cell.disabled = true; cell.classList.add("used"); grid.appendChild(cell); return; }
+      cell.textContent = vals[r]; cell.dataset.v = vals[r];
+      cell.addEventListener("click", function () { if (cell.classList.contains("used")) return; cell.classList.add("used"); cur = Number(cell.dataset.v); qEl.innerHTML = q[0]; aEl.innerHTML = q[1]; aEl.hidden = true; panel.hidden = false; });
+      grid.appendChild(cell);
+    });
+    panel.querySelector(".j-show").addEventListener("click", function () { aEl.hidden = false; });
+    qsa(".j-pt", c).forEach(function (b) { b.addEventListener("click", function () { if (cur == null) return; pts[b.dataset.t] += cur; cur = null; c.querySelector(".j-score").textContent = "Equipo A: " + pts.A + " · Equipo B: " + pts.B; window.celebrate(); }); });
+  });
+
+  /* Focus mode (runs last) */
+  var SEL = ".card, .question, .key-idea, .myth-card, .poll";
+  var blocks = qsa(SEL).filter(function (b) { for (var p = b.parentElement; p; p = p.parentElement) { if (p.matches && p.matches(SEL)) return false; } return true; });
+  var ICON = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3.5 8.5v-5h5M15.5 3.5h5v5M20.5 15.5v5h-5M8.5 20.5h-5v-5" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/><rect x="8.5" y="8.5" width="7" height="7" rx="1.2" fill="none" stroke="currentColor" stroke-width="1.8"/></svg>';
+  blocks.forEach(function (b, i) {
+    b.classList.add("has-focus");
+    var btn = document.createElement("button"); btn.type = "button"; btn.className = "focus-btn"; btn.innerHTML = ICON;
+    btn.title = "Ampliar para proyectar"; btn.setAttribute("aria-label", "Abrir este bloque en vista ampliada");
+    btn.addEventListener("click", function () { openFocus(i); });
+    b.insertBefore(btn, b.firstChild);
+  });
+  var ov = document.createElement("div");
+  ov.className = "focus-overlay"; ov.setAttribute("role", "dialog"); ov.setAttribute("aria-modal", "true"); ov.setAttribute("aria-label", "Vista ampliada");
+  ov.innerHTML = '<div class="focus-toolbar"><div class="btn-row"><button type="button" class="fbtn" id="focus-prev">◀ Anterior</button><button type="button" class="fbtn" id="focus-next">Siguiente ▶</button><span class="focus-count" id="focus-count"></span></div>' +
+    '<div class="btn-row"><button type="button" class="fbtn" id="focus-zoom-out" aria-label="Reducir">A−</button><span class="focus-count" id="focus-zoom"></span><button type="button" class="fbtn" id="focus-zoom-in" aria-label="Ampliar">A+</button><button type="button" class="fbtn close" id="focus-close">✕ Cerrar</button></div></div>' +
+    '<div class="focus-stage" id="focus-stage"><div class="focus-content" id="focus-content"></div></div>';
+  document.body.appendChild(ov);
+  var cur = -1, zoom = 1.25, moved = [];
+  function applyZoom() { $("focus-content").style.zoom = zoom; $("focus-zoom").textContent = Math.round(zoom * 100) + "%"; }
+  function restore() { moved.forEach(function (m) { m.marker.parentNode.insertBefore(m.node, m.marker); m.marker.parentNode.removeChild(m.marker); }); moved = []; }
+  function openFocus(i) {
+    restore(); cur = i;
+    var b = blocks[i], nodes = [b], n = b.nextElementSibling, box = $("focus-content");
+    if (n && n.classList.contains("write-space")) nodes.push(n);
+    nodes.forEach(function (node) { var mk = document.createComment("focus-placeholder"); node.parentNode.insertBefore(mk, node); moved.push({ node: node, marker: mk }); box.appendChild(node); });
+    ov.classList.add("open"); document.body.classList.add("focus-open");
+    $("focus-count").textContent = (i + 1) + " / " + blocks.length;
+    $("focus-prev").disabled = i === 0; $("focus-next").disabled = i === blocks.length - 1;
+    $("focus-stage").scrollTop = 0; applyZoom(); $("focus-close").focus();
+  }
+  function closeFocus() {
+    if (cur < 0) return;
+    var b = blocks[cur]; restore(); cur = -1;
+    ov.classList.remove("open"); document.body.classList.remove("focus-open");
+    b.scrollIntoView({ block: "center" });
+    var fb = b.querySelector(".focus-btn"); if (fb) fb.focus({ preventScroll: true });
+  }
+  $("focus-prev").addEventListener("click", function () { if (cur > 0) openFocus(cur - 1); });
+  $("focus-next").addEventListener("click", function () { if (cur < blocks.length - 1) openFocus(cur + 1); });
+  $("focus-zoom-in").addEventListener("click", function () { zoom = Math.min(2.2, Math.round((zoom + 0.1) * 100) / 100); applyZoom(); });
+  $("focus-zoom-out").addEventListener("click", function () { zoom = Math.max(0.8, Math.round((zoom - 0.1) * 100) / 100); applyZoom(); });
+  $("focus-close").addEventListener("click", closeFocus);
+  document.addEventListener("keydown", function (e) {
+    if (cur < 0) return;
+    if (e.key === "Escape") { e.preventDefault(); closeFocus(); return; }
+    var a = document.activeElement, tag = a ? a.tagName : "";
+    if (tag === "INPUT" || tag === "TEXTAREA" || tag === "SELECT" || (a && a.isContentEditable)) return;
+    if (e.key === "ArrowRight" && cur < blocks.length - 1) { e.preventDefault(); openFocus(cur + 1); }
+    if (e.key === "ArrowLeft" && cur > 0) { e.preventDefault(); openFocus(cur - 1); }
+  });
+})();
+
+</script>
+</body>
+</html>

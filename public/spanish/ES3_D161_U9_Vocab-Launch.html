@@ -1,0 +1,888 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>El arte de mirar · Día 161</title>
+<style>
+:root {
+  --navy: #13294b; --ink: #1d2733; --muted: #4f5d6e; --line: #d3dce6; --wash: #f2f6fa; --paper: #ffffff;
+  --blue: #1f6fb2; --cyan: #5cc8d6; --amber: #e9a23b; --green: #2e7d4f; --red: #c0453c; --purple: #6a3fb5;
+  --soft-green: #e3f4ea; --soft-amber: #fff2dc; --soft-blue: #e7f1fa;
+  --interp: #1f6fb2; --inter: #b26b00; --pres: #2e7d4f;
+}
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+html { font-size: 19px; scroll-behavior: smooth; }
+body { margin: 0; font-family: "Segoe UI", system-ui, -apple-system, Roboto, Arial, sans-serif; color: var(--ink); background: #eef2f6; line-height: 1.5; }
+h1, h2, h3 { color: var(--navy); line-height: 1.2; }
+a { color: var(--blue); }
+button { font: inherit; }
+
+/* Presenter bar */
+.topbar { position: sticky; top: 0; z-index: 50; display: flex; flex-wrap: wrap; align-items: center; gap: 8px 14px; padding: 8px 16px; background: var(--navy); color: white; }
+.brand { font-weight: 900; letter-spacing: .02em; white-space: nowrap; }
+.navlinks { display: flex; flex: 1 1 auto; min-width: 0; flex-wrap: wrap; row-gap: 2px; gap: 2px 4px; }
+.navlinks a { padding: 5px 8px; border-radius: 8px; color: white; text-decoration: none; font-size: .78rem; font-weight: 700; white-space: nowrap; }
+.navlinks a:hover { background: rgba(255,255,255,.14); }
+.navlinks a b { color: var(--cyan); margin-right: 3px; }
+.presenter-tools { display: flex; gap: 6px; flex: 0 0 auto; flex-wrap: wrap; }
+.ptool { border: 1px solid rgba(255,255,255,.4); border-radius: 9px; padding: 5px 11px; color: white; background: rgba(255,255,255,.1); font-weight: 850; font-size: .8rem; cursor: pointer; }
+.ptool:hover { background: rgba(255,255,255,.22); }
+.ptool[aria-pressed="true"] { background: var(--amber); border-color: var(--amber); color: var(--navy); }
+@media (max-width: 700px) { .navlinks { flex-wrap: nowrap; overflow-x: auto; } .presenter-tools { width: 100%; } }
+
+/* Layout */
+main { max-width: 1120px; margin: 0 auto; padding: 0 16px 80px; }
+.hero { margin: 26px 0 22px; padding: 34px 34px 30px; border-radius: 24px; color: white; background: linear-gradient(135deg, #13294b 0%, #1f6fb2 62%, #2e9bb0 100%); }
+.eyebrow { display: inline-block; margin-bottom: 10px; padding: 4px 12px; border-radius: 999px; background: rgba(255,255,255,.16); font-size: .78rem; font-weight: 900; letter-spacing: .12em; }
+.hero h1 { margin: 0 0 8px; color: white; font-size: 2.3rem; }
+.hero .sub { margin: 0; font-size: 1.1rem; color: #e3f2fb; font-weight: 600; }
+.hero .en { color: #cfe6f5; }
+section.lesson-section { scroll-margin-top: 70px; margin: 0 0 30px; padding: 28px 28px 10px; border-radius: 22px; background: var(--paper); box-shadow: 0 10px 30px rgba(19,41,75,.07); }
+section.lesson-section > h2 { margin: 0 0 8px; font-size: 1.6rem; }
+.sec-num { display: inline-grid; place-items: center; width: 38px; height: 38px; margin-right: 10px; border-radius: 12px; color: white; background: var(--navy); font-size: 1.05rem; vertical-align: middle; }
+.card { margin: 0 0 22px; padding: 22px 24px; border: 1px solid var(--line); border-radius: 18px; background: white; }
+.card h3 { margin: 0 0 12px; font-size: 1.2rem; }
+.grid-2 { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; }
+.grid-3 { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; }
+@media (max-width: 760px) { .grid-2, .grid-3 { grid-template-columns: 1fr; } section.lesson-section { padding: 22px 16px 6px; } .hero { padding: 26px 20px; } .hero h1 { font-size: 1.8rem; } }
+.note { color: var(--muted); font-size: .85rem; }
+.spaced { margin-top: 12px; }
+
+/* English toggle */
+.en { display: none; color: var(--muted); font-style: italic; }
+body.show-en .en { display: block; }
+body.show-en span.en, body.show-en td.en, body.show-en th.en { display: revert; }
+span.en { font-size: .9em; }
+
+/* Mode pills + key */
+.mode-pills { display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 20px; }
+.mode-pill { padding: 4px 12px; border-radius: 999px; font-size: .72rem; font-weight: 900; letter-spacing: .04em; color: white; }
+.mode-pill.interp { background: var(--interp); } .mode-pill.inter { background: var(--inter); } .mode-pill.pres { background: var(--pres); }
+.mode-pill.cult { background: #efeaf8; color: #4b2e83; }
+.color-key { display: flex; flex-wrap: wrap; gap: 8px 22px; align-items: center; font-size: .85rem; color: var(--navy); font-weight: 700; }
+.color-key i { display: inline-block; width: 26px; height: 10px; margin-right: 7px; border-radius: 4px; vertical-align: middle; }
+
+/* Can-do */
+.cando { border: 2px solid var(--green); background: linear-gradient(135deg, #eaf7ef, #ffffff 70%); }
+.cando ul { margin: 0; padding-left: 0; list-style: none; }
+.cando li { margin: 8px 0; padding-left: 34px; position: relative; font-weight: 650; color: var(--navy); }
+.cando li::before { content: "✓"; position: absolute; left: 0; top: 0; width: 24px; height: 24px; border-radius: 50%; display: grid; place-items: center; color: white; background: var(--green); font-size: .8rem; }
+
+/* Key idea */
+.key-idea { margin: 0 0 22px; padding: 22px 24px 20px; border: 2px solid var(--blue); border-radius: 18px; background: linear-gradient(135deg, #eaf3fb, #ffffff 70%); }
+.key-idea .ki-label { display: inline-block; margin-bottom: 8px; padding: 3px 11px; border-radius: 999px; color: white; background: var(--blue); font-size: .72rem; font-weight: 900; letter-spacing: .08em; text-transform: uppercase; }
+.key-idea p { margin: 0 0 6px; color: var(--navy); font-weight: 650; }
+.key-idea.tip { border-color: var(--amber); background: linear-gradient(135deg, #fff5df, #ffffff 70%); }
+.key-idea.tip .ki-label { color: var(--navy); background: var(--amber); }
+.write-space { height: 220px; margin: 0 0 24px; border: 1px solid #e2e8f0; border-radius: 14px; background: #f8fafc; }
+
+/* Buttons */
+.btn-row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.btn { border: 2px solid var(--navy); border-radius: 12px; padding: 8px 16px; background: white; color: var(--navy); font-weight: 800; cursor: pointer; }
+.btn:hover:not(:disabled) { background: var(--wash); }
+.btn.primary { background: var(--navy); color: white; }
+.btn.primary:hover:not(:disabled) { background: #1d3c6b; }
+.btn.small { padding: 5px 12px; font-size: .85rem; }
+.btn:disabled { opacity: .45; cursor: default; }
+.say { display: inline-grid; place-items: center; width: 34px; height: 34px; flex: 0 0 auto; padding: 0; border: 1px solid var(--line); border-radius: 50%; background: var(--soft-blue); color: var(--blue); cursor: pointer; vertical-align: middle; }
+.say:hover { background: var(--blue); color: white; }
+.say svg { width: 18px; height: 18px; }
+
+/* Units overview */
+.unit-tile { padding: 14px 16px; border-radius: 16px; background: var(--wash); border: 1px solid var(--line); }
+.unit-tile .u-num { display: inline-grid; place-items: center; width: 34px; height: 34px; margin-bottom: 6px; border-radius: 10px; color: white; background: var(--blue); font-weight: 900; }
+.unit-tile.now { border: 2px solid var(--amber); background: #fffaf0; }
+.unit-tile.now .u-num { background: var(--amber); color: var(--navy); }
+.unit-tile strong { display: block; color: var(--navy); }
+
+/* Phrase cards */
+.phrase-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+@media (max-width: 760px) { .phrase-grid { grid-template-columns: 1fr; } }
+.phrase { display: flex; gap: 12px; align-items: center; padding: 12px 14px; border: 1px solid var(--line); border-radius: 14px; background: white; }
+.phrase .es { font-weight: 800; color: var(--navy); }
+.phrase .en { font-size: .88rem; }
+
+/* Norms */
+.norms { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; margin: 0; padding: 0; list-style: none; }
+.norms li { padding: 14px 16px; border-radius: 14px; background: var(--soft-amber); font-weight: 700; color: var(--navy); }
+@media (max-width: 760px) { .norms { grid-template-columns: 1fr; } }
+
+/* Model text */
+.model-text { padding: 20px 22px; border-left: 6px solid var(--pres); border-radius: 12px; background: #f4faf6; font-size: 1.08rem; }
+.model-text .v { border-radius: 5px; transition: background .2s, color .2s; }
+.model-text.hl .v { background: #ffe08a; color: var(--navy); font-weight: 800; padding: 0 3px; }
+
+/* Tables */
+table.ref { width: 100%; border-collapse: collapse; margin: 6px 0 14px; }
+table.ref th, table.ref td { padding: 9px 12px; border: 1px solid var(--line); text-align: left; vertical-align: top; }
+table.ref th { background: var(--navy); color: white; }
+table.ref tr:nth-child(even) td { background: var(--wash); }
+.table-wrap { overflow-x: auto; }
+
+/* Conjugation explorer */
+.explorer { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr); gap: 20px; align-items: start; }
+@media (max-width: 760px) { .explorer { grid-template-columns: 1fr; } }
+.field { display: block; margin: 0 0 12px; font-weight: 800; color: var(--navy); }
+.field select, .field input[type=text] { display: block; width: 100%; margin-top: 6px; padding: 9px 12px; border: 2px solid var(--line); border-radius: 12px; font: inherit; color: var(--ink); background: white; }
+.field input[type=text]:focus, .field select:focus { outline: none; border-color: var(--blue); }
+.conj-out { padding: 20px; border-radius: 18px; background: var(--navy); color: white; text-align: center; }
+.conj-out .form { display: flex; justify-content: center; align-items: center; gap: 12px; font-size: 2.2rem; font-weight: 900; color: #ffe08a; }
+.conj-out .form .say { background: rgba(255,255,255,.15); color: white; border-color: rgba(255,255,255,.4); }
+.conj-out .tag { margin-top: 6px; font-size: .85rem; color: #cfe6f5; }
+.conj-table { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px 14px; margin-top: 14px; text-align: left; font-size: .9rem; }
+.conj-table div { padding: 4px 8px; border-radius: 8px; background: rgba(255,255,255,.08); }
+.conj-table div.on { background: #ffe08a; color: var(--navy); font-weight: 800; }
+.challenge { margin-top: 16px; padding: 16px 18px; border: 2px dashed var(--blue); border-radius: 16px; background: var(--soft-blue); }
+.challenge .prompt-line { font-size: 1.15rem; font-weight: 800; color: var(--navy); }
+.feedback { margin-top: 10px; padding: 10px 14px; border-radius: 12px; font-weight: 700; }
+.feedback.ok { color: #155d36; background: var(--soft-green); }
+.feedback.close { color: #7b4e0b; background: var(--soft-amber); }
+.feedback.no { color: #8b2620; background: #fbeceb; }
+.streak { font-weight: 850; color: var(--navy); }
+
+/* Matching game */
+.match-board { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+@media (max-width: 760px) { .match-board { grid-template-columns: 1fr; } }
+.match-col { display: grid; gap: 8px; align-content: start; }
+.match-col h4 { margin: 0 0 4px; color: var(--muted); font-size: .8rem; letter-spacing: .08em; text-transform: uppercase; }
+.m-item { padding: 11px 14px; border: 2px solid var(--line); border-radius: 12px; background: white; color: var(--ink); text-align: left; cursor: pointer; font-weight: 650; }
+.m-item:hover:not(:disabled) { border-color: var(--blue); }
+.m-item.sel { border-color: var(--navy); background: #e9eef6; }
+.m-item.done { border-color: var(--green); background: var(--soft-green); color: #155d36; cursor: default; }
+.m-item.shake { animation: shake .35s; border-color: var(--red); }
+@keyframes shake { 0%,100% { transform: translateX(0); } 25% { transform: translateX(-6px); } 75% { transform: translateX(6px); } }
+.score-line { margin-top: 12px; color: var(--navy); font-weight: 850; }
+
+/* Polls & MC */
+.poll { margin: 0 0 26px; padding: 20px 22px; border: 2px dashed var(--amber); border-radius: 18px; background: #fffaf0; }
+.poll-label, .qtype { display: inline-block; margin-bottom: 8px; padding: 3px 11px; border-radius: 999px; color: var(--navy); background: var(--amber); font-size: .72rem; font-weight: 900; letter-spacing: .07em; text-transform: uppercase; }
+.qtype { background: #e7e0f6; color: #4b2e83; }
+.poll-q { margin: 0 0 12px; color: var(--navy); font-weight: 800; font-size: 1.05rem; }
+.poll-opts, .mc-options { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; margin: 0 0 12px; }
+.poll-opt, .mc-opt { display: flex; align-items: center; gap: 12px; padding: 11px 14px; text-align: left; border: 2px solid var(--line); border-radius: 14px; background: white; color: var(--ink); cursor: pointer; }
+.poll-opt:hover:not(:disabled), .mc-opt:hover:not(:disabled) { border-color: var(--blue); }
+.mc-key { width: 32px; height: 32px; flex: 0 0 auto; display: grid; place-items: center; border-radius: 50%; color: white; background: var(--navy); font-weight: 900; }
+.poll-opt.chosen { border-color: var(--navy); background: #eef3f7; }
+.poll-opt.correct, .mc-opt.correct { border-color: var(--green); background: var(--soft-green); }
+.poll-opt.correct .mc-key, .mc-opt.correct .mc-key { background: var(--green); }
+.poll-opt.wrong, .mc-opt.wrong { border-color: var(--red); background: #fbeceb; }
+.poll-opt.wrong .mc-key, .mc-opt.wrong .mc-key { background: var(--red); }
+.mc-opt:disabled, .poll-opt:disabled { cursor: default; }
+.poll-why { padding: 12px 14px; border-radius: 12px; background: white; color: var(--navy); }
+.question { margin: 0 0 22px; padding: 20px 22px; border: 1px solid var(--line); border-radius: 18px; background: white; }
+.question h3 { margin: 4px 0 10px; font-size: 1.1rem; }
+.mc-feedback { margin-bottom: 12px; border-radius: 12px; }
+.mc-feedback.ok { padding: 12px 14px; color: #155d36; background: var(--soft-green); }
+.mc-feedback.retry { padding: 12px 14px; color: #7b4e0b; background: var(--soft-amber); }
+.reveal { display: none; margin-top: 12px; padding: 12px 14px; border-radius: 12px; background: var(--wash); }
+.reveal.open { display: block; }
+@media (max-width: 760px) { .poll-opts, .mc-options { grid-template-columns: 1fr; } }
+
+/* Myth or fact */
+.myth-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; }
+@media (max-width: 760px) { .myth-grid { grid-template-columns: 1fr; } }
+.myth-card { padding: 22px 22px 20px; border: 1px solid var(--line); border-radius: 18px; background: white; box-shadow: 0 10px 28px rgba(17,35,61,.07); }
+.myth-num { color: var(--blue); font-size: .78rem; font-weight: 900; letter-spacing: .08em; text-transform: uppercase; }
+.myth-statement { margin: 8px 50px 14px 0; color: var(--navy); font-size: 1.1rem; font-weight: 800; }
+.myth-vote.correct { color: white; background: var(--green); border-color: var(--green); }
+.myth-vote.wrong { color: white; background: var(--red); border-color: var(--red); }
+.myth-reveal { margin-top: 14px; padding-top: 12px; border-top: 1px solid var(--line); }
+.myth-reveal p { margin: 0 0 8px; }
+.quick-test { padding: 10px 12px; border-radius: 12px; background: var(--wash); }
+.qt-answer { color: #155d36; font-weight: 800; }
+
+/* Interview tools */
+.roulette { padding: 26px 22px; border-radius: 20px; background: var(--navy); color: white; text-align: center; }
+.roulette .q-big { min-height: 2.6em; margin: 10px 0 16px; font-size: 1.8rem; font-weight: 900; color: #ffe08a; display: flex; align-items: center; justify-content: center; gap: 12px; flex-wrap: wrap; }
+.roulette .q-big .say { background: rgba(255,255,255,.15); color: white; border-color: rgba(255,255,255,.4); }
+.roulette .btn { border-color: white; }
+.timer { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; }
+.timer .t-display { min-width: 4.5ch; font-size: 2.4rem; font-weight: 900; color: var(--navy); font-variant-numeric: tabular-nums; }
+.timer.done .t-display { color: var(--red); }
+.timer .t-msg { font-weight: 850; color: var(--red); }
+.bingo { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
+.b-cell { min-height: 112px; padding: 12px; border: 2px solid var(--line); border-radius: 14px; background: white; color: var(--ink); text-align: left; cursor: pointer; }
+.b-cell .b-text { display: block; font-weight: 800; color: var(--navy); }
+.b-cell .b-q { display: block; margin-top: 6px; font-size: .85rem; color: var(--blue); font-weight: 700; }
+.bingo:not(.show-q) .b-q { visibility: hidden; }
+.b-cell.on { border-color: var(--green); background: var(--soft-green); }
+.b-cell.on .b-text::after { content: " ✓"; color: var(--green); }
+@media (max-width: 560px) { .b-cell { min-height: 96px; padding: 8px; font-size: .85rem; } }
+.react { display: flex; flex-wrap: wrap; gap: 8px; }
+.react span { padding: 6px 12px; border-radius: 999px; background: var(--soft-amber); color: var(--navy); font-weight: 750; }
+
+/* Diagnostic */
+textarea { width: 100%; min-height: 180px; padding: 14px; border: 2px solid var(--line); border-radius: 14px; font: inherit; color: var(--ink); resize: vertical; }
+textarea:focus { outline: none; border-color: var(--pres); }
+.wc { display: flex; flex-wrap: wrap; gap: 8px 18px; margin-top: 8px; font-weight: 800; color: var(--navy); }
+.wc .good { color: var(--green); }
+.check-option { display: flex; gap: 10px; align-items: flex-start; padding: 8px 10px; border-radius: 10px; cursor: pointer; }
+.check-option:hover { background: var(--wash); }
+.check-option input { width: 20px; height: 20px; margin-top: 3px; accent-color: var(--green); }
+.scale-row { display: grid; grid-template-columns: minmax(0, 1.6fr) minmax(0, 2fr); gap: 10px; align-items: center; padding: 10px 0; border-bottom: 1px solid var(--line); }
+.scale-row:last-child { border-bottom: none; }
+.scale-row .s-text { font-weight: 750; color: var(--navy); }
+.scale-btns { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px; }
+.scale-btns button { padding: 7px 6px; border: 2px solid var(--line); border-radius: 10px; background: white; font-size: .8rem; font-weight: 800; color: var(--muted); cursor: pointer; }
+.scale-btns button.on[data-l="0"] { border-color: var(--red); background: #fbeceb; color: #8b2620; }
+.scale-btns button.on[data-l="1"] { border-color: var(--amber); background: var(--soft-amber); color: #7b4e0b; }
+.scale-btns button.on[data-l="2"] { border-color: var(--green); background: var(--soft-green); color: #155d36; }
+@media (max-width: 760px) { .scale-row { grid-template-columns: 1fr; } }
+
+/* Confidence */
+.conf-bar { height: 18px; margin: 8px 0 4px; border-radius: 999px; background: var(--wash); border: 1px solid var(--line); overflow: hidden; }
+.conf-bar span { display: block; height: 100%; width: 0; background: linear-gradient(90deg, var(--cyan), var(--green)); transition: width .3s; }
+.conf-list { display: grid; gap: 4px; margin-top: 10px; }
+
+/* Teacher guide */
+details.teacher { margin: 0 0 22px; padding: 14px 18px; border-radius: 14px; background: #f6f3fb; border: 1px solid #e2d9f3; }
+details.teacher summary { cursor: pointer; font-weight: 850; color: #4b2e83; }
+details.teacher ol { margin: 10px 0 0; }
+
+/* Focus mode */
+.has-focus { position: relative; }
+.has-focus > h3:first-of-type { padding-right: 48px; }
+.focus-btn { position: absolute; top: 10px; right: 10px; z-index: 3; width: 40px; height: 40px; display: grid; place-items: center; padding: 0; border: 1px solid var(--line); border-radius: 10px; color: var(--navy); background: rgba(255,255,255,.92); opacity: .72; cursor: pointer; }
+.focus-btn:hover, .focus-btn:focus-visible { opacity: 1; border-color: var(--blue); color: var(--blue); }
+.focus-btn svg { width: 24px; height: 24px; }
+.focus-overlay { position: fixed; inset: 0; z-index: 100; display: none; flex-direction: column; background: #0a1b31; }
+.focus-overlay.open { display: flex; }
+body.focus-open { overflow: hidden; }
+.focus-toolbar { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; justify-content: space-between; padding: 10px 18px; color: white; }
+.fbtn { border: 1px solid rgba(255,255,255,.4); border-radius: 999px; padding: 7px 15px; color: white; background: rgba(255,255,255,.1); font-weight: 850; cursor: pointer; }
+.fbtn:hover { background: rgba(255,255,255,.22); }
+.fbtn:disabled { opacity: .35; cursor: default; }
+.fbtn.close { background: var(--amber); border-color: var(--amber); color: var(--navy); }
+.focus-count { color: #bcecf1; font-weight: 800; font-variant-numeric: tabular-nums; }
+.focus-stage { flex: 1; overflow: auto; padding: 8px 24px 48px; }
+.focus-content { width: 100%; max-width: 1200px; margin: 0 auto; padding: 26px; border-radius: 22px; background: white; }
+.focus-content .focus-btn { display: none; }
+.focus-content > .write-space { margin-bottom: 0; }
+
+.confetti-piece { position: fixed; top: -14px; z-index: 300; width: 10px; height: 15px; border-radius: 2px; pointer-events: none; animation: confetti-fall 1.5s ease-in forwards; }
+@keyframes confetti-fall { to { transform: translate(var(--dx), 108vh) rotate(var(--rot)); } }
+.voice-warn { margin: 0 0 16px; padding: 10px 14px; border-radius: 12px; background: var(--soft-amber); color: #7b4e0b; font-weight: 700; }
+footer { text-align: center; color: var(--muted); font-size: .8rem; }
+@media print { .topbar, .focus-btn, .focus-overlay, .say { display: none !important; } .reveal { display: block; } }
+
+/* ---- Components added for the full series ---- */
+.vocab-icon { font-size: 1.5rem; width: 34px; text-align: center; flex: 0 0 auto; }
+.phrase .ex { font-size: .88rem; color: var(--ink); margin-top: 2px; }
+.reading-text { padding: 22px 24px; border-left: 6px solid var(--interp); border-radius: 12px; background: #f3f8fd; font-size: 1.08rem; }
+.reading-text h4 { margin: 0 0 10px; color: var(--navy); font-size: 1.15rem; }
+.reading-text p { margin: 0 0 12px; }
+.gloss { position: relative; border-bottom: 2px dotted var(--blue); cursor: help; }
+.gloss.show::after { content: attr(data-g); position: absolute; left: 0; top: 100%; z-index: 5; margin-top: 4px; padding: 4px 9px; border-radius: 8px; background: var(--navy); color: white; font-size: .8rem; font-weight: 700; font-style: normal; white-space: nowrap; }
+.listen-box { padding: 22px; border-radius: 18px; background: var(--navy); color: white; text-align: center; }
+.listen-box .btn { border-color: white; }
+.listen-box .btn:not(.primary) { background: transparent; color: white; }
+.listen-box .l-status { margin-top: 10px; color: #cfe6f5; font-weight: 700; min-height: 1.5em; }
+.transcript { margin-top: 14px; padding: 16px 18px; border-radius: 12px; background: var(--wash); }
+.transcript p { margin: 0 0 8px; }
+.dialogue { display: grid; gap: 10px; }
+.d-line { display: flex; gap: 10px; align-items: flex-start; }
+.d-line .who { flex: 0 0 auto; display: grid; place-items: center; min-width: 34px; height: 34px; padding: 0 8px; border-radius: 10px; color: white; background: var(--inter); font-weight: 900; font-size: .85rem; }
+.d-line.b .who { background: var(--blue); }
+.d-line .bubble { flex: 1; padding: 10px 14px; border-radius: 14px; background: var(--wash); }
+.d-line .bubble .en { font-size: .88rem; }
+.fill-list { display: grid; grid-template-columns: minmax(0, 1fr); gap: 10px; }
+.fill-item, .match-col, .s-bin, .station, .step { min-width: 0; overflow-wrap: anywhere; }
+.fill-item { padding: 12px 14px; border: 1px solid var(--line); border-radius: 14px; background: white; }
+.fill-item .f-q { font-weight: 700; color: var(--navy); margin-bottom: 8px; }
+.fill-item .f-row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.fill-item input { flex: 1 1 180px; min-width: 0; max-width: 100%; padding: 8px 12px; border: 2px solid var(--line); border-radius: 12px; font: inherit; }
+.fill-item input:focus { outline: none; border-color: var(--blue); }
+.fill-item.ok { border-color: var(--green); background: var(--soft-green); }
+.fill-item .feedback { margin-top: 8px; }
+.acc-bar { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; margin: 0 0 12px; }
+.sort-pool { display: flex; flex-wrap: wrap; gap: 8px; min-height: 52px; padding: 12px; margin-bottom: 14px; border: 2px dashed var(--line); border-radius: 14px; background: var(--wash); }
+.s-item { padding: 8px 13px; border: 2px solid var(--line); border-radius: 12px; background: white; color: var(--ink); font-weight: 700; cursor: pointer; }
+.s-item.sel { border-color: var(--navy); background: #e9eef6; }
+.s-item.placed { border-color: var(--green); background: var(--soft-green); color: #155d36; cursor: default; }
+.s-item.shake { animation: shake .35s; border-color: var(--red); }
+.sort-bins { display: grid; grid-template-columns: repeat(var(--bins, 2), minmax(0, 1fr)); gap: 12px; }
+@media (max-width: 760px) { .sort-bins { grid-template-columns: 1fr; } }
+.s-bin { min-height: 120px; padding: 12px; border: 2px solid var(--blue); border-radius: 16px; background: white; cursor: pointer; text-align: left; color: var(--ink); }
+.s-bin:hover { background: var(--soft-blue); }
+.s-bin .bin-title { display: block; margin-bottom: 8px; color: var(--navy); font-weight: 900; }
+.s-bin .bin-items { display: flex; flex-wrap: wrap; gap: 6px; }
+.role-cards { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; margin-top: 12px; }
+@media (max-width: 760px) { .role-cards { grid-template-columns: 1fr; } }
+.role { padding: 18px 20px; border-radius: 16px; color: var(--navy); font-weight: 700; min-height: 110px; }
+.role .r-label { display: block; margin-bottom: 6px; font-size: .75rem; font-weight: 900; letter-spacing: .08em; text-transform: uppercase; }
+.role.a { background: var(--soft-amber); border: 2px solid var(--amber); }
+.role.b { background: var(--soft-blue); border: 2px solid var(--blue); }
+.role.cover { filter: blur(6px); user-select: none; }
+.steps-list { display: grid; gap: 10px; margin-top: 10px; }
+.step { padding: 12px 14px; border-radius: 12px; background: var(--wash); border-left: 5px solid var(--blue); }
+.step .s-label { display: block; color: var(--blue); font-size: .78rem; font-weight: 900; letter-spacing: .06em; text-transform: uppercase; }
+.step-hidden { display: none; }
+.stations { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
+@media (max-width: 760px) { .stations { grid-template-columns: 1fr; } }
+.station { padding: 16px 18px; border: 2px solid var(--line); border-radius: 16px; background: white; }
+.station .st-num { display: inline-grid; place-items: center; width: 32px; height: 32px; margin-right: 8px; border-radius: 10px; color: white; background: var(--purple); font-weight: 900; }
+.station h4 { display: inline; color: var(--navy); font-size: 1.05rem; }
+.station ul { margin: 10px 0 0; padding-left: 20px; }
+.jeo { display: grid; grid-template-columns: repeat(var(--cats, 4), minmax(0, 1fr)); gap: 8px; }
+@media (max-width: 760px) { .jeo { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+.jeo .j-cat { padding: 10px 8px; border-radius: 12px; background: var(--navy); color: white; font-weight: 900; text-align: center; font-size: .85rem; }
+.jeo .j-cell { padding: 16px 8px; border: none; border-radius: 12px; background: var(--blue); color: #ffe08a; font-size: 1.4rem; font-weight: 900; cursor: pointer; }
+.jeo .j-cell.used { background: #c9d6e4; color: #6b7c8f; }
+.j-panel { margin-top: 14px; padding: 18px 20px; border-radius: 16px; background: var(--navy); color: white; }
+.j-panel .j-q { font-size: 1.3rem; font-weight: 800; color: #ffe08a; }
+.j-panel .j-a { margin-top: 10px; font-size: 1.1rem; font-weight: 800; color: #bdf0cf; }
+.j-panel .btn { border-color: white; background: transparent; color: white; }
+.teams { display: flex; flex-wrap: wrap; gap: 16px; align-items: center; margin-top: 12px; font-weight: 850; color: var(--navy); }
+.mc-set.exam .mc-opt.chosen { border-color: var(--navy); background: #e9eef6; }
+.exam-bar { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin-top: 10px; }
+.prompt-card .p-text { font-size: 1.08rem; font-weight: 700; color: var(--navy); }
+.frame-list { margin: 8px 0 0; padding-left: 0; list-style: none; display: grid; gap: 6px; }
+.frame-list li { padding: 8px 12px; border-radius: 10px; background: #f4faf6; border-left: 4px solid var(--pres); font-weight: 650; }
+table.rubric th:first-child { min-width: 140px; }
+table.rubric td { font-size: .88rem; }
+.svg-wrap { overflow-x: auto; }
+.svg-wrap svg { display: block; max-width: 100%; height: auto; margin: 0 auto; }
+.svg-wrap svg text { font-size: 14px; }
+
+</style>
+</head>
+<body>
+<header class="topbar">
+  <div class="brand">Español 3</div>
+  <nav class="navlinks" aria-label="Secciones"><a href="#gancho"><b>1</b> Gancho</a><a href="#vocabulario"><b>2</b> Vocabulario</a><a href="#practica"><b>3</b> Practica</a><a href="#contexto"><b>4</b> En contexto</a><a href="#mitos"><b>5</b> ¿Mito o realidad?</a><a href="#usalo"><b>6</b> Úsalo</a><a href="#salida"><b>7</b> Boleto de salida</a></nav>
+  <div class="presenter-tools">
+    <button type="button" class="ptool" id="en-toggle" aria-pressed="false" title="Show English support">EN</button>
+    <button type="button" class="ptool" id="slow-toggle" aria-pressed="false" title="Slow down the audio">Audio lento</button>
+    <button type="button" class="ptool" id="font-down" aria-label="Smaller text">A−</button>
+    <button type="button" class="ptool" id="font-up" aria-label="Larger text">A+</button>
+    <button type="button" class="ptool" id="fullscreen-btn">Pantalla completa</button>
+  </div>
+</header>
+<main>
+  <div class="hero">
+    <span class="eyebrow">ESPAÑOL 3 · DÍA 161 / 180</span>
+    <h1>El arte de mirar</h1>
+    <p class="sub">Unidad 9: Arte, literatura e identidad · Vocabulario: describir una obra de arte</p>
+    <p class="en">The art of looking · Unit 9: Art, Literature and Identity · Vocabulary: describing a work of art</p>
+  </div>
+  <div class="card cando">
+    <h3>Hoy puedo…</h3>
+    <ul><li>Puedo describir una obra de arte con vocabulario específico. <span class="en">— I can describe a work of art with specific vocabulary.</span></li><li>Puedo decir dónde están las cosas en un cuadro: en primer plano, al fondo, a la izquierda… <span class="en">— I can say where things are in a painting: in the foreground, in the background, on the left…</span></li><li>Puedo nombrar tipos de obras: el retrato, el autorretrato, el paisaje, el mural. <span class="en">— I can name kinds of works: portrait, self-portrait, landscape, mural.</span></li><li>Puedo usar hay y estar para describir una escena. <span class="en">— I can use hay and estar to describe a scene.</span></li></ul>
+    <div class="color-key spaced" aria-label="Modos de comunicación">
+      <span><i style="background:var(--interp)"></i>Interpretivo (leer / escuchar)</span>
+      <span><i style="background:var(--inter)"></i>Interpersonal (conversar)</span>
+      <span><i style="background:var(--pres)"></i>Presentacional (hablar / escribir para otros)</span>
+    </div>
+  </div>
+  <details class="teacher">
+    <summary>Guía del profesor · Teacher guide (≈ 55 min)</summary>
+    <p class="note"><strong>Pacing guide:</strong> Vocab Launch · Interpretive · Grammar: — · Product: Exit ticket</p>
+    <ol><li><strong>Gancho (6 min):</strong> Poll first (artists' origins), then introduce Unit 9 and its essential question. Students write two sentences about any artwork they know (a mural, a graffiti piece, a photo) — share 2–3 aloud.</li><li><strong>Vocabulario (9 min):</strong> Play each card; students repeat. Act out the location phrases with your arms (al fondo: point far away; en primer plano: point close). Ask quick either/or questions: «¿Un paisaje o un retrato?».</li><li><strong>Practica (8 min):</strong> Matching game whole class (volunteers come up), then the sort in pairs. Point out el lienzo, la acuarela, el óleo from the ¡Ojo! card.</li><li><strong>En contexto (10 min):</strong> Read the description of «Las Meninas» aloud twice (no image needed — students sketch the scene while listening). Then press the highlight button and answer the three questions. Stress hay vs. estar.</li><li><strong>¿Mito o realidad? (7 min):</strong> Students vote with fingers (1 = mito, 2 = realidad) before you click; run the «Prueba» on each card.</li><li><strong>Úsalo (11 min):</strong> «Dibuja lo que oyes»: A reads a card, B draws on scrap paper without looking at the screen. 2 minutes per card, then switch. Finish with the comparison sentences.</li><li><strong>Boleto de salida (4 min):</strong> Exit MC, a 4-sentence description, and the confidence check.</li></ol>
+    <p class="note">Unit 9 opener. No images are used in this lesson on purpose: students build the picture from the language. If you want to show real works afterward, «Las Meninas» (Velázquez, 1656) is in the Museo del Prado. Scrap paper needed for the drawing game.</p>
+    <p class="note">Nothing typed on this page is saved or sent anywhere. Audio uses the computer's built-in Spanish voice.</p>
+  </details>
+  <section class="lesson-section" id="gancho"><h2><span class="sec-num">1</span>Gancho: ¿Qué es el arte para ti?</h2><p class="en">Unit 9: Art, literature and identity</p><div class="mode-pills"><span class="mode-pill interp">Interpretivo</span><span class="mode-pill cult">Cultura</span></div><div class="card"><h3>Unidad 9: Arte, literatura e identidad</h3><p>En esta última unidad vamos a mirar cuadros, murales, música y poesía del mundo hispanohablante. La pregunta esencial es: <strong>¿Cómo expresan el arte, la música y la literatura quiénes somos?</strong></p><p>Al final, vas a presentar el análisis de una obra de arte <em>o</em> vas a escribir y leer tu propio poema.</p><p class="en">In this last unit we look at paintings, murals, music and poetry from the Spanish-speaking world. Essential question: How do art, music and literature express who we are? At the end you will present an art analysis or write and perform your own poem.</p></div><div class="card"><h3>Artistas que vamos a conocer</h3><div class="react"><span>Diego Velázquez 🇪🇸</span><span>Frida Kahlo 🇲🇽</span><span>Diego Rivera 🇲🇽</span><span>Pablo Picasso 🇪🇸</span><span>José Martí 🇨🇺</span><span>Gustavo Adolfo Bécquer 🇪🇸</span></div><p class="en">Artists and writers we will meet this unit.</p></div><div class="key-idea"><span class="ki-label">Idea clave</span><p>Una obra de arte se puede <strong>«leer»</strong> como un texto. Hacemos tres preguntas:</p><ol><li>¿Qué <strong>hay</strong>? (personas, objetos, colores)</li><li>¿Dónde <strong>está</strong> cada cosa?</li><li>¿Qué <strong>significa</strong> o qué <strong>sentimos</strong>?</li></ol><p class="en">You can «read» an artwork like a text: What is there? Where is each thing? What does it mean or make us feel?</p></div><div class="card prompt-card"><h3>Piensa y escribe</h3><p class="p-text">Piensa en una obra de arte que conoces: un cuadro, un mural de tu ciudad, un grafiti, una foto. Descríbela en dos oraciones. ¿Qué hay? ¿Te gusta?</p><p class="en">Think of an artwork you know (a painting, a mural in your city, graffiti, a photo). Describe it in two sentences. What's in it? Do you like it?</p></div><div class="write-space"></div></section><section class="lesson-section" id="vocabulario"><h2><span class="sec-num">2</span>Vocabulario del arte</h2><div class="mode-pills"><span class="mode-pill interp">Interpretivo</span></div><div class="card"><h3>Para hablar de arte 🎨</h3><div class="phrase-grid"><div class="phrase"><button class="say" data-say="el cuadro. Este cuadro está en el Museo del Prado." aria-label="Escuchar"></button><span class="vocab-icon" aria-hidden="true">🖼️</span><div><div class="es">el cuadro</div><div class="ex">Este cuadro está en el Museo del Prado.</div><div class="en">painting (framed picture)</div></div></div><div class="phrase"><button class="say" data-say="la obra de arte. «Guernica» es una obra de arte muy famosa." aria-label="Escuchar"></button><span class="vocab-icon" aria-hidden="true">🏛️</span><div><div class="es">la obra de arte</div><div class="ex">«Guernica» es una obra de arte muy famosa.</div><div class="en">work of art</div></div></div><div class="phrase"><button class="say" data-say="el pintor / la pintora. Frida Kahlo fue una pintora mexicana." aria-label="Escuchar"></button><span class="vocab-icon" aria-hidden="true">🧑‍🎨</span><div><div class="es">el pintor / la pintora</div><div class="ex">Frida Kahlo fue una pintora mexicana.</div><div class="en">painter</div></div></div><div class="phrase"><button class="say" data-say="el retrato. Velázquez pintó muchos retratos del rey." aria-label="Escuchar"></button><span class="vocab-icon" aria-hidden="true">👤</span><div><div class="es">el retrato</div><div class="ex">Velázquez pintó muchos retratos del rey.</div><div class="en">portrait</div></div></div><div class="phrase"><button class="say" data-say="el autorretrato. En su autorretrato, la artista lleva flores en el pelo." aria-label="Escuchar"></button><span class="vocab-icon" aria-hidden="true">🪞</span><div><div class="es">el autorretrato</div><div class="ex">En su autorretrato, la artista lleva flores en el pelo.</div><div class="en">self-portrait</div></div></div><div class="phrase"><button class="say" data-say="el paisaje. En el paisaje hay montañas y un río." aria-label="Escuchar"></button><span class="vocab-icon" aria-hidden="true">🏞️</span><div><div class="es">el paisaje</div><div class="ex">En el paisaje hay montañas y un río.</div><div class="en">landscape</div></div></div><div class="phrase"><button class="say" data-say="la naturaleza muerta. En la naturaleza muerta hay frutas y un jarrón." aria-label="Escuchar"></button><span class="vocab-icon" aria-hidden="true">🍎</span><div><div class="es">la naturaleza muerta</div><div class="ex">En la naturaleza muerta hay frutas y un jarrón.</div><div class="en">still life</div></div></div><div class="phrase"><button class="say" data-say="el mural. El mural cubre toda la pared del edificio." aria-label="Escuchar"></button><span class="vocab-icon" aria-hidden="true">🧱</span><div><div class="es">el mural</div><div class="ex">El mural cubre toda la pared del edificio.</div><div class="en">mural</div></div></div><div class="phrase"><button class="say" data-say="la escultura. La escultura es de bronce." aria-label="Escuchar"></button><span class="vocab-icon" aria-hidden="true">🗿</span><div><div class="es">la escultura</div><div class="ex">La escultura es de bronce.</div><div class="en">sculpture</div></div></div><div class="phrase"><button class="say" data-say="el estilo. El estilo de Botero es fácil de reconocer: figuras grandes y redondas." aria-label="Escuchar"></button><span class="vocab-icon" aria-hidden="true">✨</span><div><div class="es">el estilo</div><div class="ex">El estilo de Botero es fácil de reconocer: figuras grandes y redondas.</div><div class="en">style</div></div></div><div class="phrase"><button class="say" data-say="en primer plano. En primer plano hay un perro grande." aria-label="Escuchar"></button><span class="vocab-icon" aria-hidden="true">🔍</span><div><div class="es">en primer plano</div><div class="ex">En primer plano hay un perro grande.</div><div class="en">in the foreground</div></div></div><div class="phrase"><button class="say" data-say="al fondo. Al fondo se ve un volcán." aria-label="Escuchar"></button><span class="vocab-icon" aria-hidden="true">⛰️</span><div><div class="es">al fondo</div><div class="ex">Al fondo se ve un volcán.</div><div class="en">in the background</div></div></div><div class="phrase"><button class="say" data-say="en el centro. En el centro hay una niña con un vestido blanco." aria-label="Escuchar"></button><span class="vocab-icon" aria-hidden="true">🎯</span><div><div class="es">en el centro</div><div class="ex">En el centro hay una niña con un vestido blanco.</div><div class="en">in the center</div></div></div><div class="phrase"><button class="say" data-say="a la izquierda / a la derecha. A la izquierda está el pintor; a la derecha hay una ventana." aria-label="Escuchar"></button><span class="vocab-icon" aria-hidden="true">↔️</span><div><div class="es">a la izquierda / a la derecha</div><div class="ex">A la izquierda está el pintor; a la derecha hay una ventana.</div><div class="en">on the left / on the right</div></div></div><div class="phrase"><button class="say" data-say="los colores vivos / oscuros. Los colores vivos transmiten alegría." aria-label="Escuchar"></button><span class="vocab-icon" aria-hidden="true">🌈</span><div><div class="es">los colores vivos / oscuros</div><div class="ex">Los colores vivos transmiten alegría.</div><div class="en">bright / dark colors</div></div></div><div class="phrase"><button class="say" data-say="el pincel. El pintor tiene un pincel en la mano." aria-label="Escuchar"></button><span class="vocab-icon" aria-hidden="true">🖌️</span><div><div class="es">el pincel</div><div class="ex">El pintor tiene un pincel en la mano.</div><div class="en">paintbrush</div></div></div></div></div></section><section class="lesson-section" id="practica"><h2><span class="sec-num">3</span>Practica el vocabulario</h2><div class="mode-pills"><span class="mode-pill interp">Interpretivo</span></div><div class="card match-comp"><script type="application/json">{"pairs": [["el autorretrato", "El artista se pinta a sí mismo."], ["el retrato", "El artista pinta a otra persona."], ["el paisaje", "Montañas, ríos, árboles y cielo."], ["la naturaleza muerta", "Frutas, flores y objetos sobre una mesa."], ["el mural", "Una pintura grande sobre una pared."], ["la escultura", "Una obra en tres dimensiones, de piedra, madera o metal."], ["el pincel", "La herramienta para poner la pintura."], ["al fondo", "La parte más lejana de la escena."]], "say": true}</script><h3>Empareja la palabra con su definición</h3><p class="note">Haz clic en un elemento de la izquierda y después en su pareja. <span class="en">Click an item on the left, then its match.</span></p><div class="match-board"><div class="match-col m-left"><h4>Palabra</h4></div><div class="match-col m-right"><h4>Definición</h4></div></div><div class="score-line m-score"></div><div class="btn-row spaced"><button type="button" class="btn small m-reset">Mezclar otra vez</button></div></div><div class="key-idea tip"><span class="ki-label">¡Ojo!</span><p><strong>La pintura</strong> tiene dos significados: la obra (<em>«Las Meninas» es una pintura famosa</em>) y el material (<em>Necesito pintura azul</em>).</p><p>Más materiales: <strong>el lienzo</strong> (la tela donde se pinta), <strong>el óleo</strong> (pintura con aceite), <strong>la acuarela</strong> (pintura con agua).</p><p class="en">La pintura = a painting AND paint. El lienzo = canvas, el óleo = oil paint, la acuarela = watercolor.</p></div><div class="card sort-comp"><script type="application/json">{"items": [["el autorretrato", "0"], ["el paisaje", "0"], ["el mural", "0"], ["la naturaleza muerta", "0"], ["en primer plano", "1"], ["al fondo", "1"], ["a la izquierda", "1"], ["en el centro", "1"], ["el pincel", "2"], ["el lienzo", "2"], ["el óleo", "2"], ["la acuarela", "2"]]}</script><h3>Clasifica las palabras</h3><p class="note">Haz clic en una tarjeta y después en la categoría correcta. <span class="en">Click a card, then the right category.</span></p><div class="sort-pool"></div><div class="sort-bins" style="--bins:3"><div class="s-bin" role="button" tabindex="0" data-bin="0"><span class="bin-title">Tipo de obra</span><span class="bin-items"></span></div><div class="s-bin" role="button" tabindex="0" data-bin="1"><span class="bin-title">Lugar en el cuadro</span><span class="bin-items"></span></div><div class="s-bin" role="button" tabindex="0" data-bin="2"><span class="bin-title">Materiales y herramientas</span><span class="bin-items"></span></div></div><div class="score-line"></div><div class="btn-row spaced"><button type="button" class="btn small s-reset">Empezar otra vez</button></div></div></section><section class="lesson-section" id="contexto"><h2><span class="sec-num">4</span>En contexto: «Las Meninas»</h2><div class="mode-pills"><span class="mode-pill interp">Interpretivo</span><span class="mode-pill cult">Cultura</span></div><div class="card model-comp"><h3>Escucha y dibuja la escena en tu mente (o en papel)</h3><div class="btn-row" style="margin-bottom:12px"><button type="button" class="btn small primary hl-btn">Encuentra el vocabulario del arte</button><button class="say" data-say-target="model-1" aria-label="Escuchar el texto"></button><span class="note">Escucha el texto completo</span></div><div class="model-text" id="model-1"><p>«Las Meninas» es un <span class="v">cuadro</span> muy famoso de Diego Velázquez, un <span class="v">pintor</span> español del siglo XVII. Hoy está en el Museo del Prado, en Madrid.</p><p><span class="v">En el centro</span> hay una niña rubia con un vestido muy grande y claro: es la infanta Margarita, la hija del rey. A su lado hay dos jóvenes que la atienden; ellas son «las meninas». <span class="v">A la izquierda</span>, detrás de un lienzo enorme, está el mismo Velázquez con un <span class="v">pincel</span> en la mano. ¡Hay un <span class="v">autorretrato</span> dentro del cuadro!</p><p><span class="v">A la derecha</span>, <span class="v">en primer plano</span>, hay un perro grande y tranquilo, y un niño le pone el pie encima. <span class="v">Al fondo</span>, un hombre está de pie en una puerta abierta y, en la pared, hay un espejo. En el espejo vemos al rey y a la reina. Los <span class="v">colores</span> son <span class="v">oscuros</span> y suaves, pero la luz ilumina a la niña. Es una obra misteriosa: ¿qué está pintando Velázquez?</p></div><p class="en spaced">«Las Meninas» is a very famous painting by Diego Velázquez, a 17th-century Spanish painter. Today it is in the Prado Museum in Madrid. In the center there is a blond girl in a very large, light-colored dress: she is the Infanta Margarita, the king's daughter. Next to her there are two young women attending her; they are «las meninas» (the maids of honor). On the left, behind an enormous canvas, is Velázquez himself with a brush in his hand. There's a self-portrait inside the painting! On the right, in the foreground, there is a big, calm dog, and a boy puts his foot on it. In the background, a man stands in an open doorway and, on the wall, there is a mirror. In the mirror we see the king and queen. The colors are dark and soft, but the light shines on the girl. It is a mysterious work: what is Velázquez painting?</p><p class="note hl-note" hidden>Fíjate: usamos <strong>hay</strong> para presentar algo nuevo (<em>hay un perro</em>) y <strong>estar</strong> para decir dónde está algo (<em>está el mismo Velázquez</em>).</p></div><div class="mc-set"><article class="question mc" data-answer="B"><span class="qtype">Pregunta 1</span><h3>¿Quién está en el centro del cuadro?</h3><p class="en">Who is in the center of the painting?</p><div class="mc-options"><button class="mc-opt" type="button" data-key="A"><span class="mc-key">A</span><span>El rey Felipe IV</span></button><button class="mc-opt" type="button" data-key="B"><span class="mc-key">B</span><span>La infanta Margarita</span></button><button class="mc-opt" type="button" data-key="C"><span class="mc-key">C</span><span>Diego Velázquez</span></button><button class="mc-opt" type="button" data-key="D"><span class="mc-key">D</span><span>Un hombre en la puerta</span></button></div><div class="mc-feedback" aria-live="polite"></div></article><article class="question mc" data-answer="C"><span class="qtype">Pregunta 2</span><h3>¿Qué hay a la derecha, en primer plano?</h3><p class="en">What is on the right, in the foreground?</p><div class="mc-options"><button class="mc-opt" type="button" data-key="A"><span class="mc-key">A</span><span>Un espejo</span></button><button class="mc-opt" type="button" data-key="B"><span class="mc-key">B</span><span>Un lienzo enorme</span></button><button class="mc-opt" type="button" data-key="C"><span class="mc-key">C</span><span>Un perro y un niño</span></button><button class="mc-opt" type="button" data-key="D"><span class="mc-key">D</span><span>Una puerta abierta</span></button></div><div class="mc-feedback" aria-live="polite"></div></article><article class="question mc" data-answer="A"><span class="qtype">Pregunta 3</span><h3>¿Por qué decimos que hay un autorretrato dentro del cuadro?</h3><p class="en">Why do we say there is a self-portrait inside the painting?</p><div class="mc-options"><button class="mc-opt" type="button" data-key="A"><span class="mc-key">A</span><span>Porque Velázquez se pintó a sí mismo en la escena.</span></button><button class="mc-opt" type="button" data-key="B"><span class="mc-key">B</span><span>Porque la infanta pintó el cuadro.</span></button><button class="mc-opt" type="button" data-key="C"><span class="mc-key">C</span><span>Porque los reyes se ven en el espejo.</span></button><button class="mc-opt" type="button" data-key="D"><span class="mc-key">D</span><span>Porque el cuadro es muy grande.</span></button></div><div class="mc-feedback" aria-live="polite"></div><div class="reveal explain">Velázquez aparece <strong>a la izquierda</strong>, con el pincel en la mano: el pintor está dentro de su propia obra.</div></article><div class="score-line"></div></div><div class="key-idea tip"><span class="ki-label">¡Ojo!</span><p><strong>Hay</strong> presenta algo nuevo: <em>Hay un perro.</em></p><p><strong>Estar</strong> dice dónde está algo que ya conocemos: <em>El perro está en primer plano.</em></p><p>✗ <em>El perro es en primer plano.</em> → ✓ <em>El perro está en primer plano.</em> La ubicación usa <strong>estar</strong>.</p><p class="en">Hay introduces something new; estar says where a known thing is. The location of people and things uses estar, not ser.</p></div><div class="write-space"></div></section><section class="lesson-section" id="mitos"><h2><span class="sec-num">5</span>¿Mito o realidad?</h2><div class="mode-pills"><span class="mode-pill interp">Interpretivo</span></div><div class="myth-set"><p class="note">Errores comunes al describir arte. Vota: ¿mito o realidad? <span class="en">Common mistakes when describing art — vote: myth or fact?</span></p><div class="myth-grid"><article class="myth-card" data-truth="mito"><span class="myth-num">Afirmación 1</span><p class="myth-statement">«Para decir dónde está algo en un cuadro, usamos ser: <em>El perro es a la derecha</em>.»</p><div class="btn-row myth-votes"><button class="btn myth-vote" data-vote="mito" type="button">Mito</button><button class="btn myth-vote" data-vote="realidad" type="button">Realidad</button></div><div class="myth-reveal" hidden><p class="myth-verdict"></p><p><strong>Por qué:</strong> La ubicación usa <em>estar</em>, también dentro de un cuadro.</p><p><strong>Correcto:</strong> El perro está a la derecha.</p><div class="quick-test"><strong>Prueba:</strong> «The mirror is in the background.» <button class="btn small qt-btn" type="button">Ver respuesta</button><span class="qt-answer" hidden> El espejo está al fondo.</span></div></div></article><article class="myth-card" data-truth="realidad"><span class="myth-num">Afirmación 2</span><p class="myth-statement">«Un autorretrato es el retrato que un artista hace de sí mismo.»</p><div class="btn-row myth-votes"><button class="btn myth-vote" data-vote="mito" type="button">Mito</button><button class="btn myth-vote" data-vote="realidad" type="button">Realidad</button></div><div class="myth-reveal" hidden><p class="myth-verdict"></p><p><strong>Por qué:</strong> <em>Auto-</em> = uno mismo (como en <em>autobiografía</em>).</p><p><strong>Correcto:</strong> Frida Kahlo pintó muchos autorretratos.</p><div class="quick-test"><strong>Prueba:</strong> «She painted a portrait of her mother.» <button class="btn small qt-btn" type="button">Ver respuesta</button><span class="qt-answer" hidden> Pintó un retrato de su madre.</span></div></div></article><article class="myth-card" data-truth="mito"><span class="myth-num">Afirmación 3</span><p class="myth-statement">«<em>Los colores son vivo</em> es correcto.»</p><div class="btn-row myth-votes"><button class="btn myth-vote" data-vote="mito" type="button">Mito</button><button class="btn myth-vote" data-vote="realidad" type="button">Realidad</button></div><div class="myth-reveal" hidden><p class="myth-verdict"></p><p><strong>Por qué:</strong> El adjetivo concuerda con el sustantivo: «los colores» es masculino plural.</p><p><strong>Correcto:</strong> Los colores son vivos.</p><div class="quick-test"><strong>Prueba:</strong> «The colors are dark.» <button class="btn small qt-btn" type="button">Ver respuesta</button><span class="qt-answer" hidden> Los colores son oscuros.</span></div></div></article><article class="myth-card" data-truth="realidad"><span class="myth-num">Afirmación 4</span><p class="myth-statement">«<em>Artista</em> es igual para hombres y mujeres: el artista, la artista.»</p><div class="btn-row myth-votes"><button class="btn myth-vote" data-vote="mito" type="button">Mito</button><button class="btn myth-vote" data-vote="realidad" type="button">Realidad</button></div><div class="myth-reveal" hidden><p class="myth-verdict"></p><p><strong>Por qué:</strong> Las palabras en <em>-ista</em> no cambian; solo cambia el artículo.</p><p><strong>Correcto:</strong> Frida Kahlo es una artista mexicana muy famosa.</p><div class="quick-test"><strong>Prueba:</strong> «She is a famous painter.» <button class="btn small qt-btn" type="button">Ver respuesta</button><span class="qt-answer" hidden> Es una pintora famosa.</span></div></div></article><article class="myth-card" data-truth="mito"><span class="myth-num">Afirmación 5</span><p class="myth-statement">«<em>Pintura</em> solo significa <em>paint</em>.»</p><div class="btn-row myth-votes"><button class="btn myth-vote" data-vote="mito" type="button">Mito</button><button class="btn myth-vote" data-vote="realidad" type="button">Realidad</button></div><div class="myth-reveal" hidden><p class="myth-verdict"></p><p><strong>Por qué:</strong> <em>La pintura</em> es el material y también la obra.</p><p><strong>Correcto:</strong> «Las Meninas» es una pintura de Velázquez. / Necesito pintura roja.</p><div class="quick-test"><strong>Prueba:</strong> «This painting is very old.» <button class="btn small qt-btn" type="button">Ver respuesta</button><span class="qt-answer" hidden> Este cuadro (Esta pintura) es muy antiguo/a.</span></div></div></article><article class="myth-card" data-truth="mito"><span class="myth-num">Afirmación 6</span><p class="myth-statement">«<em>En primer plano</em> significa <em>in the background</em>.»</p><div class="btn-row myth-votes"><button class="btn myth-vote" data-vote="mito" type="button">Mito</button><button class="btn myth-vote" data-vote="realidad" type="button">Realidad</button></div><div class="myth-reveal" hidden><p class="myth-verdict"></p><p><strong>Por qué:</strong> <em>En primer plano</em> = lo más cercano (<em>foreground</em>). <em>Background</em> = <em>al fondo</em>.</p><p><strong>Correcto:</strong> En primer plano hay flores; al fondo hay montañas.</p><div class="quick-test"><strong>Prueba:</strong> «In the background there are mountains.» <button class="btn small qt-btn" type="button">Ver respuesta</button><span class="qt-answer" hidden> Al fondo hay montañas.</span></div></div></article><article class="myth-card" data-truth="realidad"><span class="myth-num">Afirmación 7</span><p class="myth-statement">«Para presentar algo nuevo en la escena, usamos <em>hay</em>.»</p><div class="btn-row myth-votes"><button class="btn myth-vote" data-vote="mito" type="button">Mito</button><button class="btn myth-vote" data-vote="realidad" type="button">Realidad</button></div><div class="myth-reveal" hidden><p class="myth-verdict"></p><p><strong>Por qué:</strong> <em>Hay</em> = <em>there is / there are</em>, y no cambia en plural.</p><p><strong>Correcto:</strong> Hay un espejo al fondo. Hay dos meninas.</p><div class="quick-test"><strong>Prueba:</strong> «There are two girls on the left.» <button class="btn small qt-btn" type="button">Ver respuesta</button><span class="qt-answer" hidden> Hay dos niñas a la izquierda.</span></div></div></article><article class="myth-card" data-truth="mito"><span class="myth-num">Afirmación 8</span><p class="myth-statement">«Se dice <em>a la izquierda de el perro</em>.»</p><div class="btn-row myth-votes"><button class="btn myth-vote" data-vote="mito" type="button">Mito</button><button class="btn myth-vote" data-vote="realidad" type="button">Realidad</button></div><div class="myth-reveal" hidden><p class="myth-verdict"></p><p><strong>Por qué:</strong> <em>De + el</em> se contrae: <strong>del</strong>.</p><p><strong>Correcto:</strong> a la izquierda del perro</p><div class="quick-test"><strong>Prueba:</strong> «to the right of the mirror» <button class="btn small qt-btn" type="button">Ver respuesta</button><span class="qt-answer" hidden> a la derecha del espejo</span></div></div></article></div><div class="score-line">Puntos: 0 · 0 de 8 contestadas</div><div style="height:20px"></div></div></section><section class="lesson-section" id="usalo"><h2><span class="sec-num">6</span>Úsalo: Dibuja lo que oyes</h2><div class="mode-pills"><span class="mode-pill inter">Interpersonal</span><span class="mode-pill pres">Presentacional</span></div><div class="card roles-comp"><script type="application/json">{"cards": [{"a": "Un paisaje: Al fondo hay dos montañas y un sol amarillo. En el centro hay una casa pequeña y roja. En primer plano, a la izquierda, hay un perro negro.", "b": "Dibuja. Pregunta al menos una vez: «¿Dónde está…?» o «¿De qué color es…?»."}, {"a": "Un retrato: En el centro hay una mujer con el pelo largo y negro. Lleva un collar de flores. Al fondo hay hojas verdes. A la derecha, sobre su hombro, hay un gato.", "b": "Dibuja. Pregunta: «¿Cómo es la mujer?» y «¿Qué lleva?»."}, {"a": "Una naturaleza muerta: En el centro hay una mesa con una botella azul. A la izquierda de la botella hay tres manzanas. A la derecha hay un libro abierto.", "b": "Dibuja. Pregunta: «¿Cuántas…?» y «¿Qué hay a la derecha?»."}, {"a": "Un paisaje: Al fondo hay un volcán con nieve. En el centro hay un lago azul. En primer plano hay dos personas en una canoa.", "b": "Dibuja. Pregunta: «¿Qué hay al fondo?» y «¿Cuántas personas hay?»."}, {"a": "Un mural: A la izquierda hay un grupo de estudiantes con libros. En el centro hay un árbol enorme. A la derecha hay una bandera de Puerto Rico y una bandera de la República Dominicana.", "b": "Dibuja. Pregunta: «¿Qué hay en el centro?» y «¿Qué banderas hay?»."}, {"a": "¡Tu propia obra! Imagina un cuadro y descríbelo con cuatro oraciones: en el centro, al fondo, a la izquierda o a la derecha, y los colores.", "b": "Dibuja. Después, describe tu dibujo en voz alta para comprobar."}]}</script><h3>Dibuja lo que oyes</h3><p>Estudiante A lee la descripción <strong>sin mostrar la pantalla</strong>. Estudiante B dibuja en papel y hace preguntas. Después, cambien.</p><p class="en">A reads the description without showing the screen; B draws on paper and asks questions. Then switch.</p><div class="btn-row"><button type="button" class="btn small primary r-draw">Otra situación 🎴</button><span class="note r-count"></span><span class="note">Haz clic en una tarjeta para taparla.</span></div><div class="role-cards"><div class="role a"><span class="r-label">Estudiante A · describe</span><span class="r-text"></span></div><div class="role b"><span class="r-label">Estudiante B · dibuja y pregunta</span><span class="r-text"></span></div></div><div class="timer spaced" data-seconds="120" data-end="¡Tiempo! ¡Cambien!"><span class="t-display">2:00</span><button type="button" class="btn small primary t-start">Empezar</button><button type="button" class="btn small t-reset">Reiniciar</button><span class="t-msg" aria-live="polite"></span></div></div><div class="card prompt-card"><h3>Compara</h3><p class="p-text">Compara tu dibujo con la descripción. Escribe dos oraciones: «En mi dibujo, el perro está…, pero en la descripción está…».</p><p class="en">Compare your drawing with the description. Write two sentences about what's different.</p></div><div class="write-space"></div></section><section class="lesson-section" id="salida"><h2><span class="sec-num">7</span>Boleto de salida</h2><div class="mode-pills"><span class="mode-pill interp">Interpretivo</span><span class="mode-pill pres">Presentacional</span></div><div class="mc-set"><article class="question mc" data-answer="B"><span class="qtype">Pregunta 1</span><h3>Un artista pinta montañas, un río y el cielo. Es…</h3><div class="mc-options"><button class="mc-opt" type="button" data-key="A"><span class="mc-key">A</span><span>un autorretrato</span></button><button class="mc-opt" type="button" data-key="B"><span class="mc-key">B</span><span>un paisaje</span></button><button class="mc-opt" type="button" data-key="C"><span class="mc-key">C</span><span>una naturaleza muerta</span></button><button class="mc-opt" type="button" data-key="D"><span class="mc-key">D</span><span>una escultura</span></button></div><div class="mc-feedback" aria-live="polite"></div></article><article class="question mc" data-answer="D"><span class="qtype">Pregunta 2</span><h3>Completa: El espejo ___ al fondo del cuadro.</h3><div class="mc-options"><button class="mc-opt" type="button" data-key="A"><span class="mc-key">A</span><span>es</span></button><button class="mc-opt" type="button" data-key="B"><span class="mc-key">B</span><span>hay</span></button><button class="mc-opt" type="button" data-key="C"><span class="mc-key">C</span><span>tiene</span></button><button class="mc-opt" type="button" data-key="D"><span class="mc-key">D</span><span>está</span></button></div><div class="mc-feedback" aria-live="polite"></div></article><article class="question mc" data-answer="A"><span class="qtype">Pregunta 3</span><h3>¿Qué significa «en primer plano»?</h3><div class="mc-options"><button class="mc-opt" type="button" data-key="A"><span class="mc-key">A</span><span>in the foreground</span></button><button class="mc-opt" type="button" data-key="B"><span class="mc-key">B</span><span>in the background</span></button><button class="mc-opt" type="button" data-key="C"><span class="mc-key">C</span><span>in the center</span></button><button class="mc-opt" type="button" data-key="D"><span class="mc-key">D</span><span>on the left</span></button></div><div class="mc-feedback" aria-live="polite"></div></article><article class="question mc" data-answer="C"><span class="qtype">Pregunta 4</span><h3>¿Qué oración es correcta?</h3><div class="mc-options"><button class="mc-opt" type="button" data-key="A"><span class="mc-key">A</span><span>Los colores son oscuro.</span></button><button class="mc-opt" type="button" data-key="B"><span class="mc-key">B</span><span>La pintora es mexicano.</span></button><button class="mc-opt" type="button" data-key="C"><span class="mc-key">C</span><span>Hay un perro a la derecha del niño.</span></button><button class="mc-opt" type="button" data-key="D"><span class="mc-key">D</span><span>El niño está a la izquierda de el perro.</span></button></div><div class="mc-feedback" aria-live="polite"></div></article><div class="score-line"></div></div><div class="card prompt-card"><h3>Describe una obra en 4 oraciones</h3><p class="p-text">Describe una obra de arte (un cuadro, un mural o tu dibujo de hoy): ¿Qué hay en el centro? ¿Qué hay al fondo? ¿Qué hay en primer plano? ¿Cómo son los colores?</p><p class="en">Describe an artwork in 4 sentences: center, background, foreground, colors.</p></div><div class="write-space"></div><div class="card confidence"><h3>¿Puedo hacerlo?</h3><div class="conf-bar" role="progressbar" aria-valuemin="0" aria-valuemax="5" aria-valuenow="0"><span class="conf-fill"></span></div><p class="note conf-msg">0 / 5 — marca lo que puedes hacer sin ayuda.</p><div class="conf-list"><label class="check-option conf-check"><input type="checkbox"> Puedo nombrar tipos de obras: retrato, autorretrato, paisaje, naturaleza muerta, mural.</label><label class="check-option conf-check"><input type="checkbox"> Puedo decir dónde están las cosas: en primer plano, al fondo, en el centro, a la izquierda, a la derecha.</label><label class="check-option conf-check"><input type="checkbox"> Puedo usar hay para presentar algo y estar para la ubicación.</label><label class="check-option conf-check"><input type="checkbox"> Puedo describir los colores con concordancia correcta.</label><label class="check-option conf-check"><input type="checkbox"> Puedo describir una obra de arte en cuatro oraciones.</label></div></div></section>
+  <footer>Español 3 · Día 161 · Unidad 9: Arte, literatura e identidad</footer>
+</main>
+<script type="application/json" id="polls-data">{"gancho": {"q": "¿Cuál de estos artistas NO es de España?", "o": ["Pablo Picasso", "Salvador Dalí", "Diego Velázquez", "Frida Kahlo"], "a": 3, "why": "<strong>Frida Kahlo<\/strong> era mexicana (de Coyoacán, en la Ciudad de México). Picasso era de Málaga, Dalí de Figueres y Velázquez de Sevilla: los tres eran españoles.", "en": "Which of these artists is NOT from Spain?"}, "vocabulario": {"q": "¿Qué crees que significa «en primer plano»?", "o": ["on the first floor", "in the background", "in the foreground", "first of all"], "a": 2, "why": "<strong>En primer plano<\/strong> = <em>in the foreground<\/em>, la parte más cercana a nosotros. Lo contrario es <strong>al fondo<\/strong> (<em>in the background<\/em>)."}, "practica": {"q": "Una artista pinta su propia cara mirándose en un espejo. ¿Qué tipo de obra es?", "o": ["un paisaje", "un mural", "un retrato de otra persona", "un autorretrato"], "a": 3, "why": "<strong>Auto-<\/strong> significa «uno mismo»: un <strong>autorretrato<\/strong> es el retrato que el artista hace de sí mismo."}, "contexto": {"q": "En el famoso cuadro «Las Meninas» hay un espejo al fondo. ¿Qué se ve en el espejo, según tu predicción?", "o": ["El pintor", "El rey y la reina", "Un perro", "La calle"], "a": 1, "why": "En el espejo se ven <strong>el rey Felipe IV y la reina Mariana<\/strong>. Por eso muchos piensan que los reyes están donde estamos nosotros, mirando la escena."}, "mitos": {"q": "¿Cuál oración es correcta?", "o": ["La niña está en el centro.", "La niña es en el centro.", "La niña hay en el centro.", "La niña tiene en el centro."], "a": 0, "why": "La ubicación usa <strong>estar<\/strong>: La niña <strong>está<\/strong> en el centro. También es correcto: <em>En el centro hay una niña.<\/em>"}, "usalo": {"q": "Tu compañero describe un cuadro y no entiendes dónde está el gato. ¿Qué preguntas?", "o": ["¿Qué es el gato?", "¿Cómo es el gato?", "¿Dónde está el gato?", "¿Cuándo está el gato?"], "a": 2, "why": "Para la ubicación: <strong>¿Dónde está…?<\/strong> Respuesta: <em>Está a la derecha, en primer plano.<\/em>"}, "salida": {"q": "¿Cómo se dice «on the right of the painter»?", "o": ["a la derecha de el pintor", "a la derecha del pintor", "en la derecha del pintor", "a derecha del pintor"], "a": 1, "why": "<strong>A la derecha<\/strong> + <strong>de + el = del<\/strong>: a la derecha del pintor."}}</script>
+<script>
+(function () {
+  "use strict";
+  var $ = function (id) { return document.getElementById(id); };
+  var qsa = function (sel, root) { return Array.prototype.slice.call((root || document).querySelectorAll(sel)); };
+  var reduceMotion = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  function shuffle(a) { a = a.slice(); for (var i = a.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)); var t = a[i]; a[i] = a[j]; a[j] = t; } return a; }
+  function stripAcc(s) { return s.normalize("NFD").replace(/[̀-ͯ]/g, ""); }
+  function norm(s) { return s.trim().toLowerCase().replace(/[¿?¡!.,;:]/g, "").replace(/\s+/g, " ").trim(); }
+  function data(el) { var s = el.querySelector(':scope > script[type="application/json"]'); return s ? JSON.parse(s.textContent) : {}; }
+  function esc(s) { var d = document.createElement("div"); d.textContent = s; return d.innerHTML; }
+
+  /* Celebrate + cheers */
+  window.celebrate = function () {
+    if (reduceMotion) return;
+    var colors = ["#1f6fb2", "#5cc8d6", "#e9a23b", "#6a3fb5", "#2e7d4f", "#c0453c"];
+    for (var i = 0; i < 70; i++) {
+      var c = document.createElement("span"); c.className = "confetti-piece";
+      c.style.left = (Math.random() * 100) + "vw"; c.style.background = colors[i % colors.length];
+      c.style.setProperty("--dx", (Math.random() * 240 - 120) + "px"); c.style.setProperty("--rot", (Math.random() * 900 - 450) + "deg");
+      c.style.animationDelay = (Math.random() * 0.25) + "s"; c.style.animationDuration = (1.1 + Math.random() * 0.8) + "s";
+      document.body.appendChild(c);
+      setTimeout(function (n) { if (n.parentNode) n.parentNode.removeChild(n); }, 2600, c);
+    }
+  };
+  var cheers = ["¡Excelente!", "¡Muy bien!", "¡Perfecto!", "¡Eso es!", "¡Qué bien lo haces!", "¡Fenomenal!"];
+  function cheer() { return cheers[Math.floor(Math.random() * cheers.length)]; }
+
+  /* Audio */
+  var SPEAKER = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9H4z" fill="currentColor"/><path d="M16 8.5a5 5 0 0 1 0 7M18.5 6a8.5 8.5 0 0 1 0 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>';
+  function decorateSay(root) { qsa(".say", root).forEach(function (b) { if (!b.innerHTML) b.innerHTML = SPEAKER; b.type = "button"; if (!b.getAttribute("aria-label")) b.setAttribute("aria-label", "Escuchar"); }); }
+  decorateSay(document);
+  var slow = false, voice = null;
+  function pickVoice() {
+    if (!("speechSynthesis" in window)) return;
+    var vs = window.speechSynthesis.getVoices(), pref = ["es-MX", "es-US", "es-419", "es-ES"];
+    for (var i = 0; i < pref.length && !voice; i++) voice = vs.filter(function (v) { return v.lang.replace("_", "-") === pref[i]; })[0] || null;
+    if (!voice) voice = vs.filter(function (v) { return /^es/i.test(v.lang); })[0] || null;
+  }
+  if ("speechSynthesis" in window) { pickVoice(); window.speechSynthesis.onvoiceschanged = pickVoice; }
+  var warned = false;
+  function warnVoice() {
+    if (warned) return; warned = true;
+    var w = document.createElement("div"); w.className = "voice-warn";
+    w.textContent = "No Spanish voice was found on this computer, so audio may sound English or be silent. Add a Spanish voice in the system's speech settings.";
+    document.querySelector("main").insertBefore(w, document.querySelector(".hero").nextSibling);
+  }
+  function utter(text) {
+    var u = new SpeechSynthesisUtterance(text.replace(/_{2,}|\.\.\./g, " "));
+    u.lang = voice ? voice.lang : "es-MX"; if (voice) u.voice = voice;
+    u.rate = slow ? 0.7 : 0.95; return u;
+  }
+  function speak(text, onend) {
+    if (!("speechSynthesis" in window)) { warnVoice(); return; }
+    window.speechSynthesis.cancel();
+    var u = utter(text); if (onend) u.onend = onend;
+    window.speechSynthesis.speak(u);
+    if (!voice) warnVoice();
+  }
+  function speakQueue(lines, onLine, onDone) {
+    if (!("speechSynthesis" in window)) { warnVoice(); return; }
+    window.speechSynthesis.cancel(); if (!voice) warnVoice();
+    lines.forEach(function (t, i) { var u = utter(t); u.onstart = function () { if (onLine) onLine(i); }; if (i === lines.length - 1) u.onend = function () { if (onDone) onDone(); }; window.speechSynthesis.speak(u); });
+  }
+  document.addEventListener("click", function (e) {
+    var b = e.target.closest && e.target.closest(".say");
+    if (!b) return;
+    if (b.hasAttribute("data-say")) speak(b.getAttribute("data-say"));
+    else if (b.hasAttribute("data-say-target")) { var t = $(b.getAttribute("data-say-target")); if (t) speak(t.textContent.replace(/\s+/g, " ")); }
+  });
+  $("slow-toggle").addEventListener("click", function () { slow = !slow; this.setAttribute("aria-pressed", slow); });
+
+  /* Presenter bar */
+  var baseFont = 19;
+  function setFont() { document.documentElement.style.fontSize = baseFont + "px"; }
+  $("font-down").addEventListener("click", function () { baseFont = Math.max(15, baseFont - 2); setFont(); });
+  $("font-up").addEventListener("click", function () { baseFont = Math.min(31, baseFont + 2); setFont(); });
+  $("fullscreen-btn").addEventListener("click", function () {
+    try { if (!document.fullscreenElement) document.documentElement.requestFullscreen(); else document.exitFullscreen(); } catch (e) {}
+  });
+  document.addEventListener("fullscreenchange", function () { $("fullscreen-btn").textContent = document.fullscreenElement ? "Salir" : "Pantalla completa"; });
+  $("en-toggle").addEventListener("click", function () { var on = document.body.classList.toggle("show-en"); this.setAttribute("aria-pressed", on); });
+
+  /* Generic reveal buttons */
+  qsa(".reveal-btn").forEach(function (btn) {
+    btn.dataset.label = btn.textContent;
+    btn.addEventListener("click", function () { var t = $(btn.getAttribute("data-target")); var open = t.classList.toggle("open"); if (t.hasAttribute("hidden")) t.hidden = !open; btn.textContent = open ? "Ocultar" : btn.dataset.label; });
+  });
+
+  /* Glossary words */
+  qsa(".gloss").forEach(function (g) { g.addEventListener("click", function () { g.classList.toggle("show"); }); });
+
+  /* Accent bars insert into the last focused input */
+  var lastInput = null;
+  document.addEventListener("focusin", function (e) { if (e.target.matches && e.target.matches('input[type="text"], textarea')) lastInput = e.target; });
+  qsa(".acc").forEach(function (b) {
+    b.addEventListener("mousedown", function (e) { e.preventDefault(); });
+    b.addEventListener("click", function () {
+      var scope = b.closest(".card, .challenge, .fill-set") || document;
+      var inp = (lastInput && scope.contains(lastInput)) ? lastInput : scope.querySelector('input[type="text"], textarea');
+      if (!inp) return;
+      var s = inp.selectionStart == null ? inp.value.length : inp.selectionStart, e2 = inp.selectionEnd == null ? inp.value.length : inp.selectionEnd;
+      inp.value = inp.value.slice(0, s) + b.textContent + inp.value.slice(e2); inp.focus(); inp.setSelectionRange(s + 1, s + 1);
+      inp.dispatchEvent(new Event("input"));
+    });
+  });
+
+  /* Predict-first polls */
+  var polls = JSON.parse($("polls-data").textContent);
+  Object.keys(polls).forEach(function (id) {
+    var sec = $(id); if (!sec) return;
+    var anchor = sec.querySelector(".mode-pills"), p = polls[id], box = document.createElement("div");
+    box.className = "poll"; box.setAttribute("data-answer", p.a);
+    box.innerHTML = '<span class="poll-label">Predice primero</span><p class="poll-q">' + p.q + '</p>' + (p.en ? '<p class="en">' + p.en + '</p>' : '') + '<div class="poll-opts">' +
+      p.o.map(function (o, i) { return '<button type="button" class="poll-opt" data-i="' + i + '"><span class="mc-key">' + "ABCD"[i] + '</span><span>' + o + '</span></button>'; }).join("") +
+      '</div><div class="btn-row"><button type="button" class="btn small primary poll-reveal" disabled>Revelar la respuesta</button><span class="note poll-status">Elige una predicción primero.</span></div><div class="poll-why spaced" hidden></div>';
+    anchor.parentNode.insertBefore(box, anchor.nextSibling);
+    var chosen = -1, opts = qsa(".poll-opt", box), reveal = box.querySelector(".poll-reveal");
+    opts.forEach(function (b) { b.addEventListener("click", function () {
+      chosen = Number(b.getAttribute("data-i"));
+      opts.forEach(function (x) { x.classList.toggle("chosen", x === b); });
+      reveal.disabled = false; box.querySelector(".poll-status").textContent = "Tu predicción: " + "ABCD"[chosen] + ". ¿Revelamos?";
+    }); });
+    reveal.addEventListener("click", function () {
+      opts.forEach(function (x, i) { x.disabled = true; x.classList.remove("chosen"); if (i === p.a) x.classList.add("correct"); else if (i === chosen) x.classList.add("wrong"); });
+      var why = box.querySelector(".poll-why"); why.hidden = false;
+      why.innerHTML = (chosen === p.a ? "<strong>" + cheer() + "</strong> " : "<strong>¡Buena predicción para comprobar!</strong> ") + p.why;
+      reveal.disabled = true; box.querySelector(".poll-status").textContent = "";
+      if (chosen === p.a) window.celebrate();
+    });
+  });
+
+  /* Multiple choice sets (practice mode and exam mode) */
+  qsa(".mc-set").forEach(function (set) {
+    var items = qsa(".question.mc", set), first = 0, solved = 0, line = set.querySelector(":scope > .score-line"), exam = set.classList.contains("exam");
+    function upd() { if (line && !exam) line.textContent = "Correctas al primer intento: " + first + " / " + items.length + (solved ? " · resueltas: " + solved : ""); }
+    items.forEach(function (q) {
+      var ans = q.getAttribute("data-answer"), fb = q.querySelector(".mc-feedback"), tried = false;
+      qsa(".mc-opt", q).forEach(function (b) { b.addEventListener("click", function () {
+        if (exam) { if (set.classList.contains("revealed")) return; qsa(".mc-opt", q).forEach(function (x) { x.classList.toggle("chosen", x === b); }); return; }
+        if (q.classList.contains("solved")) return;
+        if (b.getAttribute("data-key") === ans) {
+          b.classList.add("correct"); q.classList.add("solved"); solved++;
+          qsa(".mc-opt", q).forEach(function (x) { x.disabled = true; });
+          fb.className = "mc-feedback ok"; fb.innerHTML = "<strong>" + cheer() + "</strong> " + (tried ? "¡Lo lograste!" : "Correcto al primer intento.");
+          if (!tried) { first++; window.celebrate(); }
+          var r = q.querySelector(".explain"); if (r) r.classList.add("open");
+          upd();
+        } else {
+          tried = true; b.classList.add("wrong"); b.disabled = true;
+          fb.className = "mc-feedback retry"; fb.innerHTML = "<strong>Todavía no — ¡buen intento!</strong> Piensa otra vez y elige de nuevo.";
+        }
+      }); });
+    });
+    if (exam) {
+      var rb = set.querySelector(".exam-reveal");
+      rb.addEventListener("click", function () {
+        set.classList.add("revealed"); var right = 0;
+        items.forEach(function (q) {
+          var ans = q.getAttribute("data-answer"), ch = q.querySelector(".mc-opt.chosen");
+          qsa(".mc-opt", q).forEach(function (x) { x.disabled = true; if (x.getAttribute("data-key") === ans) x.classList.add("correct"); else if (x === ch) x.classList.add("wrong"); });
+          if (ch && ch.getAttribute("data-key") === ans) right++;
+          var r = q.querySelector(".explain"); if (r) r.classList.add("open");
+        });
+        line.textContent = "Resultado: " + right + " / " + items.length; rb.disabled = true;
+      });
+    }
+    upd();
+  });
+
+  /* Model texts: highlight */
+  qsa(".model-comp").forEach(function (c) {
+    var btn = c.querySelector(".hl-btn"), txt = c.querySelector(".model-text"), note = c.querySelector(".hl-note");
+    if (!btn) return; var label = btn.textContent;
+    btn.addEventListener("click", function () { var on = txt.classList.toggle("hl"); btn.textContent = on ? "Ocultar" : label; if (note) note.hidden = !on; });
+  });
+
+  /* Explorers */
+  qsa(".explorer-comp").forEach(function (c) {
+    var d = data(c), vSel = c.querySelector(".cx-verb"), pSel = c.querySelector(".cx-person");
+    var names = Object.keys(d.verbs);
+    names.forEach(function (v) { var o = document.createElement("option"); o.value = v; o.textContent = v; vSel.appendChild(o); });
+    d.persons.forEach(function (p, i) { var o = document.createElement("option"); o.value = i; o.textContent = p; pSel.appendChild(o); });
+    function render() {
+      var v = d.verbs[vSel.value], i = Number(pSel.value);
+      c.querySelector(".cx-form").textContent = v.f[i];
+      c.querySelector(".cx-tag").textContent = vSel.value + (v.type ? " · " + v.type : "");
+      c.querySelector(".cx-info").innerHTML = (v.en ? '<span class="en">' + esc(v.en) + '</span>' : '') + (v.note ? '<br>' + esc(v.note) : '') + ((d.notes && d.notes[i]) ? '<br>' + esc(d.notes[i]) : '');
+      c.querySelector(".conj-table").innerHTML = v.f.map(function (f, k) { return '<div class="' + (k === i ? "on" : "") + '">' + esc(d.persons[k].split(" / ")[0]) + " · " + esc(f) + "</div>"; }).join("");
+    }
+    vSel.addEventListener("change", render); pSel.addEventListener("change", render);
+    c.querySelector(".cx-say").addEventListener("click", function () { var i = Number(pSel.value); speak(((d.say_prefix && d.say_prefix[i]) ? d.say_prefix[i] + " " : "") + d.verbs[vSel.value].f[i]); });
+    render();
+    var ch = c.querySelector(".challenge"); if (!ch) return;
+    var cur = null, right = 0, streak = 0, done = false, inp = ch.querySelector(".ch-input"), fb = ch.querySelector(".feedback");
+    var pool = []; d.persons.forEach(function (p, i) { if (!d.skip || d.skip.indexOf(i) < 0) pool.push(i); });
+    function next() {
+      var v = names[Math.floor(Math.random() * names.length)], i = pool[Math.floor(Math.random() * pool.length)];
+      cur = { v: v, i: i, ans: d.verbs[v].f[i] }; done = false; ch.setAttribute("data-ans", cur.ans);
+      ch.querySelector(".prompt-line").innerHTML = (d.ask || "Conjuga") + " <strong>" + esc(v) + "</strong> · <strong>" + esc(d.persons[i]) + "</strong>";
+      inp.value = ""; fb.hidden = true;
+    }
+    function check() {
+      if (!cur || done) return; var val = norm(inp.value); if (!val) return; fb.hidden = false;
+      var answers = cur.ans.split(" / ").map(norm);
+      if (answers.indexOf(val) >= 0) { done = true; right++; streak++; fb.className = "feedback ok"; fb.textContent = cheer() + " " + cur.ans; if (streak % 3 === 0) window.celebrate(); }
+      else if (answers.map(stripAcc).indexOf(stripAcc(val)) >= 0) { fb.className = "feedback close"; fb.textContent = "¡Casi! Revisa el acento."; }
+      else { streak = 0; done = true; fb.className = "feedback no"; fb.innerHTML = "Todavía no. La respuesta es <strong>" + esc(cur.ans) + "</strong>. Intenta otro."; }
+      ch.querySelector(".streak").textContent = "Correctas: " + right + " · Racha: " + streak;
+    }
+    ch.querySelector(".ch-check").addEventListener("click", check);
+    ch.querySelector(".ch-next").addEventListener("click", next);
+    inp.addEventListener("keydown", function (e) { if (e.key === "Enter") { e.preventDefault(); if (done) next(); else check(); } });
+    next();
+  });
+
+  /* Fill-in sets */
+  qsa(".fill-set").forEach(function (set) {
+    var items = qsa(".fill-item", set), right = 0, line = set.querySelector(".score-line");
+    function upd() { if (line) line.textContent = "Correctas: " + right + " / " + items.length; }
+    items.forEach(function (it) {
+      var ans = JSON.parse(it.getAttribute("data-a")), inp = it.querySelector("input"), fb = it.querySelector(".feedback"), tries = 0, done = false;
+      function check() {
+        if (done) return; var val = norm(inp.value); if (!val) return; fb.hidden = false;
+        var ok = ans.map(norm);
+        if (ok.indexOf(val) >= 0) { done = true; right++; it.classList.add("ok"); inp.disabled = true; fb.className = "feedback ok"; fb.innerHTML = cheer() + (it.querySelector(".explain") ? "" : ""); var ex = it.querySelector(".explain"); if (ex) ex.classList.add("open"); if (tries === 0 && right === items.length) window.celebrate(); upd(); }
+        else if (ok.map(stripAcc).indexOf(stripAcc(val)) >= 0) { fb.className = "feedback close"; fb.textContent = "¡Casi! Revisa el acento."; }
+        else { tries++; if (tries >= 2) { fb.className = "feedback no"; fb.innerHTML = "Respuesta: <strong>" + esc(ans[0]) + "</strong>"; var ex2 = it.querySelector(".explain"); if (ex2) ex2.classList.add("open"); } else { fb.className = "feedback no"; fb.textContent = "Todavía no. Intenta otra vez."; } }
+      }
+      it.querySelector(".f-check").addEventListener("click", check);
+      inp.addEventListener("keydown", function (e) { if (e.key === "Enter") { e.preventDefault(); check(); } });
+    });
+    upd();
+  });
+
+  /* Matching games */
+  qsa(".match-comp").forEach(function (c) {
+    var d = data(c), L = c.querySelector(".m-left"), R = c.querySelector(".m-right"), score = c.querySelector(".m-score");
+    var sel = null, done = 0, miss = 0;
+    function build() {
+      qsa(".m-item", c).forEach(function (n) { n.parentNode.removeChild(n); }); sel = null; done = 0; miss = 0;
+      shuffle(d.pairs.map(function (p, i) { return i; })).forEach(function (i) { L.appendChild(mk(d.pairs[i][0], i, "q")); });
+      shuffle(d.pairs.map(function (p, i) { return i; })).forEach(function (i) { R.appendChild(mk(d.pairs[i][1], i, "a")); });
+      upd();
+    }
+    function mk(text, i, side) {
+      var b = document.createElement("button"); b.type = "button"; b.className = "m-item"; b.innerHTML = text; b.dataset.i = i; b.dataset.side = side;
+      b.addEventListener("click", function () {
+        if (b.classList.contains("done")) return;
+        if (!sel || sel.dataset.side === side) {
+          if (sel) sel.classList.remove("sel"); sel = (sel === b) ? null : b; if (sel) sel.classList.add("sel");
+          if (sel && d.say !== false && ((side === "q" && d.say !== "right") || (side === "a" && d.say === "right"))) speak(b.textContent);
+          return;
+        }
+        if (sel.dataset.i === b.dataset.i) { [sel, b].forEach(function (x) { x.classList.remove("sel"); x.classList.add("done"); x.disabled = true; }); done++; sel = null; if (done === d.pairs.length) window.celebrate(); }
+        else { miss++; [sel, b].forEach(function (x) { x.classList.remove("shake"); void x.offsetWidth; x.classList.add("shake"); }); sel.classList.remove("sel"); sel = null; }
+        upd();
+      });
+      return b;
+    }
+    function upd() { score.textContent = "Parejas: " + done + " / " + d.pairs.length + " · errores: " + miss + (done === d.pairs.length ? " · ¡Completo! " + cheer() : ""); }
+    c.querySelector(".m-reset").addEventListener("click", build);
+    build();
+  });
+
+  /* Sorting games */
+  qsa(".sort-comp").forEach(function (c) {
+    var d = data(c), pool = c.querySelector(".sort-pool"), bins = qsa(".s-bin", c), score = c.querySelector(".score-line");
+    var sel = null, placed = 0, miss = 0;
+    function build() {
+      qsa(".s-item", c).forEach(function (n) { n.parentNode.removeChild(n); }); sel = null; placed = 0; miss = 0;
+      shuffle(d.items.map(function (x, i) { return i; })).forEach(function (i) {
+        var b = document.createElement("button"); b.type = "button"; b.className = "s-item"; b.innerHTML = d.items[i][0]; b.dataset.bin = d.items[i][1];
+        b.addEventListener("click", function () { if (b.classList.contains("placed")) return; if (sel) sel.classList.remove("sel"); sel = (sel === b) ? null : b; if (sel) sel.classList.add("sel"); });
+        pool.appendChild(b);
+      });
+      upd();
+    }
+    bins.forEach(function (bin) { bin.addEventListener("keydown", function (e) { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); bin.click(); } }); bin.addEventListener("click", function () {
+      if (!sel) return;
+      if (sel.dataset.bin === bin.getAttribute("data-bin")) { var sp = document.createElement("span"); sp.className = "s-item placed"; sp.innerHTML = sel.innerHTML; bin.querySelector(".bin-items").appendChild(sp); sel.parentNode.removeChild(sel); placed++; sel = null; if (placed === d.items.length) window.celebrate(); }
+      else { miss++; var s = sel; s.classList.remove("shake"); void s.offsetWidth; s.classList.add("shake"); s.classList.remove("sel"); sel = null; }
+      upd();
+    }); });
+    function upd() { score.textContent = "Clasificadas: " + placed + " / " + d.items.length + " · errores: " + miss + (placed === d.items.length ? " · ¡Completo! " + cheer() : ""); }
+    c.querySelector(".s-reset").addEventListener("click", build);
+    build();
+  });
+
+  /* Myth or fact sets */
+  qsa(".myth-set").forEach(function (set) {
+    var cards = qsa(".myth-card", set), right = 0, done = 0, line = set.querySelector(".score-line");
+    cards.forEach(function (c) {
+      var truth = c.getAttribute("data-truth");
+      qsa(".myth-vote", c).forEach(function (b) { b.addEventListener("click", function () {
+        if (c.classList.contains("answered")) return; c.classList.add("answered");
+        var ok = b.getAttribute("data-vote") === truth;
+        qsa(".myth-vote", c).forEach(function (x) { x.disabled = true; });
+        b.classList.add(ok ? "correct" : "wrong");
+        if (!ok) c.querySelector('.myth-vote[data-vote="' + truth + '"]').classList.add("correct");
+        done++; if (ok) right++;
+        c.querySelector(".myth-verdict").innerHTML = (ok ? "<strong>" + cheer() + "</strong> " : "<strong>Casi — este engaña a mucha gente.</strong> ") + "Es <strong>" + truth.toUpperCase() + "</strong>.";
+        c.querySelector(".myth-reveal").hidden = false;
+        line.textContent = "Puntos: " + right + " · " + done + " de " + cards.length + " contestadas";
+        if (ok) window.celebrate();
+      }); });
+      var qt = c.querySelector(".qt-btn");
+      if (qt) qt.addEventListener("click", function () { var a = c.querySelector(".qt-answer"); a.hidden = !a.hidden; qt.textContent = a.hidden ? "Ver respuesta" : "Ocultar"; });
+    });
+  });
+
+  /* Roulettes */
+  qsa(".roulette-comp").forEach(function (c) {
+    var d = data(c), deck = [], txt = c.querySelector(".rq-text"), say = c.querySelector(".rq-say");
+    c.querySelector(".rq-spin").addEventListener("click", function () {
+      if (!deck.length) deck = shuffle(d.bank);
+      var q = deck.pop(); txt.innerHTML = q; say.setAttribute("data-say", txt.textContent);
+    });
+  });
+
+  /* Timers */
+  qsa(".timer").forEach(function (t) {
+    var total = Number(t.getAttribute("data-seconds")), left = total, iv = null;
+    var disp = t.querySelector(".t-display"), start = t.querySelector(".t-start"), msg = t.querySelector(".t-msg"), endMsg = t.getAttribute("data-end") || "¡Tiempo!";
+    function fmt(s) { return Math.floor(s / 60) + ":" + ("0" + (s % 60)).slice(-2); }
+    function draw() { disp.textContent = fmt(left); }
+    function stop() { clearInterval(iv); iv = null; start.textContent = "Empezar"; }
+    start.addEventListener("click", function () {
+      if (iv) { stop(); start.textContent = "Seguir"; return; }
+      if (left === 0) { left = total; t.classList.remove("done"); msg.textContent = ""; }
+      start.textContent = "Pausa";
+      iv = setInterval(function () { left--; draw(); if (left <= 0) { left = 0; draw(); stop(); t.classList.add("done"); msg.textContent = endMsg; } }, 1000);
+    });
+    t.querySelector(".t-reset").addEventListener("click", function () { stop(); left = total; t.classList.remove("done"); msg.textContent = ""; draw(); });
+    draw();
+  });
+
+  /* Bingo */
+  qsa(".bingo-comp").forEach(function (c) {
+    var d = data(c), grid = c.querySelector(".bingo"), msg = c.querySelector(".b-msg"), won = false;
+    d.items.forEach(function (it) {
+      var cell = document.createElement("button"); cell.type = "button"; cell.className = "b-cell";
+      cell.innerHTML = '<span class="b-text">' + it[0] + '</span><span class="b-q">' + it[1] + "</span>";
+      cell.addEventListener("click", function () { cell.classList.toggle("on"); check(); });
+      grid.appendChild(cell);
+    });
+    var lines = [[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]];
+    function check() {
+      var on = qsa(".b-cell", grid).map(function (x) { return x.classList.contains("on"); });
+      var n = lines.filter(function (l) { return on[l[0]] && on[l[1]] && on[l[2]]; }).length, count = on.filter(Boolean).length;
+      msg.textContent = count + " / 9" + (n ? " · ¡BINGO! (" + n + " línea" + (n > 1 ? "s" : "") + ")" : "");
+      if (n && !won) { won = true; window.celebrate(); } if (!n) won = false;
+    }
+    c.querySelector(".bq-toggle").addEventListener("click", function () { var on = grid.classList.toggle("show-q"); this.textContent = on ? "Ocultar preguntas" : "Mostrar preguntas"; });
+    c.querySelector(".b-reset").addEventListener("click", function () { qsa(".b-cell", grid).forEach(function (x) { x.classList.remove("on"); }); check(); });
+    check();
+  });
+
+  /* Writing counters */
+  qsa(".writing-comp").forEach(function (c) {
+    var d = data(c), ta = c.querySelector("textarea"), target = d.target || 80;
+    var conns = (d.connectors || ["y", "pero", "porque", "también", "además"]).map(function (w) { return w.toLowerCase(); });
+    function upd() {
+      var t = ta.value, words = (t.trim().match(/\S+/g) || []).length, low = " " + t.toLowerCase().replace(/[.,;:!?¡¿()«»"]/g, " ") + " ", cn = 0;
+      conns.forEach(function (w) { var parts = low.split(" " + w + " "); cn += parts.length - 1; });
+      var sents = (t.match(/[^.!?]+[.!?]/g) || []).length;
+      var wc = c.querySelector(".w-count"); wc.textContent = words + " palabras" + (words >= target ? " ✓" : " / " + target); wc.className = "w-count" + (words >= target ? " good" : "");
+      var cc = c.querySelector(".w-conn"); cc.textContent = "Conectores: " + cn + (cn >= 3 ? " ✓" : ""); cc.className = "w-conn" + (cn >= 3 ? " good" : "");
+      c.querySelector(".w-q").textContent = "Oraciones: " + sents;
+    }
+    ta.addEventListener("input", upd); upd();
+  });
+
+  /* Self-assessment scales */
+  qsa(".scale-comp").forEach(function (c) {
+    qsa(".scale-row", c).forEach(function (row) { qsa("button", row).forEach(function (b) { b.addEventListener("click", function () { qsa("button", row).forEach(function (x) { x.classList.toggle("on", x === b); }); }); }); });
+  });
+
+  /* Confidence checks */
+  qsa(".confidence").forEach(function (c) {
+    var checks = qsa(".conf-check input", c), done = false, fill = c.querySelector(".conf-fill"), bar = c.querySelector(".conf-bar"), msgEl = c.querySelector(".conf-msg");
+    function upd() {
+      var n = checks.filter(function (x) { return x.checked; }).length, total = checks.length;
+      fill.style.width = (100 * n / total) + "%"; bar.setAttribute("aria-valuenow", n);
+      var m = n === 0 ? "marca lo que puedes hacer sin ayuda." : n < total / 2 ? "buen comienzo — repasa las secciones de lo que falta." : n < total ? "¡casi! Un repaso más y lo tienes." : "¡Lo lograste! ¡Excelente trabajo!";
+      msgEl.textContent = n + " / " + total + " — " + m;
+      if (n === total && !done) { done = true; window.celebrate(); } if (n < total) done = false;
+    }
+    checks.forEach(function (x) { x.addEventListener("change", upd); }); upd();
+  });
+
+  /* Role cards */
+  qsa(".roles-comp").forEach(function (c) {
+    var d = data(c), deck = [], a = c.querySelector(".role.a .r-text"), b = c.querySelector(".role.b .r-text"), cnt = c.querySelector(".r-count");
+    function draw() { if (!deck.length) deck = shuffle(d.cards.map(function (x, i) { return i; })); var i = deck.pop(); a.innerHTML = d.cards[i].a; b.innerHTML = d.cards[i].b; cnt.textContent = "Situación " + (i + 1) + " de " + d.cards.length; qsa(".role", c).forEach(function (r) { r.classList.remove("cover"); }); }
+    c.querySelector(".r-draw").addEventListener("click", draw);
+    qsa(".role", c).forEach(function (r) { r.addEventListener("click", function () { r.classList.toggle("cover"); }); });
+    draw();
+  });
+
+  /* Listening */
+  qsa(".listen-comp").forEach(function (c) {
+    var d = data(c), status = c.querySelector(".l-status"), plays = 0;
+    c.querySelector(".l-play").addEventListener("click", function () {
+      plays++; status.textContent = "Escuchando… (vez " + plays + ")";
+      speakQueue(d.lines, function (i) { status.textContent = "Escuchando… " + (i + 1) + " / " + d.lines.length + " (vez " + plays + ")"; }, function () { status.textContent = "Fin. Has escuchado " + plays + (plays === 1 ? " vez." : " veces."); });
+    });
+    c.querySelector(".l-stop").addEventListener("click", function () { if ("speechSynthesis" in window) window.speechSynthesis.cancel(); status.textContent = "Pausado."; });
+  });
+
+  /* Dialogue line audio handled by .say; play-all */
+  qsa(".dialogue-comp").forEach(function (c) {
+    var btn = c.querySelector(".d-play"); if (!btn) return;
+    btn.addEventListener("click", function () { speakQueue(qsa(".d-line .es-line", c).map(function (x) { return x.textContent; })); });
+  });
+
+  /* Guided steps */
+  qsa(".steps-comp").forEach(function (c) {
+    var steps = qsa(".step", c), shown = 0, b = c.querySelectorAll(".step-controls button");
+    function upd() { steps.forEach(function (s, i) { s.classList.toggle("step-hidden", i >= shown); }); b[0].textContent = shown < steps.length ? "Revelar el siguiente paso (" + shown + "/" + steps.length + ")" : "Todos los pasos"; b[0].disabled = shown >= steps.length; }
+    b[0].addEventListener("click", function () { shown = Math.min(steps.length, shown + 1); upd(); });
+    b[1].addEventListener("click", function () { shown = steps.length; upd(); });
+    b[2].addEventListener("click", function () { shown = 0; upd(); });
+    upd();
+  });
+
+  /* Review board (Jeopardy style) */
+  qsa(".jeo-comp").forEach(function (c) {
+    var d = data(c), grid = c.querySelector(".jeo"), panel = c.querySelector(".j-panel"), qEl = panel.querySelector(".j-q"), aEl = panel.querySelector(".j-a"), cur = null;
+    var pts = { A: 0, B: 0 }, vals = [100, 200, 300, 400, 500];
+    grid.style.setProperty("--cats", d.cats.length);
+    d.cats.forEach(function (cat) { var h = document.createElement("div"); h.className = "j-cat"; h.innerHTML = cat.name; grid.appendChild(h); });
+    var rows = Math.max.apply(null, d.cats.map(function (x) { return x.qs.length; }));
+    for (var r = 0; r < rows; r++) d.cats.forEach(function (cat) {
+      var cell = document.createElement("button"); cell.type = "button"; cell.className = "j-cell"; var q = cat.qs[r];
+      if (!q) { cell.disabled = true; cell.classList.add("used"); grid.appendChild(cell); return; }
+      cell.textContent = vals[r]; cell.dataset.v = vals[r];
+      cell.addEventListener("click", function () { if (cell.classList.contains("used")) return; cell.classList.add("used"); cur = Number(cell.dataset.v); qEl.innerHTML = q[0]; aEl.innerHTML = q[1]; aEl.hidden = true; panel.hidden = false; });
+      grid.appendChild(cell);
+    });
+    panel.querySelector(".j-show").addEventListener("click", function () { aEl.hidden = false; });
+    qsa(".j-pt", c).forEach(function (b) { b.addEventListener("click", function () { if (cur == null) return; pts[b.dataset.t] += cur; cur = null; c.querySelector(".j-score").textContent = "Equipo A: " + pts.A + " · Equipo B: " + pts.B; window.celebrate(); }); });
+  });
+
+  /* Focus mode (runs last) */
+  var SEL = ".card, .question, .key-idea, .myth-card, .poll";
+  var blocks = qsa(SEL).filter(function (b) { for (var p = b.parentElement; p; p = p.parentElement) { if (p.matches && p.matches(SEL)) return false; } return true; });
+  var ICON = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3.5 8.5v-5h5M15.5 3.5h5v5M20.5 15.5v5h-5M8.5 20.5h-5v-5" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/><rect x="8.5" y="8.5" width="7" height="7" rx="1.2" fill="none" stroke="currentColor" stroke-width="1.8"/></svg>';
+  blocks.forEach(function (b, i) {
+    b.classList.add("has-focus");
+    var btn = document.createElement("button"); btn.type = "button"; btn.className = "focus-btn"; btn.innerHTML = ICON;
+    btn.title = "Ampliar para proyectar"; btn.setAttribute("aria-label", "Abrir este bloque en vista ampliada");
+    btn.addEventListener("click", function () { openFocus(i); });
+    b.insertBefore(btn, b.firstChild);
+  });
+  var ov = document.createElement("div");
+  ov.className = "focus-overlay"; ov.setAttribute("role", "dialog"); ov.setAttribute("aria-modal", "true"); ov.setAttribute("aria-label", "Vista ampliada");
+  ov.innerHTML = '<div class="focus-toolbar"><div class="btn-row"><button type="button" class="fbtn" id="focus-prev">◀ Anterior</button><button type="button" class="fbtn" id="focus-next">Siguiente ▶</button><span class="focus-count" id="focus-count"></span></div>' +
+    '<div class="btn-row"><button type="button" class="fbtn" id="focus-zoom-out" aria-label="Reducir">A−</button><span class="focus-count" id="focus-zoom"></span><button type="button" class="fbtn" id="focus-zoom-in" aria-label="Ampliar">A+</button><button type="button" class="fbtn close" id="focus-close">✕ Cerrar</button></div></div>' +
+    '<div class="focus-stage" id="focus-stage"><div class="focus-content" id="focus-content"></div></div>';
+  document.body.appendChild(ov);
+  var cur = -1, zoom = 1.25, moved = [];
+  function applyZoom() { $("focus-content").style.zoom = zoom; $("focus-zoom").textContent = Math.round(zoom * 100) + "%"; }
+  function restore() { moved.forEach(function (m) { m.marker.parentNode.insertBefore(m.node, m.marker); m.marker.parentNode.removeChild(m.marker); }); moved = []; }
+  function openFocus(i) {
+    restore(); cur = i;
+    var b = blocks[i], nodes = [b], n = b.nextElementSibling, box = $("focus-content");
+    if (n && n.classList.contains("write-space")) nodes.push(n);
+    nodes.forEach(function (node) { var mk = document.createComment("focus-placeholder"); node.parentNode.insertBefore(mk, node); moved.push({ node: node, marker: mk }); box.appendChild(node); });
+    ov.classList.add("open"); document.body.classList.add("focus-open");
+    $("focus-count").textContent = (i + 1) + " / " + blocks.length;
+    $("focus-prev").disabled = i === 0; $("focus-next").disabled = i === blocks.length - 1;
+    $("focus-stage").scrollTop = 0; applyZoom(); $("focus-close").focus();
+  }
+  function closeFocus() {
+    if (cur < 0) return;
+    var b = blocks[cur]; restore(); cur = -1;
+    ov.classList.remove("open"); document.body.classList.remove("focus-open");
+    b.scrollIntoView({ block: "center" });
+    var fb = b.querySelector(".focus-btn"); if (fb) fb.focus({ preventScroll: true });
+  }
+  $("focus-prev").addEventListener("click", function () { if (cur > 0) openFocus(cur - 1); });
+  $("focus-next").addEventListener("click", function () { if (cur < blocks.length - 1) openFocus(cur + 1); });
+  $("focus-zoom-in").addEventListener("click", function () { zoom = Math.min(2.2, Math.round((zoom + 0.1) * 100) / 100); applyZoom(); });
+  $("focus-zoom-out").addEventListener("click", function () { zoom = Math.max(0.8, Math.round((zoom - 0.1) * 100) / 100); applyZoom(); });
+  $("focus-close").addEventListener("click", closeFocus);
+  document.addEventListener("keydown", function (e) {
+    if (cur < 0) return;
+    if (e.key === "Escape") { e.preventDefault(); closeFocus(); return; }
+    var a = document.activeElement, tag = a ? a.tagName : "";
+    if (tag === "INPUT" || tag === "TEXTAREA" || tag === "SELECT" || (a && a.isContentEditable)) return;
+    if (e.key === "ArrowRight" && cur < blocks.length - 1) { e.preventDefault(); openFocus(cur + 1); }
+    if (e.key === "ArrowLeft" && cur > 0) { e.preventDefault(); openFocus(cur - 1); }
+  });
+})();
+
+</script>
+</body>
+</html>

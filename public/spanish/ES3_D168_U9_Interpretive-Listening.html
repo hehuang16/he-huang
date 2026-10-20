@@ -1,0 +1,888 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Raíces: la historia de tres ritmos · Día 168</title>
+<style>
+:root {
+  --navy: #13294b; --ink: #1d2733; --muted: #4f5d6e; --line: #d3dce6; --wash: #f2f6fa; --paper: #ffffff;
+  --blue: #1f6fb2; --cyan: #5cc8d6; --amber: #e9a23b; --green: #2e7d4f; --red: #c0453c; --purple: #6a3fb5;
+  --soft-green: #e3f4ea; --soft-amber: #fff2dc; --soft-blue: #e7f1fa;
+  --interp: #1f6fb2; --inter: #b26b00; --pres: #2e7d4f;
+}
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+html { font-size: 19px; scroll-behavior: smooth; }
+body { margin: 0; font-family: "Segoe UI", system-ui, -apple-system, Roboto, Arial, sans-serif; color: var(--ink); background: #eef2f6; line-height: 1.5; }
+h1, h2, h3 { color: var(--navy); line-height: 1.2; }
+a { color: var(--blue); }
+button { font: inherit; }
+
+/* Presenter bar */
+.topbar { position: sticky; top: 0; z-index: 50; display: flex; flex-wrap: wrap; align-items: center; gap: 8px 14px; padding: 8px 16px; background: var(--navy); color: white; }
+.brand { font-weight: 900; letter-spacing: .02em; white-space: nowrap; }
+.navlinks { display: flex; flex: 1 1 auto; min-width: 0; flex-wrap: wrap; row-gap: 2px; gap: 2px 4px; }
+.navlinks a { padding: 5px 8px; border-radius: 8px; color: white; text-decoration: none; font-size: .78rem; font-weight: 700; white-space: nowrap; }
+.navlinks a:hover { background: rgba(255,255,255,.14); }
+.navlinks a b { color: var(--cyan); margin-right: 3px; }
+.presenter-tools { display: flex; gap: 6px; flex: 0 0 auto; flex-wrap: wrap; }
+.ptool { border: 1px solid rgba(255,255,255,.4); border-radius: 9px; padding: 5px 11px; color: white; background: rgba(255,255,255,.1); font-weight: 850; font-size: .8rem; cursor: pointer; }
+.ptool:hover { background: rgba(255,255,255,.22); }
+.ptool[aria-pressed="true"] { background: var(--amber); border-color: var(--amber); color: var(--navy); }
+@media (max-width: 700px) { .navlinks { flex-wrap: nowrap; overflow-x: auto; } .presenter-tools { width: 100%; } }
+
+/* Layout */
+main { max-width: 1120px; margin: 0 auto; padding: 0 16px 80px; }
+.hero { margin: 26px 0 22px; padding: 34px 34px 30px; border-radius: 24px; color: white; background: linear-gradient(135deg, #13294b 0%, #1f6fb2 62%, #2e9bb0 100%); }
+.eyebrow { display: inline-block; margin-bottom: 10px; padding: 4px 12px; border-radius: 999px; background: rgba(255,255,255,.16); font-size: .78rem; font-weight: 900; letter-spacing: .12em; }
+.hero h1 { margin: 0 0 8px; color: white; font-size: 2.3rem; }
+.hero .sub { margin: 0; font-size: 1.1rem; color: #e3f2fb; font-weight: 600; }
+.hero .en { color: #cfe6f5; }
+section.lesson-section { scroll-margin-top: 70px; margin: 0 0 30px; padding: 28px 28px 10px; border-radius: 22px; background: var(--paper); box-shadow: 0 10px 30px rgba(19,41,75,.07); }
+section.lesson-section > h2 { margin: 0 0 8px; font-size: 1.6rem; }
+.sec-num { display: inline-grid; place-items: center; width: 38px; height: 38px; margin-right: 10px; border-radius: 12px; color: white; background: var(--navy); font-size: 1.05rem; vertical-align: middle; }
+.card { margin: 0 0 22px; padding: 22px 24px; border: 1px solid var(--line); border-radius: 18px; background: white; }
+.card h3 { margin: 0 0 12px; font-size: 1.2rem; }
+.grid-2 { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; }
+.grid-3 { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; }
+@media (max-width: 760px) { .grid-2, .grid-3 { grid-template-columns: 1fr; } section.lesson-section { padding: 22px 16px 6px; } .hero { padding: 26px 20px; } .hero h1 { font-size: 1.8rem; } }
+.note { color: var(--muted); font-size: .85rem; }
+.spaced { margin-top: 12px; }
+
+/* English toggle */
+.en { display: none; color: var(--muted); font-style: italic; }
+body.show-en .en { display: block; }
+body.show-en span.en, body.show-en td.en, body.show-en th.en { display: revert; }
+span.en { font-size: .9em; }
+
+/* Mode pills + key */
+.mode-pills { display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 20px; }
+.mode-pill { padding: 4px 12px; border-radius: 999px; font-size: .72rem; font-weight: 900; letter-spacing: .04em; color: white; }
+.mode-pill.interp { background: var(--interp); } .mode-pill.inter { background: var(--inter); } .mode-pill.pres { background: var(--pres); }
+.mode-pill.cult { background: #efeaf8; color: #4b2e83; }
+.color-key { display: flex; flex-wrap: wrap; gap: 8px 22px; align-items: center; font-size: .85rem; color: var(--navy); font-weight: 700; }
+.color-key i { display: inline-block; width: 26px; height: 10px; margin-right: 7px; border-radius: 4px; vertical-align: middle; }
+
+/* Can-do */
+.cando { border: 2px solid var(--green); background: linear-gradient(135deg, #eaf7ef, #ffffff 70%); }
+.cando ul { margin: 0; padding-left: 0; list-style: none; }
+.cando li { margin: 8px 0; padding-left: 34px; position: relative; font-weight: 650; color: var(--navy); }
+.cando li::before { content: "✓"; position: absolute; left: 0; top: 0; width: 24px; height: 24px; border-radius: 50%; display: grid; place-items: center; color: white; background: var(--green); font-size: .8rem; }
+
+/* Key idea */
+.key-idea { margin: 0 0 22px; padding: 22px 24px 20px; border: 2px solid var(--blue); border-radius: 18px; background: linear-gradient(135deg, #eaf3fb, #ffffff 70%); }
+.key-idea .ki-label { display: inline-block; margin-bottom: 8px; padding: 3px 11px; border-radius: 999px; color: white; background: var(--blue); font-size: .72rem; font-weight: 900; letter-spacing: .08em; text-transform: uppercase; }
+.key-idea p { margin: 0 0 6px; color: var(--navy); font-weight: 650; }
+.key-idea.tip { border-color: var(--amber); background: linear-gradient(135deg, #fff5df, #ffffff 70%); }
+.key-idea.tip .ki-label { color: var(--navy); background: var(--amber); }
+.write-space { height: 220px; margin: 0 0 24px; border: 1px solid #e2e8f0; border-radius: 14px; background: #f8fafc; }
+
+/* Buttons */
+.btn-row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.btn { border: 2px solid var(--navy); border-radius: 12px; padding: 8px 16px; background: white; color: var(--navy); font-weight: 800; cursor: pointer; }
+.btn:hover:not(:disabled) { background: var(--wash); }
+.btn.primary { background: var(--navy); color: white; }
+.btn.primary:hover:not(:disabled) { background: #1d3c6b; }
+.btn.small { padding: 5px 12px; font-size: .85rem; }
+.btn:disabled { opacity: .45; cursor: default; }
+.say { display: inline-grid; place-items: center; width: 34px; height: 34px; flex: 0 0 auto; padding: 0; border: 1px solid var(--line); border-radius: 50%; background: var(--soft-blue); color: var(--blue); cursor: pointer; vertical-align: middle; }
+.say:hover { background: var(--blue); color: white; }
+.say svg { width: 18px; height: 18px; }
+
+/* Units overview */
+.unit-tile { padding: 14px 16px; border-radius: 16px; background: var(--wash); border: 1px solid var(--line); }
+.unit-tile .u-num { display: inline-grid; place-items: center; width: 34px; height: 34px; margin-bottom: 6px; border-radius: 10px; color: white; background: var(--blue); font-weight: 900; }
+.unit-tile.now { border: 2px solid var(--amber); background: #fffaf0; }
+.unit-tile.now .u-num { background: var(--amber); color: var(--navy); }
+.unit-tile strong { display: block; color: var(--navy); }
+
+/* Phrase cards */
+.phrase-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+@media (max-width: 760px) { .phrase-grid { grid-template-columns: 1fr; } }
+.phrase { display: flex; gap: 12px; align-items: center; padding: 12px 14px; border: 1px solid var(--line); border-radius: 14px; background: white; }
+.phrase .es { font-weight: 800; color: var(--navy); }
+.phrase .en { font-size: .88rem; }
+
+/* Norms */
+.norms { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; margin: 0; padding: 0; list-style: none; }
+.norms li { padding: 14px 16px; border-radius: 14px; background: var(--soft-amber); font-weight: 700; color: var(--navy); }
+@media (max-width: 760px) { .norms { grid-template-columns: 1fr; } }
+
+/* Model text */
+.model-text { padding: 20px 22px; border-left: 6px solid var(--pres); border-radius: 12px; background: #f4faf6; font-size: 1.08rem; }
+.model-text .v { border-radius: 5px; transition: background .2s, color .2s; }
+.model-text.hl .v { background: #ffe08a; color: var(--navy); font-weight: 800; padding: 0 3px; }
+
+/* Tables */
+table.ref { width: 100%; border-collapse: collapse; margin: 6px 0 14px; }
+table.ref th, table.ref td { padding: 9px 12px; border: 1px solid var(--line); text-align: left; vertical-align: top; }
+table.ref th { background: var(--navy); color: white; }
+table.ref tr:nth-child(even) td { background: var(--wash); }
+.table-wrap { overflow-x: auto; }
+
+/* Conjugation explorer */
+.explorer { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr); gap: 20px; align-items: start; }
+@media (max-width: 760px) { .explorer { grid-template-columns: 1fr; } }
+.field { display: block; margin: 0 0 12px; font-weight: 800; color: var(--navy); }
+.field select, .field input[type=text] { display: block; width: 100%; margin-top: 6px; padding: 9px 12px; border: 2px solid var(--line); border-radius: 12px; font: inherit; color: var(--ink); background: white; }
+.field input[type=text]:focus, .field select:focus { outline: none; border-color: var(--blue); }
+.conj-out { padding: 20px; border-radius: 18px; background: var(--navy); color: white; text-align: center; }
+.conj-out .form { display: flex; justify-content: center; align-items: center; gap: 12px; font-size: 2.2rem; font-weight: 900; color: #ffe08a; }
+.conj-out .form .say { background: rgba(255,255,255,.15); color: white; border-color: rgba(255,255,255,.4); }
+.conj-out .tag { margin-top: 6px; font-size: .85rem; color: #cfe6f5; }
+.conj-table { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px 14px; margin-top: 14px; text-align: left; font-size: .9rem; }
+.conj-table div { padding: 4px 8px; border-radius: 8px; background: rgba(255,255,255,.08); }
+.conj-table div.on { background: #ffe08a; color: var(--navy); font-weight: 800; }
+.challenge { margin-top: 16px; padding: 16px 18px; border: 2px dashed var(--blue); border-radius: 16px; background: var(--soft-blue); }
+.challenge .prompt-line { font-size: 1.15rem; font-weight: 800; color: var(--navy); }
+.feedback { margin-top: 10px; padding: 10px 14px; border-radius: 12px; font-weight: 700; }
+.feedback.ok { color: #155d36; background: var(--soft-green); }
+.feedback.close { color: #7b4e0b; background: var(--soft-amber); }
+.feedback.no { color: #8b2620; background: #fbeceb; }
+.streak { font-weight: 850; color: var(--navy); }
+
+/* Matching game */
+.match-board { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+@media (max-width: 760px) { .match-board { grid-template-columns: 1fr; } }
+.match-col { display: grid; gap: 8px; align-content: start; }
+.match-col h4 { margin: 0 0 4px; color: var(--muted); font-size: .8rem; letter-spacing: .08em; text-transform: uppercase; }
+.m-item { padding: 11px 14px; border: 2px solid var(--line); border-radius: 12px; background: white; color: var(--ink); text-align: left; cursor: pointer; font-weight: 650; }
+.m-item:hover:not(:disabled) { border-color: var(--blue); }
+.m-item.sel { border-color: var(--navy); background: #e9eef6; }
+.m-item.done { border-color: var(--green); background: var(--soft-green); color: #155d36; cursor: default; }
+.m-item.shake { animation: shake .35s; border-color: var(--red); }
+@keyframes shake { 0%,100% { transform: translateX(0); } 25% { transform: translateX(-6px); } 75% { transform: translateX(6px); } }
+.score-line { margin-top: 12px; color: var(--navy); font-weight: 850; }
+
+/* Polls & MC */
+.poll { margin: 0 0 26px; padding: 20px 22px; border: 2px dashed var(--amber); border-radius: 18px; background: #fffaf0; }
+.poll-label, .qtype { display: inline-block; margin-bottom: 8px; padding: 3px 11px; border-radius: 999px; color: var(--navy); background: var(--amber); font-size: .72rem; font-weight: 900; letter-spacing: .07em; text-transform: uppercase; }
+.qtype { background: #e7e0f6; color: #4b2e83; }
+.poll-q { margin: 0 0 12px; color: var(--navy); font-weight: 800; font-size: 1.05rem; }
+.poll-opts, .mc-options { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; margin: 0 0 12px; }
+.poll-opt, .mc-opt { display: flex; align-items: center; gap: 12px; padding: 11px 14px; text-align: left; border: 2px solid var(--line); border-radius: 14px; background: white; color: var(--ink); cursor: pointer; }
+.poll-opt:hover:not(:disabled), .mc-opt:hover:not(:disabled) { border-color: var(--blue); }
+.mc-key { width: 32px; height: 32px; flex: 0 0 auto; display: grid; place-items: center; border-radius: 50%; color: white; background: var(--navy); font-weight: 900; }
+.poll-opt.chosen { border-color: var(--navy); background: #eef3f7; }
+.poll-opt.correct, .mc-opt.correct { border-color: var(--green); background: var(--soft-green); }
+.poll-opt.correct .mc-key, .mc-opt.correct .mc-key { background: var(--green); }
+.poll-opt.wrong, .mc-opt.wrong { border-color: var(--red); background: #fbeceb; }
+.poll-opt.wrong .mc-key, .mc-opt.wrong .mc-key { background: var(--red); }
+.mc-opt:disabled, .poll-opt:disabled { cursor: default; }
+.poll-why { padding: 12px 14px; border-radius: 12px; background: white; color: var(--navy); }
+.question { margin: 0 0 22px; padding: 20px 22px; border: 1px solid var(--line); border-radius: 18px; background: white; }
+.question h3 { margin: 4px 0 10px; font-size: 1.1rem; }
+.mc-feedback { margin-bottom: 12px; border-radius: 12px; }
+.mc-feedback.ok { padding: 12px 14px; color: #155d36; background: var(--soft-green); }
+.mc-feedback.retry { padding: 12px 14px; color: #7b4e0b; background: var(--soft-amber); }
+.reveal { display: none; margin-top: 12px; padding: 12px 14px; border-radius: 12px; background: var(--wash); }
+.reveal.open { display: block; }
+@media (max-width: 760px) { .poll-opts, .mc-options { grid-template-columns: 1fr; } }
+
+/* Myth or fact */
+.myth-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; }
+@media (max-width: 760px) { .myth-grid { grid-template-columns: 1fr; } }
+.myth-card { padding: 22px 22px 20px; border: 1px solid var(--line); border-radius: 18px; background: white; box-shadow: 0 10px 28px rgba(17,35,61,.07); }
+.myth-num { color: var(--blue); font-size: .78rem; font-weight: 900; letter-spacing: .08em; text-transform: uppercase; }
+.myth-statement { margin: 8px 50px 14px 0; color: var(--navy); font-size: 1.1rem; font-weight: 800; }
+.myth-vote.correct { color: white; background: var(--green); border-color: var(--green); }
+.myth-vote.wrong { color: white; background: var(--red); border-color: var(--red); }
+.myth-reveal { margin-top: 14px; padding-top: 12px; border-top: 1px solid var(--line); }
+.myth-reveal p { margin: 0 0 8px; }
+.quick-test { padding: 10px 12px; border-radius: 12px; background: var(--wash); }
+.qt-answer { color: #155d36; font-weight: 800; }
+
+/* Interview tools */
+.roulette { padding: 26px 22px; border-radius: 20px; background: var(--navy); color: white; text-align: center; }
+.roulette .q-big { min-height: 2.6em; margin: 10px 0 16px; font-size: 1.8rem; font-weight: 900; color: #ffe08a; display: flex; align-items: center; justify-content: center; gap: 12px; flex-wrap: wrap; }
+.roulette .q-big .say { background: rgba(255,255,255,.15); color: white; border-color: rgba(255,255,255,.4); }
+.roulette .btn { border-color: white; }
+.timer { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; }
+.timer .t-display { min-width: 4.5ch; font-size: 2.4rem; font-weight: 900; color: var(--navy); font-variant-numeric: tabular-nums; }
+.timer.done .t-display { color: var(--red); }
+.timer .t-msg { font-weight: 850; color: var(--red); }
+.bingo { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
+.b-cell { min-height: 112px; padding: 12px; border: 2px solid var(--line); border-radius: 14px; background: white; color: var(--ink); text-align: left; cursor: pointer; }
+.b-cell .b-text { display: block; font-weight: 800; color: var(--navy); }
+.b-cell .b-q { display: block; margin-top: 6px; font-size: .85rem; color: var(--blue); font-weight: 700; }
+.bingo:not(.show-q) .b-q { visibility: hidden; }
+.b-cell.on { border-color: var(--green); background: var(--soft-green); }
+.b-cell.on .b-text::after { content: " ✓"; color: var(--green); }
+@media (max-width: 560px) { .b-cell { min-height: 96px; padding: 8px; font-size: .85rem; } }
+.react { display: flex; flex-wrap: wrap; gap: 8px; }
+.react span { padding: 6px 12px; border-radius: 999px; background: var(--soft-amber); color: var(--navy); font-weight: 750; }
+
+/* Diagnostic */
+textarea { width: 100%; min-height: 180px; padding: 14px; border: 2px solid var(--line); border-radius: 14px; font: inherit; color: var(--ink); resize: vertical; }
+textarea:focus { outline: none; border-color: var(--pres); }
+.wc { display: flex; flex-wrap: wrap; gap: 8px 18px; margin-top: 8px; font-weight: 800; color: var(--navy); }
+.wc .good { color: var(--green); }
+.check-option { display: flex; gap: 10px; align-items: flex-start; padding: 8px 10px; border-radius: 10px; cursor: pointer; }
+.check-option:hover { background: var(--wash); }
+.check-option input { width: 20px; height: 20px; margin-top: 3px; accent-color: var(--green); }
+.scale-row { display: grid; grid-template-columns: minmax(0, 1.6fr) minmax(0, 2fr); gap: 10px; align-items: center; padding: 10px 0; border-bottom: 1px solid var(--line); }
+.scale-row:last-child { border-bottom: none; }
+.scale-row .s-text { font-weight: 750; color: var(--navy); }
+.scale-btns { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px; }
+.scale-btns button { padding: 7px 6px; border: 2px solid var(--line); border-radius: 10px; background: white; font-size: .8rem; font-weight: 800; color: var(--muted); cursor: pointer; }
+.scale-btns button.on[data-l="0"] { border-color: var(--red); background: #fbeceb; color: #8b2620; }
+.scale-btns button.on[data-l="1"] { border-color: var(--amber); background: var(--soft-amber); color: #7b4e0b; }
+.scale-btns button.on[data-l="2"] { border-color: var(--green); background: var(--soft-green); color: #155d36; }
+@media (max-width: 760px) { .scale-row { grid-template-columns: 1fr; } }
+
+/* Confidence */
+.conf-bar { height: 18px; margin: 8px 0 4px; border-radius: 999px; background: var(--wash); border: 1px solid var(--line); overflow: hidden; }
+.conf-bar span { display: block; height: 100%; width: 0; background: linear-gradient(90deg, var(--cyan), var(--green)); transition: width .3s; }
+.conf-list { display: grid; gap: 4px; margin-top: 10px; }
+
+/* Teacher guide */
+details.teacher { margin: 0 0 22px; padding: 14px 18px; border-radius: 14px; background: #f6f3fb; border: 1px solid #e2d9f3; }
+details.teacher summary { cursor: pointer; font-weight: 850; color: #4b2e83; }
+details.teacher ol { margin: 10px 0 0; }
+
+/* Focus mode */
+.has-focus { position: relative; }
+.has-focus > h3:first-of-type { padding-right: 48px; }
+.focus-btn { position: absolute; top: 10px; right: 10px; z-index: 3; width: 40px; height: 40px; display: grid; place-items: center; padding: 0; border: 1px solid var(--line); border-radius: 10px; color: var(--navy); background: rgba(255,255,255,.92); opacity: .72; cursor: pointer; }
+.focus-btn:hover, .focus-btn:focus-visible { opacity: 1; border-color: var(--blue); color: var(--blue); }
+.focus-btn svg { width: 24px; height: 24px; }
+.focus-overlay { position: fixed; inset: 0; z-index: 100; display: none; flex-direction: column; background: #0a1b31; }
+.focus-overlay.open { display: flex; }
+body.focus-open { overflow: hidden; }
+.focus-toolbar { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; justify-content: space-between; padding: 10px 18px; color: white; }
+.fbtn { border: 1px solid rgba(255,255,255,.4); border-radius: 999px; padding: 7px 15px; color: white; background: rgba(255,255,255,.1); font-weight: 850; cursor: pointer; }
+.fbtn:hover { background: rgba(255,255,255,.22); }
+.fbtn:disabled { opacity: .35; cursor: default; }
+.fbtn.close { background: var(--amber); border-color: var(--amber); color: var(--navy); }
+.focus-count { color: #bcecf1; font-weight: 800; font-variant-numeric: tabular-nums; }
+.focus-stage { flex: 1; overflow: auto; padding: 8px 24px 48px; }
+.focus-content { width: 100%; max-width: 1200px; margin: 0 auto; padding: 26px; border-radius: 22px; background: white; }
+.focus-content .focus-btn { display: none; }
+.focus-content > .write-space { margin-bottom: 0; }
+
+.confetti-piece { position: fixed; top: -14px; z-index: 300; width: 10px; height: 15px; border-radius: 2px; pointer-events: none; animation: confetti-fall 1.5s ease-in forwards; }
+@keyframes confetti-fall { to { transform: translate(var(--dx), 108vh) rotate(var(--rot)); } }
+.voice-warn { margin: 0 0 16px; padding: 10px 14px; border-radius: 12px; background: var(--soft-amber); color: #7b4e0b; font-weight: 700; }
+footer { text-align: center; color: var(--muted); font-size: .8rem; }
+@media print { .topbar, .focus-btn, .focus-overlay, .say { display: none !important; } .reveal { display: block; } }
+
+/* ---- Components added for the full series ---- */
+.vocab-icon { font-size: 1.5rem; width: 34px; text-align: center; flex: 0 0 auto; }
+.phrase .ex { font-size: .88rem; color: var(--ink); margin-top: 2px; }
+.reading-text { padding: 22px 24px; border-left: 6px solid var(--interp); border-radius: 12px; background: #f3f8fd; font-size: 1.08rem; }
+.reading-text h4 { margin: 0 0 10px; color: var(--navy); font-size: 1.15rem; }
+.reading-text p { margin: 0 0 12px; }
+.gloss { position: relative; border-bottom: 2px dotted var(--blue); cursor: help; }
+.gloss.show::after { content: attr(data-g); position: absolute; left: 0; top: 100%; z-index: 5; margin-top: 4px; padding: 4px 9px; border-radius: 8px; background: var(--navy); color: white; font-size: .8rem; font-weight: 700; font-style: normal; white-space: nowrap; }
+.listen-box { padding: 22px; border-radius: 18px; background: var(--navy); color: white; text-align: center; }
+.listen-box .btn { border-color: white; }
+.listen-box .btn:not(.primary) { background: transparent; color: white; }
+.listen-box .l-status { margin-top: 10px; color: #cfe6f5; font-weight: 700; min-height: 1.5em; }
+.transcript { margin-top: 14px; padding: 16px 18px; border-radius: 12px; background: var(--wash); }
+.transcript p { margin: 0 0 8px; }
+.dialogue { display: grid; gap: 10px; }
+.d-line { display: flex; gap: 10px; align-items: flex-start; }
+.d-line .who { flex: 0 0 auto; display: grid; place-items: center; min-width: 34px; height: 34px; padding: 0 8px; border-radius: 10px; color: white; background: var(--inter); font-weight: 900; font-size: .85rem; }
+.d-line.b .who { background: var(--blue); }
+.d-line .bubble { flex: 1; padding: 10px 14px; border-radius: 14px; background: var(--wash); }
+.d-line .bubble .en { font-size: .88rem; }
+.fill-list { display: grid; grid-template-columns: minmax(0, 1fr); gap: 10px; }
+.fill-item, .match-col, .s-bin, .station, .step { min-width: 0; overflow-wrap: anywhere; }
+.fill-item { padding: 12px 14px; border: 1px solid var(--line); border-radius: 14px; background: white; }
+.fill-item .f-q { font-weight: 700; color: var(--navy); margin-bottom: 8px; }
+.fill-item .f-row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.fill-item input { flex: 1 1 180px; min-width: 0; max-width: 100%; padding: 8px 12px; border: 2px solid var(--line); border-radius: 12px; font: inherit; }
+.fill-item input:focus { outline: none; border-color: var(--blue); }
+.fill-item.ok { border-color: var(--green); background: var(--soft-green); }
+.fill-item .feedback { margin-top: 8px; }
+.acc-bar { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; margin: 0 0 12px; }
+.sort-pool { display: flex; flex-wrap: wrap; gap: 8px; min-height: 52px; padding: 12px; margin-bottom: 14px; border: 2px dashed var(--line); border-radius: 14px; background: var(--wash); }
+.s-item { padding: 8px 13px; border: 2px solid var(--line); border-radius: 12px; background: white; color: var(--ink); font-weight: 700; cursor: pointer; }
+.s-item.sel { border-color: var(--navy); background: #e9eef6; }
+.s-item.placed { border-color: var(--green); background: var(--soft-green); color: #155d36; cursor: default; }
+.s-item.shake { animation: shake .35s; border-color: var(--red); }
+.sort-bins { display: grid; grid-template-columns: repeat(var(--bins, 2), minmax(0, 1fr)); gap: 12px; }
+@media (max-width: 760px) { .sort-bins { grid-template-columns: 1fr; } }
+.s-bin { min-height: 120px; padding: 12px; border: 2px solid var(--blue); border-radius: 16px; background: white; cursor: pointer; text-align: left; color: var(--ink); }
+.s-bin:hover { background: var(--soft-blue); }
+.s-bin .bin-title { display: block; margin-bottom: 8px; color: var(--navy); font-weight: 900; }
+.s-bin .bin-items { display: flex; flex-wrap: wrap; gap: 6px; }
+.role-cards { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; margin-top: 12px; }
+@media (max-width: 760px) { .role-cards { grid-template-columns: 1fr; } }
+.role { padding: 18px 20px; border-radius: 16px; color: var(--navy); font-weight: 700; min-height: 110px; }
+.role .r-label { display: block; margin-bottom: 6px; font-size: .75rem; font-weight: 900; letter-spacing: .08em; text-transform: uppercase; }
+.role.a { background: var(--soft-amber); border: 2px solid var(--amber); }
+.role.b { background: var(--soft-blue); border: 2px solid var(--blue); }
+.role.cover { filter: blur(6px); user-select: none; }
+.steps-list { display: grid; gap: 10px; margin-top: 10px; }
+.step { padding: 12px 14px; border-radius: 12px; background: var(--wash); border-left: 5px solid var(--blue); }
+.step .s-label { display: block; color: var(--blue); font-size: .78rem; font-weight: 900; letter-spacing: .06em; text-transform: uppercase; }
+.step-hidden { display: none; }
+.stations { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
+@media (max-width: 760px) { .stations { grid-template-columns: 1fr; } }
+.station { padding: 16px 18px; border: 2px solid var(--line); border-radius: 16px; background: white; }
+.station .st-num { display: inline-grid; place-items: center; width: 32px; height: 32px; margin-right: 8px; border-radius: 10px; color: white; background: var(--purple); font-weight: 900; }
+.station h4 { display: inline; color: var(--navy); font-size: 1.05rem; }
+.station ul { margin: 10px 0 0; padding-left: 20px; }
+.jeo { display: grid; grid-template-columns: repeat(var(--cats, 4), minmax(0, 1fr)); gap: 8px; }
+@media (max-width: 760px) { .jeo { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+.jeo .j-cat { padding: 10px 8px; border-radius: 12px; background: var(--navy); color: white; font-weight: 900; text-align: center; font-size: .85rem; }
+.jeo .j-cell { padding: 16px 8px; border: none; border-radius: 12px; background: var(--blue); color: #ffe08a; font-size: 1.4rem; font-weight: 900; cursor: pointer; }
+.jeo .j-cell.used { background: #c9d6e4; color: #6b7c8f; }
+.j-panel { margin-top: 14px; padding: 18px 20px; border-radius: 16px; background: var(--navy); color: white; }
+.j-panel .j-q { font-size: 1.3rem; font-weight: 800; color: #ffe08a; }
+.j-panel .j-a { margin-top: 10px; font-size: 1.1rem; font-weight: 800; color: #bdf0cf; }
+.j-panel .btn { border-color: white; background: transparent; color: white; }
+.teams { display: flex; flex-wrap: wrap; gap: 16px; align-items: center; margin-top: 12px; font-weight: 850; color: var(--navy); }
+.mc-set.exam .mc-opt.chosen { border-color: var(--navy); background: #e9eef6; }
+.exam-bar { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin-top: 10px; }
+.prompt-card .p-text { font-size: 1.08rem; font-weight: 700; color: var(--navy); }
+.frame-list { margin: 8px 0 0; padding-left: 0; list-style: none; display: grid; gap: 6px; }
+.frame-list li { padding: 8px 12px; border-radius: 10px; background: #f4faf6; border-left: 4px solid var(--pres); font-weight: 650; }
+table.rubric th:first-child { min-width: 140px; }
+table.rubric td { font-size: .88rem; }
+.svg-wrap { overflow-x: auto; }
+.svg-wrap svg { display: block; max-width: 100%; height: auto; margin: 0 auto; }
+.svg-wrap svg text { font-size: 14px; }
+
+</style>
+</head>
+<body>
+<header class="topbar">
+  <div class="brand">Español 3</div>
+  <nav class="navlinks" aria-label="Secciones"><a href="#antes"><b>1</b> Antes de escuchar</a><a href="#escucha"><b>2</b> Escucha</a><a href="#comprension"><b>3</b> Comprensión</a><a href="#otra-vez"><b>4</b> Escucha otra vez</a><a href="#cultura"><b>5</b> Cultura</a><a href="#reflexion"><b>6</b> Reflexión</a><a href="#salida"><b>7</b> Boleto de salida</a></nav>
+  <div class="presenter-tools">
+    <button type="button" class="ptool" id="en-toggle" aria-pressed="false" title="Show English support">EN</button>
+    <button type="button" class="ptool" id="slow-toggle" aria-pressed="false" title="Slow down the audio">Audio lento</button>
+    <button type="button" class="ptool" id="font-down" aria-label="Smaller text">A−</button>
+    <button type="button" class="ptool" id="font-up" aria-label="Larger text">A+</button>
+    <button type="button" class="ptool" id="fullscreen-btn">Pantalla completa</button>
+  </div>
+</header>
+<main>
+  <div class="hero">
+    <span class="eyebrow">ESPAÑOL 3 · DÍA 168 / 180</span>
+    <h1>Raíces: la historia de tres ritmos</h1>
+    <p class="sub">Unidad 9: Arte, literatura e identidad · Escuchar: salsa, tango y flamenco</p>
+    <p class="en">Roots: the story of three rhythms · Unit 9: Art, Literature and Identity · Listening: salsa, tango and flamenco</p>
+  </div>
+  <div class="card cando">
+    <h3>Hoy puedo…</h3>
+    <ul><li>Puedo entender una charla sobre la historia de un género musical. <span class="en">— I can understand a talk about the history of a music genre.</span></li><li>Puedo identificar fechas, lugares y personas en un texto oral. <span class="en">— I can identify dates, places and people in a spoken text.</span></li><li>Puedo reconocer el pretérito y el imperfecto en una narración oral. <span class="en">— I can recognize the preterite and the imperfect in spoken narration.</span></li><li>Puedo comparar el origen de tres géneros musicales. <span class="en">— I can compare the origins of three music genres.</span></li></ul>
+    <div class="color-key spaced" aria-label="Modos de comunicación">
+      <span><i style="background:var(--interp)"></i>Interpretivo (leer / escuchar)</span>
+      <span><i style="background:var(--inter)"></i>Interpersonal (conversar)</span>
+      <span><i style="background:var(--pres)"></i>Presentacional (hablar / escribir para otros)</span>
+    </div>
+  </div>
+  <details class="teacher">
+    <summary>Guía del profesor · Teacher guide (≈ 55 min)</summary>
+    <p class="note"><strong>Pacing guide:</strong> Interpretive Listening · Interpretive · Grammar: Past tenses in listening · Product: Listening check</p>
+    <ol><li><strong>Antes de escuchar (8 min):</strong> Poll + key words with audio. Students predict which genre each sentence describes (prediction sort) before listening.</li><li><strong>Escucha (10 min):</strong> Play part 1 (tango) once at normal speed, once with «Audio lento». Students note 3 facts. Repeat for parts 2 and 3 if time allows, or play all three in a row.</li><li><strong>Comprensión (8 min):</strong> MC individually; review with transcript hidden. Only reveal the transcript after the MC.</li><li><strong>Escucha otra vez (10 min):</strong> Replay; students do the fill-in from memory and the Venn-style sort. Then reveal the transcript to check.</li><li><strong>Cultura (7 min):</strong> Key card + table. Pairs answer: ¿Qué tienen en común los tres géneros?</li><li><strong>Reflexión (8 min):</strong> Short writing: the music of my family or community, using past tenses.</li><li><strong>Boleto de salida (4 min):</strong> Exit MC + confidence.</li></ol>
+    <p class="note">Audio uses the browser's Spanish voice; the three parts are labeled by speaker. Facts: tango born in the late 1800s in the poor neighborhoods and port areas of Buenos Aires and Montevideo, mixing European immigrant music, the Cuban habanera, the milonga and Afro-Rioplatense candombe; the bandoneón came from Germany; tango became a craze in Paris around 1913 and then gained prestige in Buenos Aires; Carlos Gardel (d. 1935) its most famous singer; UNESCO Intangible Heritage 2009 (Argentina and Uruguay). Flamenco: Andalusia, with Gitano (Roma) communities central, plus Arab, Jewish and Castilian influences; elements cante, toque, baile, palmas; Paco de Lucía popularized the Peruvian cajón in flamenco in the 1970s; UNESCO 2010. Salsa: rooted in Cuban son; developed in New York in the 1960s–70s by Cuban and Puerto Rican musicians (Fania Records, founded 1964); Celia Cruz (1925–2003), Cuban, known as «la Reina de la Salsa». No lyrics are quoted.</p>
+    <p class="note">Nothing typed on this page is saved or sent anywhere. Audio uses the computer's built-in Spanish voice.</p>
+  </details>
+  <section class="lesson-section" id="antes"><h2><span class="sec-num">1</span>Antes de escuchar</h2><div class="mode-pills"><span class="mode-pill interp">Interpretivo</span><span class="mode-pill cult">Cultura</span></div><div class="card"><h3>Palabras clave</h3><div class="phrase-grid"><div class="phrase"><button class="say" data-say="el inmigrante. Muchos inmigrantes llegaban de Italia y España." aria-label="Escuchar"></button><span class="vocab-icon" aria-hidden="true">🧳</span><div><div class="es">el inmigrante</div><div class="ex">Muchos inmigrantes llegaban de Italia y España.</div><div class="en">immigrant</div></div></div><div class="phrase"><button class="say" data-say="el puerto. Los barcos llegaban al puerto de Buenos Aires." aria-label="Escuchar"></button><span class="vocab-icon" aria-hidden="true">⚓</span><div><div class="es">el puerto</div><div class="ex">Los barcos llegaban al puerto de Buenos Aires.</div><div class="en">port</div></div></div><div class="phrase"><button class="say" data-say="la raíz (las raíces). La salsa tiene raíces cubanas." aria-label="Escuchar"></button><span class="vocab-icon" aria-hidden="true">🌱</span><div><div class="es">la raíz (las raíces)</div><div class="ex">La salsa tiene raíces cubanas.</div><div class="en">root(s)</div></div></div><div class="phrase"><button class="say" data-say="mezclar / la mezcla. El flamenco mezcla varias culturas." aria-label="Escuchar"></button><span class="vocab-icon" aria-hidden="true">🔀</span><div><div class="es">mezclar / la mezcla</div><div class="ex">El flamenco mezcla varias culturas.</div><div class="en">to mix / mix</div></div></div><div class="phrase"><button class="say" data-say="el cante. El cante flamenco es muy profundo." aria-label="Escuchar"></button><span class="vocab-icon" aria-hidden="true">🎤</span><div><div class="es">el cante</div><div class="ex">El cante flamenco es muy profundo.</div><div class="en">flamenco singing</div></div></div><div class="phrase"><button class="say" data-say="las palmas. Las palmas marcan el ritmo." aria-label="Escuchar"></button><span class="vocab-icon" aria-hidden="true">👏</span><div><div class="es">las palmas</div><div class="ex">Las palmas marcan el ritmo.</div><div class="en">rhythmic clapping</div></div></div><div class="phrase"><button class="say" data-say="el cajón. El cajón viene de Perú." aria-label="Escuchar"></button><span class="vocab-icon" aria-hidden="true">📦</span><div><div class="es">el cajón</div><div class="ex">El cajón viene de Perú.</div><div class="en">box drum</div></div></div><div class="phrase"><button class="say" data-say="la discográfica. Una discográfica de Nueva York grabó a muchos salseros." aria-label="Escuchar"></button><span class="vocab-icon" aria-hidden="true">💿</span><div><div class="es">la discográfica</div><div class="ex">Una discográfica de Nueva York grabó a muchos salseros.</div><div class="en">record label</div></div></div></div></div><div class="card sort-comp"><script type="application/json">{"items": [["Nació en el Río de la Plata.", "0"], ["Usa el bandoneón.", "0"], ["Se puso de moda en París.", "0"], ["Nació en Andalucía.", "1"], ["Tiene cante, toque, baile y palmas.", "1"], ["Adoptó el cajón peruano.", "1"], ["Se desarrolló en Nueva York.", "2"], ["Viene del son cubano.", "2"], ["Celia Cruz fue su reina.", "2"]]}</script><h3>Predicción: ¿de qué género habla?</h3><p class="note">Antes de escuchar, adivina. Después vas a comprobar. <span class="en">Guess before listening; you'll check afterward.</span></p><div class="sort-pool"></div><div class="sort-bins" style="--bins:3"><div class="s-bin" role="button" tabindex="0" data-bin="0"><span class="bin-title">el tango</span><span class="bin-items"></span></div><div class="s-bin" role="button" tabindex="0" data-bin="1"><span class="bin-title">el flamenco</span><span class="bin-items"></span></div><div class="s-bin" role="button" tabindex="0" data-bin="2"><span class="bin-title">la salsa</span><span class="bin-items"></span></div></div><div class="score-line"></div><div class="btn-row spaced"><button type="button" class="btn small s-reset">Empezar otra vez</button></div></div></section><section class="lesson-section" id="escucha"><h2><span class="sec-num">2</span>Escucha: el pódcast «Raíces»</h2><div class="mode-pills"><span class="mode-pill interp">Interpretivo</span></div><div class="card listen-comp"><script type="application/json">{"lines": ["¡Hola a todos y bienvenidos a «Raíces», el pódcast de la Escuela Secundaria de Chelsea! Hoy hablamos con el profesor Andrés Ortega sobre tres ritmos famosos. Profesor, ¿empezamos con el tango?", "Con mucho gusto. El tango nació a finales del siglo diecinueve en Buenos Aires y en Montevideo. En esa época llegaban miles de inmigrantes de Italia y de España. Vivían en casas pobres cerca del puerto y mezclaban su música con la habanera cubana, la milonga y los ritmos afrouruguayos y afroargentinos.", "¿Y el bandoneón? Siempre lo asocio con el tango.", "Exacto. El bandoneón vino de Alemania. Al principio, la gente rica no aceptaba el tango; decía que era un baile vulgar. Pero alrededor de 1913 el tango se puso de moda en París, y entonces la élite de Buenos Aires empezó a bailarlo también. Después, Carlos Gardel lo hizo famoso en todo el mundo con su voz.", "Ahora vamos a España. ¿De dónde viene el flamenco?", "El flamenco viene de Andalucía, en el sur de España. Los gitanos tuvieron un papel muy importante, pero también hay influencias árabes, judías y castellanas. Tiene cuatro elementos: el cante, el toque de la guitarra, el baile y las palmas.", "Y un dato curioso: en los años setenta, el guitarrista Paco de Lucía viajó a Perú y conoció el cajón. Le gustó tanto que lo llevó al flamenco. Hoy muchos grupos flamencos lo usan.", "¡Qué interesante! Y por último, la salsa. Mucha gente cree que es de Cuba, ¿verdad?", "Sus raíces son cubanas, sí: viene sobre todo del son cubano. Pero la salsa como la conocemos se desarrolló en Nueva York en los años sesenta y setenta. Allí vivían muchos músicos cubanos y puertorriqueños que tocaban juntos en los clubes.", "Una discográfica de Nueva York, Fania, grabó a muchos de esos músicos, y el nombre «salsa» se hizo popular. La cantante cubana Celia Cruz, que vivía en Estados Unidos, se convirtió en «la Reina de la Salsa».", "Entonces la salsa es una música de inmigrantes, como el tango.", "Exactamente. Los tres géneros nacieron de la mezcla de culturas. Por eso, cuando bailas salsa en Lawrence o tango en Boston, también bailas la historia de muchas familias.", "¡Gracias, profesor! Y a ustedes, gracias por escuchar «Raíces». ¡Hasta la próxima!"]}</script><h3>Episodio: tres ritmos, tres historias</h3><p>Escucha el pódcast. Toma notas: <strong>¿dónde?, ¿cuándo?, ¿quiénes?, ¿qué instrumentos?</strong></p><p class="en">Listen to the podcast episode. Take notes: where, when, who, which instruments.</p><div class="listen-box"><div class="btn-row" style="justify-content:center"><button type="button" class="btn primary l-play">▶ Escuchar</button><button type="button" class="btn l-stop">■ Parar</button></div><div class="l-status">Usa «Audio lento» arriba para escuchar más despacio.</div></div><div class="btn-row spaced"><button type="button" class="btn small reveal-btn" data-target="transcript-1">Ver la transcripción</button></div><div class="reveal transcript" id="transcript-1"><p><strong>Lucía:</strong> ¡Hola a todos y bienvenidos a «Raíces», el pódcast de la Escuela Secundaria de Chelsea! Hoy hablamos con el profesor Andrés Ortega sobre tres ritmos famosos. Profesor, ¿empezamos con el tango?</p><p><strong>Profesor Ortega:</strong> Con mucho gusto. El tango nació a finales del siglo diecinueve en Buenos Aires y en Montevideo. En esa época llegaban miles de inmigrantes de Italia y de España. Vivían en casas pobres cerca del puerto y mezclaban su música con la habanera cubana, la milonga y los ritmos afrouruguayos y afroargentinos.</p><p><strong>Lucía:</strong> ¿Y el bandoneón? Siempre lo asocio con el tango.</p><p><strong>Profesor Ortega:</strong> Exacto. El bandoneón vino de Alemania. Al principio, la gente rica no aceptaba el tango; decía que era un baile vulgar. Pero alrededor de 1913 el tango se puso de moda en París, y entonces la élite de Buenos Aires empezó a bailarlo también. Después, Carlos Gardel lo hizo famoso en todo el mundo con su voz.</p><p><strong>Lucía:</strong> Ahora vamos a España. ¿De dónde viene el flamenco?</p><p><strong>Profesor Ortega:</strong> El flamenco viene de Andalucía, en el sur de España. Los gitanos tuvieron un papel muy importante, pero también hay influencias árabes, judías y castellanas. Tiene cuatro elementos: el cante, el toque de la guitarra, el baile y las palmas.</p><p><strong>Profesor Ortega:</strong> Y un dato curioso: en los años setenta, el guitarrista Paco de Lucía viajó a Perú y conoció el cajón. Le gustó tanto que lo llevó al flamenco. Hoy muchos grupos flamencos lo usan.</p><p><strong>Lucía:</strong> ¡Qué interesante! Y por último, la salsa. Mucha gente cree que es de Cuba, ¿verdad?</p><p><strong>Profesor Ortega:</strong> Sus raíces son cubanas, sí: viene sobre todo del son cubano. Pero la salsa como la conocemos se desarrolló en Nueva York en los años sesenta y setenta. Allí vivían muchos músicos cubanos y puertorriqueños que tocaban juntos en los clubes.</p><p><strong>Profesor Ortega:</strong> Una discográfica de Nueva York, Fania, grabó a muchos de esos músicos, y el nombre «salsa» se hizo popular. La cantante cubana Celia Cruz, que vivía en Estados Unidos, se convirtió en «la Reina de la Salsa».</p><p><strong>Lucía:</strong> Entonces la salsa es una música de inmigrantes, como el tango.</p><p><strong>Profesor Ortega:</strong> Exactamente. Los tres géneros nacieron de la mezcla de culturas. Por eso, cuando bailas salsa en Lawrence o tango en Boston, también bailas la historia de muchas familias.</p><p><strong>Lucía:</strong> ¡Gracias, profesor! Y a ustedes, gracias por escuchar «Raíces». ¡Hasta la próxima!</p></div></div></section><section class="lesson-section" id="comprension"><h2><span class="sec-num">3</span>Comprensión</h2><div class="mode-pills"><span class="mode-pill interp">Interpretivo</span></div><div class="mc-set"><article class="question mc" data-answer="D"><span class="qtype">Pregunta 1</span><h3>¿Quiénes vivían cerca del puerto de Buenos Aires y Montevideo?</h3><p class="en">Who lived near the port?</p><div class="mc-options"><button class="mc-opt" type="button" data-key="A"><span class="mc-key">A</span><span>Músicos alemanes</span></button><button class="mc-opt" type="button" data-key="B"><span class="mc-key">B</span><span>Familias ricas</span></button><button class="mc-opt" type="button" data-key="C"><span class="mc-key">C</span><span>Gitanos de Andalucía</span></button><button class="mc-opt" type="button" data-key="D"><span class="mc-key">D</span><span>Inmigrantes de Italia y España</span></button></div><div class="mc-feedback" aria-live="polite"></div></article><article class="question mc" data-answer="A"><span class="qtype">Pregunta 2</span><h3>¿Qué pasó alrededor de 1913?</h3><p class="en">What happened around 1913?</p><div class="mc-options"><button class="mc-opt" type="button" data-key="A"><span class="mc-key">A</span><span>El tango se puso de moda en París.</span></button><button class="mc-opt" type="button" data-key="B"><span class="mc-key">B</span><span>Nació Carlos Gardel.</span></button><button class="mc-opt" type="button" data-key="C"><span class="mc-key">C</span><span>Llegó el bandoneón a España.</span></button><button class="mc-opt" type="button" data-key="D"><span class="mc-key">D</span><span>Se fundó la discográfica Fania.</span></button></div><div class="mc-feedback" aria-live="polite"></div></article><article class="question mc" data-answer="B"><span class="qtype">Pregunta 3</span><h3>¿Qué instrumento llevó Paco de Lucía de Perú al flamenco?</h3><p class="en">What instrument did Paco de Lucía bring from Peru to flamenco?</p><div class="mc-options"><button class="mc-opt" type="button" data-key="A"><span class="mc-key">A</span><span>El bandoneón</span></button><button class="mc-opt" type="button" data-key="B"><span class="mc-key">B</span><span>El cajón</span></button><button class="mc-opt" type="button" data-key="C"><span class="mc-key">C</span><span>La guitarra</span></button><button class="mc-opt" type="button" data-key="D"><span class="mc-key">D</span><span>Las congas</span></button></div><div class="mc-feedback" aria-live="polite"></div></article><article class="question mc" data-answer="C"><span class="qtype">Pregunta 4</span><h3>Según el profesor, ¿dónde se desarrolló la salsa?</h3><p class="en">Where did salsa develop, according to the professor?</p><div class="mc-options"><button class="mc-opt" type="button" data-key="A"><span class="mc-key">A</span><span>En La Habana</span></button><button class="mc-opt" type="button" data-key="B"><span class="mc-key">B</span><span>En San Juan</span></button><button class="mc-opt" type="button" data-key="C"><span class="mc-key">C</span><span>En Nueva York</span></button><button class="mc-opt" type="button" data-key="D"><span class="mc-key">D</span><span>En Miami</span></button></div><div class="mc-feedback" aria-live="polite"></div></article><article class="question mc" data-answer="B"><span class="qtype">Pregunta 5</span><h3>¿Por qué dice Lucía que la salsa es «una música de inmigrantes, como el tango»?</h3><p class="en">Why does Lucía say salsa is immigrant music, like tango?</p><div class="mc-options"><button class="mc-opt" type="button" data-key="A"><span class="mc-key">A</span><span>Porque los dos son de Argentina.</span></button><button class="mc-opt" type="button" data-key="B"><span class="mc-key">B</span><span>Porque los dos los crearon personas que vivían lejos de su país de origen.</span></button><button class="mc-opt" type="button" data-key="C"><span class="mc-key">C</span><span>Porque los dos usan el bandoneón.</span></button><button class="mc-opt" type="button" data-key="D"><span class="mc-key">D</span><span>Porque los dos son de los años sesenta.</span></button></div><div class="mc-feedback" aria-live="polite"></div></article><div class="score-line"></div></div></section><section class="lesson-section" id="otra-vez"><h2><span class="sec-num">4</span>Escucha otra vez: los detalles</h2><div class="mode-pills"><span class="mode-pill interp">Interpretivo</span><span class="mode-pill pres">Presentacional</span></div><div class="card fill-set"><h3>Completa con el verbo que escuchaste</h3>Escucha otra vez si necesitas. Escribe el verbo en el tiempo correcto.<div class="acc-bar" aria-label="Acentos"><span class="note">Acentos:</span><button type="button" class="btn small acc">á</button><button type="button" class="btn small acc">é</button><button type="button" class="btn small acc">í</button><button type="button" class="btn small acc">ó</button><button type="button" class="btn small acc">ú</button><button type="button" class="btn small acc">ñ</button><button type="button" class="btn small acc">ü</button></div><div class="fill-list"><div class="fill-item" data-a="[&quot;nació&quot;]"><div class="f-q">El tango ___ (nacer) a finales del siglo diecinueve.</div><div class="f-row"><input type="text" autocomplete="off" spellcheck="false" aria-label="Respuesta"><button type="button" class="btn small primary f-check">Comprobar</button></div><div class="feedback" hidden></div></div><div class="fill-item" data-a="[&quot;llegaban&quot;, &quot;llegaron&quot;]"><div class="f-q">En esa época ___ (llegar) miles de inmigrantes de Italia y de España.</div><div class="f-row"><input type="text" autocomplete="off" spellcheck="false" aria-label="Respuesta"><button type="button" class="btn small primary f-check">Comprobar</button></div><div class="feedback" hidden></div></div><div class="fill-item" data-a="[&quot;vino&quot;]"><div class="f-q">El bandoneón ___ (venir) de Alemania.</div><div class="f-row"><input type="text" autocomplete="off" spellcheck="false" aria-label="Respuesta"><button type="button" class="btn small primary f-check">Comprobar</button></div><div class="feedback" hidden></div></div><div class="fill-item" data-a="[&quot;se puso&quot;]"><div class="f-q">Alrededor de 1913 el tango ___ (ponerse) de moda en París.</div><div class="f-row"><input type="text" autocomplete="off" spellcheck="false" aria-label="Respuesta"><button type="button" class="btn small primary f-check">Comprobar</button></div><div class="feedback" hidden></div></div><div class="fill-item" data-a="[&quot;tuvieron&quot;, &quot;tenían&quot;]"><div class="f-q">Los gitanos ___ (tener) un papel muy importante en el flamenco.</div><div class="f-row"><input type="text" autocomplete="off" spellcheck="false" aria-label="Respuesta"><button type="button" class="btn small primary f-check">Comprobar</button></div><div class="feedback" hidden></div></div><div class="fill-item" data-a="[&quot;viajó&quot;]"><div class="f-q">Paco de Lucía ___ (viajar) a Perú y conoció el cajón.</div><div class="f-row"><input type="text" autocomplete="off" spellcheck="false" aria-label="Respuesta"><button type="button" class="btn small primary f-check">Comprobar</button></div><div class="feedback" hidden></div></div><div class="fill-item" data-a="[&quot;vivían&quot;]"><div class="f-q">En Nueva York ___ (vivir) muchos músicos cubanos y puertorriqueños.</div><div class="f-row"><input type="text" autocomplete="off" spellcheck="false" aria-label="Respuesta"><button type="button" class="btn small primary f-check">Comprobar</button></div><div class="feedback" hidden></div></div><div class="fill-item" data-a="[&quot;se convirtió&quot;]"><div class="f-q">Celia Cruz ___ (convertirse) en «la Reina de la Salsa».</div><div class="f-row"><input type="text" autocomplete="off" spellcheck="false" aria-label="Respuesta"><button type="button" class="btn small primary f-check">Comprobar</button></div><div class="feedback" hidden></div></div></div><div class="score-line"></div></div><div class="card sort-comp"><script type="application/json">{"items": [["Nació en el Río de la Plata.", "0"], ["La élite no lo aceptaba al principio.", "0"], ["Carlos Gardel lo hizo famoso.", "0"], ["Tiene cante, toque, baile y palmas.", "1"], ["Los gitanos tuvieron un papel muy importante.", "1"], ["Viene del son cubano.", "2"], ["Una discográfica de Nueva York grabó a sus músicos.", "2"], ["Nació de la mezcla de culturas.", "3"], ["Paco de Lucía le añadió el cajón.", "1"]]}</script><h3>Compara los tres géneros</h3><p class="note">Clasifica según el pódcast. <span class="en">Sort according to the podcast.</span></p><div class="sort-pool"></div><div class="sort-bins" style="--bins:4"><div class="s-bin" role="button" tabindex="0" data-bin="0"><span class="bin-title">El tango</span><span class="bin-items"></span></div><div class="s-bin" role="button" tabindex="0" data-bin="1"><span class="bin-title">El flamenco</span><span class="bin-items"></span></div><div class="s-bin" role="button" tabindex="0" data-bin="2"><span class="bin-title">La salsa</span><span class="bin-items"></span></div><div class="s-bin" role="button" tabindex="0" data-bin="3"><span class="bin-title">Los tres</span><span class="bin-items"></span></div></div><div class="score-line"></div><div class="btn-row spaced"><button type="button" class="btn small s-reset">Empezar otra vez</button></div></div></section><section class="lesson-section" id="cultura"><h2><span class="sec-num">5</span>Cultura: la música como identidad</h2><div class="mode-pills"><span class="mode-pill cult">Cultura</span></div><div class="card"><h3>Tres ritmos, tres historias</h3><div class="table-wrap"><table class="ref"><tr><th></th><th>El tango</th><th>El flamenco</th><th>La salsa</th></tr><tr><td>¿Dónde?</td><td>Buenos Aires y Montevideo</td><td>Andalucía (España)</td><td>Nueva York (raíces en Cuba y Puerto Rico)</td></tr><tr><td>¿Cuándo?</td><td>finales del siglo XIX</td><td>se formó durante siglos; se hizo popular en el siglo XIX</td><td>años sesenta y setenta</td></tr><tr><td>¿Quiénes?</td><td>inmigrantes europeos y comunidades afro</td><td>gitanos y otras culturas de Andalucía</td><td>músicos cubanos y puertorriqueños</td></tr><tr><td>Instrumentos</td><td>bandoneón, violín, piano</td><td>guitarra, cajón, palmas</td><td>congas, timbales, trompetas, piano</td></tr></table></div></div><div class="key-idea"><span class="ki-label">Idea clave</span><p><strong>Perspectiva:</strong> para muchas comunidades, la música es una manera de <strong>recordar de dónde vienen</strong> cuando viven lejos de su tierra. Por eso los inmigrantes crearon nuevos ritmos… ¡y siguen creándolos hoy!</p><p class="en">Perspective: for many communities, music is a way to remember where they come from when they live far from home. That's why immigrants created new rhythms — and still do today.</p></div><div class="write-space"></div><div class="card prompt-card"><h3>Conversa</h3><p class="p-text">¿Qué tienen en común los tres géneros? ¿Conoces otro género que nació de la mezcla de culturas (por ejemplo, el jazz, el hip hop o el reguetón)?</p><p class="en">What do the three genres have in common? Do you know another genre born from mixing cultures (jazz, hip hop, reggaeton)?</p></div><div class="write-space"></div></section><section class="lesson-section" id="reflexion"><h2><span class="sec-num">6</span>Reflexión: la música de mi familia</h2><div class="mode-pills"><span class="mode-pill pres">Presentacional</span></div><div class="card writing-comp"><script type="application/json">{"target": 80, "connectors": ["cuando", "siempre", "una vez", "ahora", "porque", "pero"]}</script><h3>La música de mi vida</h3><p>¿Qué música escuchaba tu familia cuando eras niño/a? ¿Qué música escuchas ahora? ¿Hay un recuerdo especial con una canción o un baile? (¡Describe la música; no copies letras!)</p><p class="en">What music did your family listen to when you were a child? What do you listen to now? Is there a special memory with a song or dance? Describe the music; don't copy lyrics.</p><p class="note">Marco de escritura:</p><ul class="frame-list"><li>Cuando era niño/a, en mi casa se escuchaba…</li><li>Mi … siempre ponía / tocaba…</li><li>Una vez, en una fiesta, …</li><li>Ahora me encanta… porque…</li><li>Para mí, la música es…</li></ul><div class="acc-bar" aria-label="Acentos"><span class="note">Acentos:</span><button type="button" class="btn small acc">á</button><button type="button" class="btn small acc">é</button><button type="button" class="btn small acc">í</button><button type="button" class="btn small acc">ó</button><button type="button" class="btn small acc">ú</button><button type="button" class="btn small acc">ñ</button><button type="button" class="btn small acc">ü</button></div><textarea placeholder="Cuando era niño/a…" aria-label="Tu texto"></textarea><div class="wc"><span class="w-count"></span><span class="w-conn"></span><span class="w-q"></span></div><p class="note">Puedes escribir en papel si prefieres. Este texto no se guarda.</p></div></section><section class="lesson-section" id="salida"><h2><span class="sec-num">7</span>Boleto de salida</h2><div class="mode-pills"><span class="mode-pill interp">Interpretivo</span><span class="mode-pill pres">Presentacional</span></div><div class="mc-set"><article class="question mc" data-answer="D"><span class="qtype">Pregunta 1</span><h3>El tango nació en…</h3><div class="mc-options"><button class="mc-opt" type="button" data-key="A"><span class="mc-key">A</span><span>Andalucía</span></button><button class="mc-opt" type="button" data-key="B"><span class="mc-key">B</span><span>Nueva York</span></button><button class="mc-opt" type="button" data-key="C"><span class="mc-key">C</span><span>La Habana</span></button><button class="mc-opt" type="button" data-key="D"><span class="mc-key">D</span><span>Buenos Aires y Montevideo</span></button></div><div class="mc-feedback" aria-live="polite"></div></article><article class="question mc" data-answer="A"><span class="qtype">Pregunta 2</span><h3>La salsa viene sobre todo del…</h3><div class="mc-options"><button class="mc-opt" type="button" data-key="A"><span class="mc-key">A</span><span>son cubano</span></button><button class="mc-opt" type="button" data-key="B"><span class="mc-key">B</span><span>flamenco</span></button><button class="mc-opt" type="button" data-key="C"><span class="mc-key">C</span><span>tango</span></button><button class="mc-opt" type="button" data-key="D"><span class="mc-key">D</span><span>mariachi</span></button></div><div class="mc-feedback" aria-live="polite"></div></article><article class="question mc" data-answer="B"><span class="qtype">Pregunta 3</span><h3>Completa: Mientras los músicos ___ en los clubes, nació un nuevo estilo.</h3><div class="mc-options"><button class="mc-opt" type="button" data-key="A"><span class="mc-key">A</span><span>tocaron</span></button><button class="mc-opt" type="button" data-key="B"><span class="mc-key">B</span><span>tocaban</span></button><button class="mc-opt" type="button" data-key="C"><span class="mc-key">C</span><span>tocan</span></button><button class="mc-opt" type="button" data-key="D"><span class="mc-key">D</span><span>tocarán</span></button></div><div class="mc-feedback" aria-live="polite"></div></article><article class="question mc" data-answer="C"><span class="qtype">Pregunta 4</span><h3>¿Qué tienen en común los tres géneros, según el pódcast?</h3><div class="mc-options"><button class="mc-opt" type="button" data-key="A"><span class="mc-key">A</span><span>Todos usan el bandoneón.</span></button><button class="mc-opt" type="button" data-key="B"><span class="mc-key">B</span><span>Todos son de España.</span></button><button class="mc-opt" type="button" data-key="C"><span class="mc-key">C</span><span>Todos nacieron de la mezcla de culturas.</span></button><button class="mc-opt" type="button" data-key="D"><span class="mc-key">D</span><span>Todos nacieron en el siglo XX.</span></button></div><div class="mc-feedback" aria-live="polite"></div></article><div class="score-line"></div></div><div class="card confidence"><h3>¿Puedo hacerlo?</h3><div class="conf-bar" role="progressbar" aria-valuemin="0" aria-valuemax="5" aria-valuenow="0"><span class="conf-fill"></span></div><p class="note conf-msg">0 / 5 — marca lo que puedes hacer sin ayuda.</p><div class="conf-list"><label class="check-option conf-check"><input type="checkbox"> Puedo entender las ideas principales de un pódcast sobre música.</label><label class="check-option conf-check"><input type="checkbox"> Puedo identificar fechas, lugares y personas en un audio.</label><label class="check-option conf-check"><input type="checkbox"> Puedo explicar el origen del tango, del flamenco y de la salsa.</label><label class="check-option conf-check"><input type="checkbox"> Puedo reconocer el pretérito y el imperfecto cuando escucho.</label><label class="check-option conf-check"><input type="checkbox"> Puedo hablar de la música de mi familia en el pasado.</label></div></div></section>
+  <footer>Español 3 · Día 168 · Unidad 9: Arte, literatura e identidad</footer>
+</main>
+<script type="application/json" id="polls-data">{"antes": {"q": "El tango hoy es elegante y famoso en todo el mundo. ¿Dónde crees que se bailaba al principio?", "o": ["En los palacios de los reyes", "En los barrios pobres y en el puerto", "En las iglesias", "En las universidades"], "a": 1, "why": "Al principio, el tango se bailaba en los <strong>barrios pobres<\/strong> y cerca del <strong>puerto<\/strong> de Buenos Aires y Montevideo, donde vivían muchos inmigrantes. ¡La élite no lo aceptaba!"}, "escucha": {"q": "En una narración oral, ¿qué verbo indica un evento terminado?", "o": ["llegaban", "bailaban", "nació", "vivían"], "a": 2, "why": "<strong>Nació<\/strong> es pretérito: un evento. <em>Llegaban, bailaban, vivían<\/em> son imperfecto: fondo o hábito."}, "comprension": {"q": "¿Cuál es la idea principal del episodio?", "o": ["El tango es más difícil que la salsa.", "Paco de Lucía viajó a Perú.", "Los tres géneros nacieron de la mezcla de culturas.", "Celia Cruz era cubana."], "a": 2, "why": "El profesor lo dice al final: <strong>los tres géneros nacieron de la mezcla de culturas<\/strong>. Las otras opciones son detalles (o no están en el audio)."}, "otra-vez": {"q": "«Al principio, la gente rica no ___ el tango.» ¿Qué forma usó el profesor?", "o": ["aceptó", "aceptaba", "acepta", "aceptará"], "a": 1, "why": "<em>Al principio<\/em> + una actitud que duraba → <strong>imperfecto<\/strong>: no aceptaba."}, "cultura": {"q": "La UNESCO protege el tango y el flamenco como…", "o": ["Patrimonio Cultural Inmaterial de la Humanidad", "Monumentos nacionales", "Deportes olímpicos", "Idiomas oficiales"], "a": 0, "why": "El tango (2009) y el flamenco (2010) son <strong>Patrimonio Cultural Inmaterial de la Humanidad<\/strong>: tradiciones vivas, no edificios."}, "reflexion": {"q": "«Cuando yo ___ niño, mi abuelo siempre ponía boleros.»", "o": ["fui", "soy", "sea", "era"], "a": 3, "why": "Edad / etapa de la vida en el pasado → imperfecto de <em>ser<\/em>: <strong>era<\/strong>."}, "salida": {"q": "¿Qué son «las palmas» en el flamenco?", "o": ["Árboles de Andalucía", "Un tipo de guitarra", "Los aplausos rítmicos", "Un baile en pareja"], "a": 2, "why": "<strong>Las palmas<\/strong> son aplausos rítmicos que acompañan el cante y el baile."}}</script>
+<script>
+(function () {
+  "use strict";
+  var $ = function (id) { return document.getElementById(id); };
+  var qsa = function (sel, root) { return Array.prototype.slice.call((root || document).querySelectorAll(sel)); };
+  var reduceMotion = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  function shuffle(a) { a = a.slice(); for (var i = a.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)); var t = a[i]; a[i] = a[j]; a[j] = t; } return a; }
+  function stripAcc(s) { return s.normalize("NFD").replace(/[̀-ͯ]/g, ""); }
+  function norm(s) { return s.trim().toLowerCase().replace(/[¿?¡!.,;:]/g, "").replace(/\s+/g, " ").trim(); }
+  function data(el) { var s = el.querySelector(':scope > script[type="application/json"]'); return s ? JSON.parse(s.textContent) : {}; }
+  function esc(s) { var d = document.createElement("div"); d.textContent = s; return d.innerHTML; }
+
+  /* Celebrate + cheers */
+  window.celebrate = function () {
+    if (reduceMotion) return;
+    var colors = ["#1f6fb2", "#5cc8d6", "#e9a23b", "#6a3fb5", "#2e7d4f", "#c0453c"];
+    for (var i = 0; i < 70; i++) {
+      var c = document.createElement("span"); c.className = "confetti-piece";
+      c.style.left = (Math.random() * 100) + "vw"; c.style.background = colors[i % colors.length];
+      c.style.setProperty("--dx", (Math.random() * 240 - 120) + "px"); c.style.setProperty("--rot", (Math.random() * 900 - 450) + "deg");
+      c.style.animationDelay = (Math.random() * 0.25) + "s"; c.style.animationDuration = (1.1 + Math.random() * 0.8) + "s";
+      document.body.appendChild(c);
+      setTimeout(function (n) { if (n.parentNode) n.parentNode.removeChild(n); }, 2600, c);
+    }
+  };
+  var cheers = ["¡Excelente!", "¡Muy bien!", "¡Perfecto!", "¡Eso es!", "¡Qué bien lo haces!", "¡Fenomenal!"];
+  function cheer() { return cheers[Math.floor(Math.random() * cheers.length)]; }
+
+  /* Audio */
+  var SPEAKER = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9H4z" fill="currentColor"/><path d="M16 8.5a5 5 0 0 1 0 7M18.5 6a8.5 8.5 0 0 1 0 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>';
+  function decorateSay(root) { qsa(".say", root).forEach(function (b) { if (!b.innerHTML) b.innerHTML = SPEAKER; b.type = "button"; if (!b.getAttribute("aria-label")) b.setAttribute("aria-label", "Escuchar"); }); }
+  decorateSay(document);
+  var slow = false, voice = null;
+  function pickVoice() {
+    if (!("speechSynthesis" in window)) return;
+    var vs = window.speechSynthesis.getVoices(), pref = ["es-MX", "es-US", "es-419", "es-ES"];
+    for (var i = 0; i < pref.length && !voice; i++) voice = vs.filter(function (v) { return v.lang.replace("_", "-") === pref[i]; })[0] || null;
+    if (!voice) voice = vs.filter(function (v) { return /^es/i.test(v.lang); })[0] || null;
+  }
+  if ("speechSynthesis" in window) { pickVoice(); window.speechSynthesis.onvoiceschanged = pickVoice; }
+  var warned = false;
+  function warnVoice() {
+    if (warned) return; warned = true;
+    var w = document.createElement("div"); w.className = "voice-warn";
+    w.textContent = "No Spanish voice was found on this computer, so audio may sound English or be silent. Add a Spanish voice in the system's speech settings.";
+    document.querySelector("main").insertBefore(w, document.querySelector(".hero").nextSibling);
+  }
+  function utter(text) {
+    var u = new SpeechSynthesisUtterance(text.replace(/_{2,}|\.\.\./g, " "));
+    u.lang = voice ? voice.lang : "es-MX"; if (voice) u.voice = voice;
+    u.rate = slow ? 0.7 : 0.95; return u;
+  }
+  function speak(text, onend) {
+    if (!("speechSynthesis" in window)) { warnVoice(); return; }
+    window.speechSynthesis.cancel();
+    var u = utter(text); if (onend) u.onend = onend;
+    window.speechSynthesis.speak(u);
+    if (!voice) warnVoice();
+  }
+  function speakQueue(lines, onLine, onDone) {
+    if (!("speechSynthesis" in window)) { warnVoice(); return; }
+    window.speechSynthesis.cancel(); if (!voice) warnVoice();
+    lines.forEach(function (t, i) { var u = utter(t); u.onstart = function () { if (onLine) onLine(i); }; if (i === lines.length - 1) u.onend = function () { if (onDone) onDone(); }; window.speechSynthesis.speak(u); });
+  }
+  document.addEventListener("click", function (e) {
+    var b = e.target.closest && e.target.closest(".say");
+    if (!b) return;
+    if (b.hasAttribute("data-say")) speak(b.getAttribute("data-say"));
+    else if (b.hasAttribute("data-say-target")) { var t = $(b.getAttribute("data-say-target")); if (t) speak(t.textContent.replace(/\s+/g, " ")); }
+  });
+  $("slow-toggle").addEventListener("click", function () { slow = !slow; this.setAttribute("aria-pressed", slow); });
+
+  /* Presenter bar */
+  var baseFont = 19;
+  function setFont() { document.documentElement.style.fontSize = baseFont + "px"; }
+  $("font-down").addEventListener("click", function () { baseFont = Math.max(15, baseFont - 2); setFont(); });
+  $("font-up").addEventListener("click", function () { baseFont = Math.min(31, baseFont + 2); setFont(); });
+  $("fullscreen-btn").addEventListener("click", function () {
+    try { if (!document.fullscreenElement) document.documentElement.requestFullscreen(); else document.exitFullscreen(); } catch (e) {}
+  });
+  document.addEventListener("fullscreenchange", function () { $("fullscreen-btn").textContent = document.fullscreenElement ? "Salir" : "Pantalla completa"; });
+  $("en-toggle").addEventListener("click", function () { var on = document.body.classList.toggle("show-en"); this.setAttribute("aria-pressed", on); });
+
+  /* Generic reveal buttons */
+  qsa(".reveal-btn").forEach(function (btn) {
+    btn.dataset.label = btn.textContent;
+    btn.addEventListener("click", function () { var t = $(btn.getAttribute("data-target")); var open = t.classList.toggle("open"); if (t.hasAttribute("hidden")) t.hidden = !open; btn.textContent = open ? "Ocultar" : btn.dataset.label; });
+  });
+
+  /* Glossary words */
+  qsa(".gloss").forEach(function (g) { g.addEventListener("click", function () { g.classList.toggle("show"); }); });
+
+  /* Accent bars insert into the last focused input */
+  var lastInput = null;
+  document.addEventListener("focusin", function (e) { if (e.target.matches && e.target.matches('input[type="text"], textarea')) lastInput = e.target; });
+  qsa(".acc").forEach(function (b) {
+    b.addEventListener("mousedown", function (e) { e.preventDefault(); });
+    b.addEventListener("click", function () {
+      var scope = b.closest(".card, .challenge, .fill-set") || document;
+      var inp = (lastInput && scope.contains(lastInput)) ? lastInput : scope.querySelector('input[type="text"], textarea');
+      if (!inp) return;
+      var s = inp.selectionStart == null ? inp.value.length : inp.selectionStart, e2 = inp.selectionEnd == null ? inp.value.length : inp.selectionEnd;
+      inp.value = inp.value.slice(0, s) + b.textContent + inp.value.slice(e2); inp.focus(); inp.setSelectionRange(s + 1, s + 1);
+      inp.dispatchEvent(new Event("input"));
+    });
+  });
+
+  /* Predict-first polls */
+  var polls = JSON.parse($("polls-data").textContent);
+  Object.keys(polls).forEach(function (id) {
+    var sec = $(id); if (!sec) return;
+    var anchor = sec.querySelector(".mode-pills"), p = polls[id], box = document.createElement("div");
+    box.className = "poll"; box.setAttribute("data-answer", p.a);
+    box.innerHTML = '<span class="poll-label">Predice primero</span><p class="poll-q">' + p.q + '</p>' + (p.en ? '<p class="en">' + p.en + '</p>' : '') + '<div class="poll-opts">' +
+      p.o.map(function (o, i) { return '<button type="button" class="poll-opt" data-i="' + i + '"><span class="mc-key">' + "ABCD"[i] + '</span><span>' + o + '</span></button>'; }).join("") +
+      '</div><div class="btn-row"><button type="button" class="btn small primary poll-reveal" disabled>Revelar la respuesta</button><span class="note poll-status">Elige una predicción primero.</span></div><div class="poll-why spaced" hidden></div>';
+    anchor.parentNode.insertBefore(box, anchor.nextSibling);
+    var chosen = -1, opts = qsa(".poll-opt", box), reveal = box.querySelector(".poll-reveal");
+    opts.forEach(function (b) { b.addEventListener("click", function () {
+      chosen = Number(b.getAttribute("data-i"));
+      opts.forEach(function (x) { x.classList.toggle("chosen", x === b); });
+      reveal.disabled = false; box.querySelector(".poll-status").textContent = "Tu predicción: " + "ABCD"[chosen] + ". ¿Revelamos?";
+    }); });
+    reveal.addEventListener("click", function () {
+      opts.forEach(function (x, i) { x.disabled = true; x.classList.remove("chosen"); if (i === p.a) x.classList.add("correct"); else if (i === chosen) x.classList.add("wrong"); });
+      var why = box.querySelector(".poll-why"); why.hidden = false;
+      why.innerHTML = (chosen === p.a ? "<strong>" + cheer() + "</strong> " : "<strong>¡Buena predicción para comprobar!</strong> ") + p.why;
+      reveal.disabled = true; box.querySelector(".poll-status").textContent = "";
+      if (chosen === p.a) window.celebrate();
+    });
+  });
+
+  /* Multiple choice sets (practice mode and exam mode) */
+  qsa(".mc-set").forEach(function (set) {
+    var items = qsa(".question.mc", set), first = 0, solved = 0, line = set.querySelector(":scope > .score-line"), exam = set.classList.contains("exam");
+    function upd() { if (line && !exam) line.textContent = "Correctas al primer intento: " + first + " / " + items.length + (solved ? " · resueltas: " + solved : ""); }
+    items.forEach(function (q) {
+      var ans = q.getAttribute("data-answer"), fb = q.querySelector(".mc-feedback"), tried = false;
+      qsa(".mc-opt", q).forEach(function (b) { b.addEventListener("click", function () {
+        if (exam) { if (set.classList.contains("revealed")) return; qsa(".mc-opt", q).forEach(function (x) { x.classList.toggle("chosen", x === b); }); return; }
+        if (q.classList.contains("solved")) return;
+        if (b.getAttribute("data-key") === ans) {
+          b.classList.add("correct"); q.classList.add("solved"); solved++;
+          qsa(".mc-opt", q).forEach(function (x) { x.disabled = true; });
+          fb.className = "mc-feedback ok"; fb.innerHTML = "<strong>" + cheer() + "</strong> " + (tried ? "¡Lo lograste!" : "Correcto al primer intento.");
+          if (!tried) { first++; window.celebrate(); }
+          var r = q.querySelector(".explain"); if (r) r.classList.add("open");
+          upd();
+        } else {
+          tried = true; b.classList.add("wrong"); b.disabled = true;
+          fb.className = "mc-feedback retry"; fb.innerHTML = "<strong>Todavía no — ¡buen intento!</strong> Piensa otra vez y elige de nuevo.";
+        }
+      }); });
+    });
+    if (exam) {
+      var rb = set.querySelector(".exam-reveal");
+      rb.addEventListener("click", function () {
+        set.classList.add("revealed"); var right = 0;
+        items.forEach(function (q) {
+          var ans = q.getAttribute("data-answer"), ch = q.querySelector(".mc-opt.chosen");
+          qsa(".mc-opt", q).forEach(function (x) { x.disabled = true; if (x.getAttribute("data-key") === ans) x.classList.add("correct"); else if (x === ch) x.classList.add("wrong"); });
+          if (ch && ch.getAttribute("data-key") === ans) right++;
+          var r = q.querySelector(".explain"); if (r) r.classList.add("open");
+        });
+        line.textContent = "Resultado: " + right + " / " + items.length; rb.disabled = true;
+      });
+    }
+    upd();
+  });
+
+  /* Model texts: highlight */
+  qsa(".model-comp").forEach(function (c) {
+    var btn = c.querySelector(".hl-btn"), txt = c.querySelector(".model-text"), note = c.querySelector(".hl-note");
+    if (!btn) return; var label = btn.textContent;
+    btn.addEventListener("click", function () { var on = txt.classList.toggle("hl"); btn.textContent = on ? "Ocultar" : label; if (note) note.hidden = !on; });
+  });
+
+  /* Explorers */
+  qsa(".explorer-comp").forEach(function (c) {
+    var d = data(c), vSel = c.querySelector(".cx-verb"), pSel = c.querySelector(".cx-person");
+    var names = Object.keys(d.verbs);
+    names.forEach(function (v) { var o = document.createElement("option"); o.value = v; o.textContent = v; vSel.appendChild(o); });
+    d.persons.forEach(function (p, i) { var o = document.createElement("option"); o.value = i; o.textContent = p; pSel.appendChild(o); });
+    function render() {
+      var v = d.verbs[vSel.value], i = Number(pSel.value);
+      c.querySelector(".cx-form").textContent = v.f[i];
+      c.querySelector(".cx-tag").textContent = vSel.value + (v.type ? " · " + v.type : "");
+      c.querySelector(".cx-info").innerHTML = (v.en ? '<span class="en">' + esc(v.en) + '</span>' : '') + (v.note ? '<br>' + esc(v.note) : '') + ((d.notes && d.notes[i]) ? '<br>' + esc(d.notes[i]) : '');
+      c.querySelector(".conj-table").innerHTML = v.f.map(function (f, k) { return '<div class="' + (k === i ? "on" : "") + '">' + esc(d.persons[k].split(" / ")[0]) + " · " + esc(f) + "</div>"; }).join("");
+    }
+    vSel.addEventListener("change", render); pSel.addEventListener("change", render);
+    c.querySelector(".cx-say").addEventListener("click", function () { var i = Number(pSel.value); speak(((d.say_prefix && d.say_prefix[i]) ? d.say_prefix[i] + " " : "") + d.verbs[vSel.value].f[i]); });
+    render();
+    var ch = c.querySelector(".challenge"); if (!ch) return;
+    var cur = null, right = 0, streak = 0, done = false, inp = ch.querySelector(".ch-input"), fb = ch.querySelector(".feedback");
+    var pool = []; d.persons.forEach(function (p, i) { if (!d.skip || d.skip.indexOf(i) < 0) pool.push(i); });
+    function next() {
+      var v = names[Math.floor(Math.random() * names.length)], i = pool[Math.floor(Math.random() * pool.length)];
+      cur = { v: v, i: i, ans: d.verbs[v].f[i] }; done = false; ch.setAttribute("data-ans", cur.ans);
+      ch.querySelector(".prompt-line").innerHTML = (d.ask || "Conjuga") + " <strong>" + esc(v) + "</strong> · <strong>" + esc(d.persons[i]) + "</strong>";
+      inp.value = ""; fb.hidden = true;
+    }
+    function check() {
+      if (!cur || done) return; var val = norm(inp.value); if (!val) return; fb.hidden = false;
+      var answers = cur.ans.split(" / ").map(norm);
+      if (answers.indexOf(val) >= 0) { done = true; right++; streak++; fb.className = "feedback ok"; fb.textContent = cheer() + " " + cur.ans; if (streak % 3 === 0) window.celebrate(); }
+      else if (answers.map(stripAcc).indexOf(stripAcc(val)) >= 0) { fb.className = "feedback close"; fb.textContent = "¡Casi! Revisa el acento."; }
+      else { streak = 0; done = true; fb.className = "feedback no"; fb.innerHTML = "Todavía no. La respuesta es <strong>" + esc(cur.ans) + "</strong>. Intenta otro."; }
+      ch.querySelector(".streak").textContent = "Correctas: " + right + " · Racha: " + streak;
+    }
+    ch.querySelector(".ch-check").addEventListener("click", check);
+    ch.querySelector(".ch-next").addEventListener("click", next);
+    inp.addEventListener("keydown", function (e) { if (e.key === "Enter") { e.preventDefault(); if (done) next(); else check(); } });
+    next();
+  });
+
+  /* Fill-in sets */
+  qsa(".fill-set").forEach(function (set) {
+    var items = qsa(".fill-item", set), right = 0, line = set.querySelector(".score-line");
+    function upd() { if (line) line.textContent = "Correctas: " + right + " / " + items.length; }
+    items.forEach(function (it) {
+      var ans = JSON.parse(it.getAttribute("data-a")), inp = it.querySelector("input"), fb = it.querySelector(".feedback"), tries = 0, done = false;
+      function check() {
+        if (done) return; var val = norm(inp.value); if (!val) return; fb.hidden = false;
+        var ok = ans.map(norm);
+        if (ok.indexOf(val) >= 0) { done = true; right++; it.classList.add("ok"); inp.disabled = true; fb.className = "feedback ok"; fb.innerHTML = cheer() + (it.querySelector(".explain") ? "" : ""); var ex = it.querySelector(".explain"); if (ex) ex.classList.add("open"); if (tries === 0 && right === items.length) window.celebrate(); upd(); }
+        else if (ok.map(stripAcc).indexOf(stripAcc(val)) >= 0) { fb.className = "feedback close"; fb.textContent = "¡Casi! Revisa el acento."; }
+        else { tries++; if (tries >= 2) { fb.className = "feedback no"; fb.innerHTML = "Respuesta: <strong>" + esc(ans[0]) + "</strong>"; var ex2 = it.querySelector(".explain"); if (ex2) ex2.classList.add("open"); } else { fb.className = "feedback no"; fb.textContent = "Todavía no. Intenta otra vez."; } }
+      }
+      it.querySelector(".f-check").addEventListener("click", check);
+      inp.addEventListener("keydown", function (e) { if (e.key === "Enter") { e.preventDefault(); check(); } });
+    });
+    upd();
+  });
+
+  /* Matching games */
+  qsa(".match-comp").forEach(function (c) {
+    var d = data(c), L = c.querySelector(".m-left"), R = c.querySelector(".m-right"), score = c.querySelector(".m-score");
+    var sel = null, done = 0, miss = 0;
+    function build() {
+      qsa(".m-item", c).forEach(function (n) { n.parentNode.removeChild(n); }); sel = null; done = 0; miss = 0;
+      shuffle(d.pairs.map(function (p, i) { return i; })).forEach(function (i) { L.appendChild(mk(d.pairs[i][0], i, "q")); });
+      shuffle(d.pairs.map(function (p, i) { return i; })).forEach(function (i) { R.appendChild(mk(d.pairs[i][1], i, "a")); });
+      upd();
+    }
+    function mk(text, i, side) {
+      var b = document.createElement("button"); b.type = "button"; b.className = "m-item"; b.innerHTML = text; b.dataset.i = i; b.dataset.side = side;
+      b.addEventListener("click", function () {
+        if (b.classList.contains("done")) return;
+        if (!sel || sel.dataset.side === side) {
+          if (sel) sel.classList.remove("sel"); sel = (sel === b) ? null : b; if (sel) sel.classList.add("sel");
+          if (sel && d.say !== false && ((side === "q" && d.say !== "right") || (side === "a" && d.say === "right"))) speak(b.textContent);
+          return;
+        }
+        if (sel.dataset.i === b.dataset.i) { [sel, b].forEach(function (x) { x.classList.remove("sel"); x.classList.add("done"); x.disabled = true; }); done++; sel = null; if (done === d.pairs.length) window.celebrate(); }
+        else { miss++; [sel, b].forEach(function (x) { x.classList.remove("shake"); void x.offsetWidth; x.classList.add("shake"); }); sel.classList.remove("sel"); sel = null; }
+        upd();
+      });
+      return b;
+    }
+    function upd() { score.textContent = "Parejas: " + done + " / " + d.pairs.length + " · errores: " + miss + (done === d.pairs.length ? " · ¡Completo! " + cheer() : ""); }
+    c.querySelector(".m-reset").addEventListener("click", build);
+    build();
+  });
+
+  /* Sorting games */
+  qsa(".sort-comp").forEach(function (c) {
+    var d = data(c), pool = c.querySelector(".sort-pool"), bins = qsa(".s-bin", c), score = c.querySelector(".score-line");
+    var sel = null, placed = 0, miss = 0;
+    function build() {
+      qsa(".s-item", c).forEach(function (n) { n.parentNode.removeChild(n); }); sel = null; placed = 0; miss = 0;
+      shuffle(d.items.map(function (x, i) { return i; })).forEach(function (i) {
+        var b = document.createElement("button"); b.type = "button"; b.className = "s-item"; b.innerHTML = d.items[i][0]; b.dataset.bin = d.items[i][1];
+        b.addEventListener("click", function () { if (b.classList.contains("placed")) return; if (sel) sel.classList.remove("sel"); sel = (sel === b) ? null : b; if (sel) sel.classList.add("sel"); });
+        pool.appendChild(b);
+      });
+      upd();
+    }
+    bins.forEach(function (bin) { bin.addEventListener("keydown", function (e) { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); bin.click(); } }); bin.addEventListener("click", function () {
+      if (!sel) return;
+      if (sel.dataset.bin === bin.getAttribute("data-bin")) { var sp = document.createElement("span"); sp.className = "s-item placed"; sp.innerHTML = sel.innerHTML; bin.querySelector(".bin-items").appendChild(sp); sel.parentNode.removeChild(sel); placed++; sel = null; if (placed === d.items.length) window.celebrate(); }
+      else { miss++; var s = sel; s.classList.remove("shake"); void s.offsetWidth; s.classList.add("shake"); s.classList.remove("sel"); sel = null; }
+      upd();
+    }); });
+    function upd() { score.textContent = "Clasificadas: " + placed + " / " + d.items.length + " · errores: " + miss + (placed === d.items.length ? " · ¡Completo! " + cheer() : ""); }
+    c.querySelector(".s-reset").addEventListener("click", build);
+    build();
+  });
+
+  /* Myth or fact sets */
+  qsa(".myth-set").forEach(function (set) {
+    var cards = qsa(".myth-card", set), right = 0, done = 0, line = set.querySelector(".score-line");
+    cards.forEach(function (c) {
+      var truth = c.getAttribute("data-truth");
+      qsa(".myth-vote", c).forEach(function (b) { b.addEventListener("click", function () {
+        if (c.classList.contains("answered")) return; c.classList.add("answered");
+        var ok = b.getAttribute("data-vote") === truth;
+        qsa(".myth-vote", c).forEach(function (x) { x.disabled = true; });
+        b.classList.add(ok ? "correct" : "wrong");
+        if (!ok) c.querySelector('.myth-vote[data-vote="' + truth + '"]').classList.add("correct");
+        done++; if (ok) right++;
+        c.querySelector(".myth-verdict").innerHTML = (ok ? "<strong>" + cheer() + "</strong> " : "<strong>Casi — este engaña a mucha gente.</strong> ") + "Es <strong>" + truth.toUpperCase() + "</strong>.";
+        c.querySelector(".myth-reveal").hidden = false;
+        line.textContent = "Puntos: " + right + " · " + done + " de " + cards.length + " contestadas";
+        if (ok) window.celebrate();
+      }); });
+      var qt = c.querySelector(".qt-btn");
+      if (qt) qt.addEventListener("click", function () { var a = c.querySelector(".qt-answer"); a.hidden = !a.hidden; qt.textContent = a.hidden ? "Ver respuesta" : "Ocultar"; });
+    });
+  });
+
+  /* Roulettes */
+  qsa(".roulette-comp").forEach(function (c) {
+    var d = data(c), deck = [], txt = c.querySelector(".rq-text"), say = c.querySelector(".rq-say");
+    c.querySelector(".rq-spin").addEventListener("click", function () {
+      if (!deck.length) deck = shuffle(d.bank);
+      var q = deck.pop(); txt.innerHTML = q; say.setAttribute("data-say", txt.textContent);
+    });
+  });
+
+  /* Timers */
+  qsa(".timer").forEach(function (t) {
+    var total = Number(t.getAttribute("data-seconds")), left = total, iv = null;
+    var disp = t.querySelector(".t-display"), start = t.querySelector(".t-start"), msg = t.querySelector(".t-msg"), endMsg = t.getAttribute("data-end") || "¡Tiempo!";
+    function fmt(s) { return Math.floor(s / 60) + ":" + ("0" + (s % 60)).slice(-2); }
+    function draw() { disp.textContent = fmt(left); }
+    function stop() { clearInterval(iv); iv = null; start.textContent = "Empezar"; }
+    start.addEventListener("click", function () {
+      if (iv) { stop(); start.textContent = "Seguir"; return; }
+      if (left === 0) { left = total; t.classList.remove("done"); msg.textContent = ""; }
+      start.textContent = "Pausa";
+      iv = setInterval(function () { left--; draw(); if (left <= 0) { left = 0; draw(); stop(); t.classList.add("done"); msg.textContent = endMsg; } }, 1000);
+    });
+    t.querySelector(".t-reset").addEventListener("click", function () { stop(); left = total; t.classList.remove("done"); msg.textContent = ""; draw(); });
+    draw();
+  });
+
+  /* Bingo */
+  qsa(".bingo-comp").forEach(function (c) {
+    var d = data(c), grid = c.querySelector(".bingo"), msg = c.querySelector(".b-msg"), won = false;
+    d.items.forEach(function (it) {
+      var cell = document.createElement("button"); cell.type = "button"; cell.className = "b-cell";
+      cell.innerHTML = '<span class="b-text">' + it[0] + '</span><span class="b-q">' + it[1] + "</span>";
+      cell.addEventListener("click", function () { cell.classList.toggle("on"); check(); });
+      grid.appendChild(cell);
+    });
+    var lines = [[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]];
+    function check() {
+      var on = qsa(".b-cell", grid).map(function (x) { return x.classList.contains("on"); });
+      var n = lines.filter(function (l) { return on[l[0]] && on[l[1]] && on[l[2]]; }).length, count = on.filter(Boolean).length;
+      msg.textContent = count + " / 9" + (n ? " · ¡BINGO! (" + n + " línea" + (n > 1 ? "s" : "") + ")" : "");
+      if (n && !won) { won = true; window.celebrate(); } if (!n) won = false;
+    }
+    c.querySelector(".bq-toggle").addEventListener("click", function () { var on = grid.classList.toggle("show-q"); this.textContent = on ? "Ocultar preguntas" : "Mostrar preguntas"; });
+    c.querySelector(".b-reset").addEventListener("click", function () { qsa(".b-cell", grid).forEach(function (x) { x.classList.remove("on"); }); check(); });
+    check();
+  });
+
+  /* Writing counters */
+  qsa(".writing-comp").forEach(function (c) {
+    var d = data(c), ta = c.querySelector("textarea"), target = d.target || 80;
+    var conns = (d.connectors || ["y", "pero", "porque", "también", "además"]).map(function (w) { return w.toLowerCase(); });
+    function upd() {
+      var t = ta.value, words = (t.trim().match(/\S+/g) || []).length, low = " " + t.toLowerCase().replace(/[.,;:!?¡¿()«»"]/g, " ") + " ", cn = 0;
+      conns.forEach(function (w) { var parts = low.split(" " + w + " "); cn += parts.length - 1; });
+      var sents = (t.match(/[^.!?]+[.!?]/g) || []).length;
+      var wc = c.querySelector(".w-count"); wc.textContent = words + " palabras" + (words >= target ? " ✓" : " / " + target); wc.className = "w-count" + (words >= target ? " good" : "");
+      var cc = c.querySelector(".w-conn"); cc.textContent = "Conectores: " + cn + (cn >= 3 ? " ✓" : ""); cc.className = "w-conn" + (cn >= 3 ? " good" : "");
+      c.querySelector(".w-q").textContent = "Oraciones: " + sents;
+    }
+    ta.addEventListener("input", upd); upd();
+  });
+
+  /* Self-assessment scales */
+  qsa(".scale-comp").forEach(function (c) {
+    qsa(".scale-row", c).forEach(function (row) { qsa("button", row).forEach(function (b) { b.addEventListener("click", function () { qsa("button", row).forEach(function (x) { x.classList.toggle("on", x === b); }); }); }); });
+  });
+
+  /* Confidence checks */
+  qsa(".confidence").forEach(function (c) {
+    var checks = qsa(".conf-check input", c), done = false, fill = c.querySelector(".conf-fill"), bar = c.querySelector(".conf-bar"), msgEl = c.querySelector(".conf-msg");
+    function upd() {
+      var n = checks.filter(function (x) { return x.checked; }).length, total = checks.length;
+      fill.style.width = (100 * n / total) + "%"; bar.setAttribute("aria-valuenow", n);
+      var m = n === 0 ? "marca lo que puedes hacer sin ayuda." : n < total / 2 ? "buen comienzo — repasa las secciones de lo que falta." : n < total ? "¡casi! Un repaso más y lo tienes." : "¡Lo lograste! ¡Excelente trabajo!";
+      msgEl.textContent = n + " / " + total + " — " + m;
+      if (n === total && !done) { done = true; window.celebrate(); } if (n < total) done = false;
+    }
+    checks.forEach(function (x) { x.addEventListener("change", upd); }); upd();
+  });
+
+  /* Role cards */
+  qsa(".roles-comp").forEach(function (c) {
+    var d = data(c), deck = [], a = c.querySelector(".role.a .r-text"), b = c.querySelector(".role.b .r-text"), cnt = c.querySelector(".r-count");
+    function draw() { if (!deck.length) deck = shuffle(d.cards.map(function (x, i) { return i; })); var i = deck.pop(); a.innerHTML = d.cards[i].a; b.innerHTML = d.cards[i].b; cnt.textContent = "Situación " + (i + 1) + " de " + d.cards.length; qsa(".role", c).forEach(function (r) { r.classList.remove("cover"); }); }
+    c.querySelector(".r-draw").addEventListener("click", draw);
+    qsa(".role", c).forEach(function (r) { r.addEventListener("click", function () { r.classList.toggle("cover"); }); });
+    draw();
+  });
+
+  /* Listening */
+  qsa(".listen-comp").forEach(function (c) {
+    var d = data(c), status = c.querySelector(".l-status"), plays = 0;
+    c.querySelector(".l-play").addEventListener("click", function () {
+      plays++; status.textContent = "Escuchando… (vez " + plays + ")";
+      speakQueue(d.lines, function (i) { status.textContent = "Escuchando… " + (i + 1) + " / " + d.lines.length + " (vez " + plays + ")"; }, function () { status.textContent = "Fin. Has escuchado " + plays + (plays === 1 ? " vez." : " veces."); });
+    });
+    c.querySelector(".l-stop").addEventListener("click", function () { if ("speechSynthesis" in window) window.speechSynthesis.cancel(); status.textContent = "Pausado."; });
+  });
+
+  /* Dialogue line audio handled by .say; play-all */
+  qsa(".dialogue-comp").forEach(function (c) {
+    var btn = c.querySelector(".d-play"); if (!btn) return;
+    btn.addEventListener("click", function () { speakQueue(qsa(".d-line .es-line", c).map(function (x) { return x.textContent; })); });
+  });
+
+  /* Guided steps */
+  qsa(".steps-comp").forEach(function (c) {
+    var steps = qsa(".step", c), shown = 0, b = c.querySelectorAll(".step-controls button");
+    function upd() { steps.forEach(function (s, i) { s.classList.toggle("step-hidden", i >= shown); }); b[0].textContent = shown < steps.length ? "Revelar el siguiente paso (" + shown + "/" + steps.length + ")" : "Todos los pasos"; b[0].disabled = shown >= steps.length; }
+    b[0].addEventListener("click", function () { shown = Math.min(steps.length, shown + 1); upd(); });
+    b[1].addEventListener("click", function () { shown = steps.length; upd(); });
+    b[2].addEventListener("click", function () { shown = 0; upd(); });
+    upd();
+  });
+
+  /* Review board (Jeopardy style) */
+  qsa(".jeo-comp").forEach(function (c) {
+    var d = data(c), grid = c.querySelector(".jeo"), panel = c.querySelector(".j-panel"), qEl = panel.querySelector(".j-q"), aEl = panel.querySelector(".j-a"), cur = null;
+    var pts = { A: 0, B: 0 }, vals = [100, 200, 300, 400, 500];
+    grid.style.setProperty("--cats", d.cats.length);
+    d.cats.forEach(function (cat) { var h = document.createElement("div"); h.className = "j-cat"; h.innerHTML = cat.name; grid.appendChild(h); });
+    var rows = Math.max.apply(null, d.cats.map(function (x) { return x.qs.length; }));
+    for (var r = 0; r < rows; r++) d.cats.forEach(function (cat) {
+      var cell = document.createElement("button"); cell.type = "button"; cell.className = "j-cell"; var q = cat.qs[r];
+      if (!q) { cell.disabled = true; cell.classList.add("used"); grid.appendChild(cell); return; }
+      cell.textContent = vals[r]; cell.dataset.v = vals[r];
+      cell.addEventListener("click", function () { if (cell.classList.contains("used")) return; cell.classList.add("used"); cur = Number(cell.dataset.v); qEl.innerHTML = q[0]; aEl.innerHTML = q[1]; aEl.hidden = true; panel.hidden = false; });
+      grid.appendChild(cell);
+    });
+    panel.querySelector(".j-show").addEventListener("click", function () { aEl.hidden = false; });
+    qsa(".j-pt", c).forEach(function (b) { b.addEventListener("click", function () { if (cur == null) return; pts[b.dataset.t] += cur; cur = null; c.querySelector(".j-score").textContent = "Equipo A: " + pts.A + " · Equipo B: " + pts.B; window.celebrate(); }); });
+  });
+
+  /* Focus mode (runs last) */
+  var SEL = ".card, .question, .key-idea, .myth-card, .poll";
+  var blocks = qsa(SEL).filter(function (b) { for (var p = b.parentElement; p; p = p.parentElement) { if (p.matches && p.matches(SEL)) return false; } return true; });
+  var ICON = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3.5 8.5v-5h5M15.5 3.5h5v5M20.5 15.5v5h-5M8.5 20.5h-5v-5" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/><rect x="8.5" y="8.5" width="7" height="7" rx="1.2" fill="none" stroke="currentColor" stroke-width="1.8"/></svg>';
+  blocks.forEach(function (b, i) {
+    b.classList.add("has-focus");
+    var btn = document.createElement("button"); btn.type = "button"; btn.className = "focus-btn"; btn.innerHTML = ICON;
+    btn.title = "Ampliar para proyectar"; btn.setAttribute("aria-label", "Abrir este bloque en vista ampliada");
+    btn.addEventListener("click", function () { openFocus(i); });
+    b.insertBefore(btn, b.firstChild);
+  });
+  var ov = document.createElement("div");
+  ov.className = "focus-overlay"; ov.setAttribute("role", "dialog"); ov.setAttribute("aria-modal", "true"); ov.setAttribute("aria-label", "Vista ampliada");
+  ov.innerHTML = '<div class="focus-toolbar"><div class="btn-row"><button type="button" class="fbtn" id="focus-prev">◀ Anterior</button><button type="button" class="fbtn" id="focus-next">Siguiente ▶</button><span class="focus-count" id="focus-count"></span></div>' +
+    '<div class="btn-row"><button type="button" class="fbtn" id="focus-zoom-out" aria-label="Reducir">A−</button><span class="focus-count" id="focus-zoom"></span><button type="button" class="fbtn" id="focus-zoom-in" aria-label="Ampliar">A+</button><button type="button" class="fbtn close" id="focus-close">✕ Cerrar</button></div></div>' +
+    '<div class="focus-stage" id="focus-stage"><div class="focus-content" id="focus-content"></div></div>';
+  document.body.appendChild(ov);
+  var cur = -1, zoom = 1.25, moved = [];
+  function applyZoom() { $("focus-content").style.zoom = zoom; $("focus-zoom").textContent = Math.round(zoom * 100) + "%"; }
+  function restore() { moved.forEach(function (m) { m.marker.parentNode.insertBefore(m.node, m.marker); m.marker.parentNode.removeChild(m.marker); }); moved = []; }
+  function openFocus(i) {
+    restore(); cur = i;
+    var b = blocks[i], nodes = [b], n = b.nextElementSibling, box = $("focus-content");
+    if (n && n.classList.contains("write-space")) nodes.push(n);
+    nodes.forEach(function (node) { var mk = document.createComment("focus-placeholder"); node.parentNode.insertBefore(mk, node); moved.push({ node: node, marker: mk }); box.appendChild(node); });
+    ov.classList.add("open"); document.body.classList.add("focus-open");
+    $("focus-count").textContent = (i + 1) + " / " + blocks.length;
+    $("focus-prev").disabled = i === 0; $("focus-next").disabled = i === blocks.length - 1;
+    $("focus-stage").scrollTop = 0; applyZoom(); $("focus-close").focus();
+  }
+  function closeFocus() {
+    if (cur < 0) return;
+    var b = blocks[cur]; restore(); cur = -1;
+    ov.classList.remove("open"); document.body.classList.remove("focus-open");
+    b.scrollIntoView({ block: "center" });
+    var fb = b.querySelector(".focus-btn"); if (fb) fb.focus({ preventScroll: true });
+  }
+  $("focus-prev").addEventListener("click", function () { if (cur > 0) openFocus(cur - 1); });
+  $("focus-next").addEventListener("click", function () { if (cur < blocks.length - 1) openFocus(cur + 1); });
+  $("focus-zoom-in").addEventListener("click", function () { zoom = Math.min(2.2, Math.round((zoom + 0.1) * 100) / 100); applyZoom(); });
+  $("focus-zoom-out").addEventListener("click", function () { zoom = Math.max(0.8, Math.round((zoom - 0.1) * 100) / 100); applyZoom(); });
+  $("focus-close").addEventListener("click", closeFocus);
+  document.addEventListener("keydown", function (e) {
+    if (cur < 0) return;
+    if (e.key === "Escape") { e.preventDefault(); closeFocus(); return; }
+    var a = document.activeElement, tag = a ? a.tagName : "";
+    if (tag === "INPUT" || tag === "TEXTAREA" || tag === "SELECT" || (a && a.isContentEditable)) return;
+    if (e.key === "ArrowRight" && cur < blocks.length - 1) { e.preventDefault(); openFocus(cur + 1); }
+    if (e.key === "ArrowLeft" && cur > 0) { e.preventDefault(); openFocus(cur - 1); }
+  });
+})();
+
+</script>
+</body>
+</html>

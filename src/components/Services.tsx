@@ -2,7 +2,7 @@
 
 import { useRef } from 'react'
 import { motion, useInView } from 'framer-motion'
-import { Music, Dumbbell, Car, BookOpen, Globe } from 'lucide-react'
+import { Music, Dumbbell, Car, BookOpen, Globe, Languages } from 'lucide-react'
 
 const PHONE = '+17813544240'
 
@@ -66,6 +66,17 @@ const services = [
     ),
     experience: '7 cars serviced',
   },
+  {
+    icon: Languages,
+    title: 'Spanish',
+    price: '180 Daily Lessons',
+    priceBadgeClass: 'text-[#2563EB] bg-[#DBEAFE]',
+    description:
+      'Interactive Español 3 daily learning curriculum covering 9 units and 180 lessons — vocabulary, grammar, reading, listening, and speaking practice.',
+    experience: 'Español 3 · Intermediate Low → Intermediate Mid',
+    cta: 'Start Daily Learning →',
+    href: '/spanish/index.html',
+  },
 ]
 
 export default function Services() {
@@ -119,7 +130,13 @@ export default function Services() {
                     {/* Title + Price */}
                     <div className="flex flex-col xl:flex-row xl:items-center xl:justify-between gap-2">
                       <h3 className="font-display font-semibold text-lg text-[#1A1A2E]">
-                        {service.title}
+                        {service.href ? (
+                          <a href={service.href} className="hover:text-[#2563EB] transition-colors">
+                            {service.title}
+                          </a>
+                        ) : (
+                          service.title
+                        )}
                       </h3>
                       <div className="flex flex-col sm:flex-row sm:items-center gap-2">
                         <span
@@ -150,7 +167,7 @@ export default function Services() {
 
                     {/* CTA */}
                     <a
-                      href="#contact"
+                      href={service.href || '#contact'}
                       className="inline-block mt-4 text-[#2563EB] hover:text-[#1E3A5F] text-sm font-medium transition-colors"
                     >
                       {service.cta || 'Text to Book →'}
